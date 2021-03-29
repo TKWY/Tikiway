@@ -1,4 +1,4 @@
-const Customer = require('../models/customerModel')
+const Customer = require('../models/customerModels');
 // handle customers operation
 // get user
 // signin
@@ -10,7 +10,7 @@ const Customer = require('../models/customerModel')
 // get futur orders
 
 const create_customer = (req, res) => {
-  if (!Customer.find(req.body.phone)) {
+  if (!Customer.find(req.phone)) {
     const newCustomer = new Customer(req.body)
     newCustomer.save()
       .then((result) => {
@@ -24,12 +24,12 @@ const create_customer = (req, res) => {
   };
 };
 
-const customer_signup = (req, res) => {
+const customer_signin = (req, res) => {
   if (!req.body.phone || !req.body.password) {
     res.status(401).send('Please enter your phone number and password');
   } else {
     Customer.find((customer) => {
-      if (customer.phone === req.body.phone && customer.password === req.body.password) {
+      if (customer.phone === req.body.phone && customer.password === req.body.password) { // Need to add password encryption.
         req.session.customer = customer;
       };
     });
@@ -39,5 +39,5 @@ const customer_signup = (req, res) => {
 
 module.exports = {
   create_customer,
-  customer_signup
+  customer_signin
 };
