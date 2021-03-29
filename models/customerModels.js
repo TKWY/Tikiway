@@ -15,7 +15,10 @@ const customerSchema = new Schema({
     required: true
   },
   email: { type: String },
-  phone: { type: String },
+  phone: { 
+    type: String ,
+    required: true
+  },
   dateOfBirth: { type: Date },
   profileImage: { type: String },
 })
