@@ -1,0 +1,16 @@
+{
+  "name": "tkclients",
+  "version": "1.0.0",
+  "description": "Customer micro service",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tikiway",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.2"
+  }
+}
