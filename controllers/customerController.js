@@ -2,28 +2,35 @@ const Customer = require('../models/customerModels');
 // handle customers operation
 // get user
 // signin
-// checksignin
 // check password
 // encrypt password
-// get orders
-// get past orders
-// get futur orders
 
+// Create a new customer account
 const create_customer = (req, res) => {
-  if (!Customer.find(req.phone)) {
-    const newCustomer = new Customer(req.body)
-    newCustomer.save()
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      }) 
-  } else {
-    res.status(409).send('User Already Exits! Login or enter another phone number');
-  };
+  const newCustomer = new Customer(req.body)
+  newCustomer.save()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch(() => {
+      res.status(409).send('This phone number is already used.');
+    })
 };
 
+// Get all customers
+const get_all_customers = (req, res) => {
+  Customer.find()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+};
+
+// Get customer by id
+
+// Local authenticatification
 const customer_signin = (req, res) => {
   if (!req.body.phone || !req.body.password) {
     res.status(401).send('Please enter your phone number and password');
@@ -39,5 +46,6 @@ const customer_signin = (req, res) => {
 
 module.exports = {
   create_customer,
-  customer_signin
+  customer_signin,
+  get_all_customers
 };

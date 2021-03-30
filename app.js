@@ -15,9 +15,8 @@ app.listen(port, () => {
 });
 
 // Connect to mongodb
-const dbURI = `mongodb+srv://${mongodb_user}:${mongodb_password}@cluster0.b11y0.mongodb.net/node-tuts?retryWrites=true&w=majority`;
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true})
-  .then((result) => console.log('connected to db.'))
+const dbURI = `mongodb+srv://${mongodb_user}:${mongodb_password}@cluster0.b11y0.mongodb.net/TKclients?retryWrites=true&w=majority`;
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
   .catch((err) => console.log(err))
 
 // Application options & middleware

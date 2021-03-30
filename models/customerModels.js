@@ -17,7 +17,9 @@ const customerSchema = new Schema({
   email: { type: String },
   phone: { 
     type: String ,
-    required: true
+    required: true,
+    unique: [true, 'That phone number is already used.'],
+    index: true
   },
   dateOfBirth: { type: Date },
   profileImage: { type: String },
