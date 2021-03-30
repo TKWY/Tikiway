@@ -5,7 +5,7 @@ const morgan = require('morgan');
 
 // Local imports
 const customerRoutes = require('./routes/customerRoutes');
-const { port, mongodb_user, mongodb_password } = require('./config')
+const { port, mongodb_user, mongodb_password, mongodb_cluster, mongodb_document } = require('./config')
 
 // Running Application
 const app = express()
@@ -15,7 +15,7 @@ app.listen(port, () => {
 });
 
 // Connect to mongodb
-const dbURI = `mongodb+srv://${mongodb_user}:${mongodb_password}@cluster0.b11y0.mongodb.net/TKclients?retryWrites=true&w=majority`;
+const dbURI = `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_cluster}/${mongodb_document}?retryWrites=true&w=majority`;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
   .catch((err) => console.log(err))
 
