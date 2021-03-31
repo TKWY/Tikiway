@@ -1,38 +1,22 @@
 const Customer = require('../models/customerModels');
 const bcrypt = require('bcrypt');
-const { salt } = require('../config');
 // signin
 // check password
 
 // Create a new customer account
-const create_customer = async(req, res) => {
+const create_customer = async (req, res, next) => {
   const body = req.body;
-  const newCustomer = new Customer(req.body);
-  const salt = await bcrypt.genSalt(10);
+  const newCustomer = new Customer(body);
 
-  // Handle request datas
-  if (!(body.phone && body.password)) {
-    return res.status(400).send({error: 'Data not formatted'});
-  }
-  if (body.phone.length > 10) {
-    return res.send({error: 'Phone number is too long.'});
-  } else {
-    if (body.phone.length < 10) {
-      return res.send({error: 'Phone number is too short.'});
-    }
-  };
-  
-  // Save customers & handle errors
-  newCustomer.password = await bcrypt.hash(newCustomer.password, salt);
-  newCustomer.save()
+  await newCustomer.save()
     .then((result) => {
       res.send(result);
     })
-    .catch(() => {
-      res.status(409).send('This phone number is already used.');
+    .catch((err) => {
+      res.send(err)
     })
 };
-
+ 
 // Update customer infos
 const update_customer = (req, res) => {
   const id = req.params.id;
