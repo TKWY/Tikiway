@@ -18,7 +18,14 @@ app.listen(port, () => {
 
 // Connect to mongodb
 const dbURI = `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_cluster}/${mongodb_document}?retryWrites=true&w=majority`;
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+mongoose.connect(dbURI, {
+  // Options 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true, 
+  useCreateIndex: true, 
+  useFindAndModify: true,
+  useCreateIndex: true
+})
   .catch((err) => console.log(err));
 
 
