@@ -1,58 +1,46 @@
 const Customer = require('../models/customerModels');
-const bcrypt = require('bcrypt');
-// signin
-// check password
+const errorController = require('./errorController');
+
 
 // Create a new customer account
-const create_customer = async (req, res, next) => {
+const create_customer = (req, res) => {
   const body = req.body;
   const newCustomer = new Customer(body);
-
-  await newCustomer.save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      res.send(err)
-    })
+  newCustomer.save()
+    .then(result => { res.send(result) })
+    .catch(err => { res.send(errorController(err)) })
 };
- 
-// Update customer infos
-const update_customer = (req, res) => {
-  const id = req.params.id;
-  Customer.findByIdAndUpdate(id, req.body)
-    .then((result) => {
-      res.send(result)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-}
+
 
 // Get all customers
-const get_all_customers = (req, res) => {
+const get_all_customers = (res) => {
   Customer.find()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    .then((result) => { res.send(result) })
+    .catch((err) => { res.send(err) })
 };
+
 
 // Get customer by id
 const get_customers_by_id = (req, res) => {
   const id = req.params.id; // need to check if params or body
   Customer.findById(id)
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-}
+    .then((result) => { res.send(result) })
+    .catch((err) => { console.log(err) })
+};
+
+
+// Update customer infos
+// need tests
+const update_customer = (req, res) => {
+  const id = req.params.id;
+  Customer.findByIdAndUpdate(id, req.body)
+    .then((result) => { res.send(result) })
+    .catch((err) => { res.send(err) })
+};
+
 
 // Local authenticatification
+// authentication need rework with password comparaison in model.
 const customer_signin = (req, res) => {
   if (!req.body.phone || !req.body.password) {
     res.status(401).send('Please enter your phone number and password');
@@ -66,10 +54,9 @@ const customer_signin = (req, res) => {
   };
 };
 
-module.exports = {
-  create_customer,
-  update_customer,
-  customer_signin,
-  get_all_customers,
-  get_customers_by_id
+
+// Exports
+module.exports = { 
+  create_customer, update_customer, customer_signin,
+  get_all_customers, get_customers_by_id 
 };
