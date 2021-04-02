@@ -13,7 +13,7 @@ const create_customer = (req, res) => {
 
 
 // Get all customers
-const get_all_customers = (res) => {
+const get_all_customers = (req, res) => {
   Customer.find()
     .then((result) => { res.send(result) })
     .catch((err) => { res.send(err) })
