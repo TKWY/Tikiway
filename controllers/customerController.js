@@ -3,7 +3,7 @@ const errorController = require('./errorController');
 
 
 // Create a new customer account
-const create_customer = (req, res) => {
+const createCustomer = (req, res) => {
   const body = req.body;
   const newCustomer = new Customer(body);
   newCustomer.save()
@@ -16,32 +16,37 @@ const create_customer = (req, res) => {
 const get_all_customers = (req, res) => {
   Customer.find()
     .then((result) => { res.send(result) })
-    .catch((err) => { res.send(err) })
+    .catch(err => { res.send(err) })
 };
 
 
 // Get customer by id
-const get_customers_by_id = (req, res) => {
+const getCustomersById = (req, res) => {
   const id = req.params.id; // need to check if params or body
   Customer.findById(id)
     .then((result) => { res.send(result) })
-    .catch((err) => { console.log(err) })
+    .catch((err) => { res.send(err) })
 };
 
 
 // Update customer infos
-// need tests
-const update_customer = (req, res) => {
+const updateCustomer = (req, res) => {
   const id = req.params.id;
-  Customer.findByIdAndUpdate(id, req.body)
-    .then((result) => { res.send(result) })
-    .catch((err) => { res.send(err) })
+    Customer.findOneAndUpdate({_id: id}, req.body, err => {
+      if (err) { res.send({code: 500, message: `User doesn't exist.` })}
+    })
+      .then(() => { 
+        Customer.findOne({_id:id})
+          .then(result => { res.send(result) })
+          .catch(err => { res.send(err) })
+        })
+      .catch(err => { res.send({code: 500, message: 'Unknow error happened.'}) }) 
 };
 
 
 // Local authenticatification
 // authentication need rework with password comparaison in model.
-const customer_signin = (req, res) => {
+const customerSignin = (req, res) => {
   if (!req.body.phone || !req.body.password) {
     res.status(401).send('Please enter your phone number and password');
   } else {
@@ -57,6 +62,6 @@ const customer_signin = (req, res) => {
 
 // Exports
 module.exports = { 
-  create_customer, update_customer, customer_signin,
-  get_all_customers, get_customers_by_id 
+  createCustomer, updateCustomer, customerSignin,
+  getAllCustomers, getCustomersById 
 };
