@@ -12,7 +12,7 @@ const walletSchema = new Schema({
   giftCards: [
     { 
       _id: String, 
-      required: true 
+      type: String
     }
   ]
 })
