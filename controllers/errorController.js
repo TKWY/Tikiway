@@ -3,7 +3,7 @@ const errorController = (err, res) => {
     if (err.name === 'ValidationError') return err = handValidationError(err, res);
     if (err.code && err.code === 11000) return err = handleDuplicateKeyError(err, res);
   } catch(err) {
-    return ({code: err, error: 'An unknow error occured'});
+    return ({code: err, error: 'An unknown error occurred'});
   }
 }
 
