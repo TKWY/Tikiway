@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 const env = process.env.NODE_ENV;
 dotenv.config(); // Activate dotenv usage
 
-// Development environnement
+// Development environment
 const dev = {
   app: {
     port: 3000
@@ -12,10 +12,12 @@ const dev = {
     password: process.env.DEV_PASSWORD,
     cluster: process.env.DEV_CLUSTER,
     document: process.env.DEV_DOCUMENT
-  }
+  },
+  secret: process.env.SECRET,
+  morgan: 'dev'
 }
 
-// Production environnement
+// Production environment
 const prod = {
   app: {
     port: 3000
@@ -28,7 +30,7 @@ const prod = {
   }
 }
 
-// Test environnement
+// Test environment
 const test = {
   app: {
     port: 3000
