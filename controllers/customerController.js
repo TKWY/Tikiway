@@ -1,13 +1,18 @@
 const Customer = require('../models/customerModels');
 const errorController = require('./errorController');
+const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 // Create a new customer account
 const createCustomer = (req, res) => {
   const body = req.body;
   const newCustomer = new Customer(body);
   newCustomer.save()
-    .then(result => { res.send(result) })
-    .catch(err => { res.send(errorController(err)) })
+    .then(result => { res.json(result) })
+    .catch(err => {
+      console.log(err)
+      res.json(errorController(err))
+    })
 };
 
 // Get all customers
@@ -40,22 +45,31 @@ const updateCustomer = (req, res) => {
 };
 
 // Local authentication's
-// must add possibility to log with email too
+// missing jwt
 const customerSignIn = (req, res) => {
-  let customer = req.body
+  let customer = req.body;
   if (!customer.username || !customer.password) {
     res.status(401).send('Please enter your phone number and password');
   } else {
-    const username = customer.username
-    Customer.findOne({$or:[{phone: username}, {email: username}]} )
-      .then((res) => {
-        console.log(res)
-        res.comparePassword(req.body.password, function (err, IsMatch) {
-          if (err) throw err;
-          console.log('Password: ', IsMatch)
+    console.log(req.session)
+    if (req.session.isAuthenticated) {
+      console.log('already authenticated')
+      res.send(req.session);
+    } else {
+      req.session.isAuthenticated = true
+      const username = customer.username
+      const token = jwt.sign({username: customer.username}, config.secret, { expiresIn: '1800s' })
+      Customer.findOne({$or:[{phone: username}, {email: username}]})
+        .then((res) => {
+          res.comparePassword(req.body.password, function (err, IsMatch) {
+            if (err) throw err;
+            console.log('Password: ', IsMatch)
+          })
         })
-      })
-      .catch(err => console.log(err))
+        .catch(err => res.status(403).json({msg: 'Bad credential'}))
+      res.json({
+        token: token})
+    }
   }
 };
 
