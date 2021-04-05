@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
-
 // Customers Schema
 const customerSchema = new Schema({
   firstName: {
@@ -13,15 +12,15 @@ const customerSchema = new Schema({
     type: String,
     required: [true, 'Enter your lastname.']
   },
-  password: {
-    type: String,
-    required: [true, 'Enter your password.']
-  },
   email: {
     type: String,
     required: [true, 'Email is required'],
     unique: [true, 'Email is already used.'],
     index: true
+  },
+  password: {
+    type: String,
+    required: true
   },
   phone: {
     type: String ,
@@ -34,18 +33,17 @@ const customerSchema = new Schema({
   profileImage: { type: String },
 });
 
-// Customers Methods
 customerSchema.pre('save', function save(next) {
   const customer = this;
   bcrypt.genSalt(10, function(err, salt) {
     if (err) return next(err)
     bcrypt.hash(customer.password, salt, function (err, hash) {
+      console.log(customer.password)
       if (err) return next(err)
       customer.password = hash;
       next()
     })
   })
-
 });
 
 customerSchema.methods.comparePassword = function(candidatePassword, cb) {

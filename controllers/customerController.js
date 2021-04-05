@@ -8,8 +8,11 @@ const createCustomer = (req, res) => {
   const body = req.body;
   const newCustomer = new Customer(body);
   newCustomer.save()
-    .then(result => { res.send(result) })
-    .catch(err => { res.send(errorController(err)) })
+    .then(result => { res.json(result) })
+    .catch(err => {
+      console.log(err)
+      res.json(errorController(err))
+    })
 };
 
 // Get all customers
@@ -51,12 +54,12 @@ const customerSignIn = (req, res) => {
     console.log(req.session)
     if (req.session.isAuthenticated) {
       console.log('already authenticated')
-      req.json(req.session);
+      res.send(req.session);
     } else {
       req.session.isAuthenticated = true
       const username = customer.username
       const token = jwt.sign({username: customer.username}, config.secret, { expiresIn: '1800s' })
-      Customer.findOne({$or:[{phone: username}, {email: username}]} )
+      Customer.findOne({$or:[{phone: username}, {email: username}]})
         .then((res) => {
           res.comparePassword(req.body.password, function (err, IsMatch) {
             if (err) throw err;
@@ -64,7 +67,8 @@ const customerSignIn = (req, res) => {
           })
         })
         .catch(err => res.status(403).json({msg: 'Bad credential'}))
-      res.json({token: token})
+      res.json({
+        token: token})
     }
   }
 };

@@ -2,21 +2,23 @@
 const express = require('express');
 const router = express.Router();
 
-
 // Local imports
 const customerController = require('../controllers/customerController');
 
-router.get('/', (req) => {customerController.getAllCustomers(req)});
-router.post('/create', customerController.createCustomer);
-router.post('/login', customerController.customerSignIn)
-/*router.post('/login', (req, res) => {
-  if (req.session.authenticated) {
-    console.log('already connected')
-  } else {
-    customerController.customerSignIn(req)
-  }
-});*/
-router.get('/:id', customerController.getAllCustomers);
-router.put('/:id', customerController.updateCustomer)
+// Customer API http request:
+// Route to all customers
+router.get('/', customerController.getAllCustomers);
+
+// Route to create customer
+router.post('/signup', customerController.createCustomer);
+
+// Route to customer login
+router.post('/signin', customerController.customerSignIn);
+
+// Route to customer by ID
+router.get(customerController.getAllCustomers);
+
+// Route to update customer information with their ID
+router.put('/:id', customerController.updateCustomer);
 
 module.exports = router;
