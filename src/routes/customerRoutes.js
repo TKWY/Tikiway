@@ -17,7 +17,7 @@ router.post('/signup', customerController.createCustomer);
 router.post('/signin', customerController.customerSignIn);
 
 // Route to customer by ID
-router.get(customerController.getAllCustomers);
+router.get('/:id',customerController.getCustomersById);
 
 // Route to update customer information with their ID
 router.put('/:id', customerController.updateCustomer);

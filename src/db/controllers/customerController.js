@@ -30,17 +30,30 @@ const getAllCustomers = (req, res) => {
 // Get customer by id
 // need to return infos
 const getCustomersById = (req, res) => {
-  const id = req.params.id; // need to check if params or body
-  Customer.findById(id)
-    .then((result) => { res.send(result) })
-    .catch((err) => { res.send(err) })
+  if (req.session.isAuthenticated) {
+    const id = req.params.id;
+    const sessionID = req.session.id;
+    if (id.value !== sessionID.value) {
+      res.status(500).json({code: 500, success: false, msg: 'This user is not authenticated'});
+    } else {
+      Customer.findById(id)
+        .then((response) => { res.status(200).json({
+          code: 200,
+          success: true,
+          msg: `User id: ${ response._id } found`,
+          response: response }) })
+        .catch((err) => { res.status(500).json({code: 500, success: false, msg: 'Wrong user!'}) })
+    }
+  } else {
+    res.status(403).json({ success: false, msg: 'Please log in first!'});
+  }
 };
 
 // Update customer infos
 // id filter not returning account error if wrong account
 const updateCustomer = (req, res) => {
   if (!req.session.isAuthenticated) {
-    res.status(403).json('Please login first!')
+    res.status(403).json({ success: false, msg: 'Please log in first!'})
   } else {
     const id = req.params.id;
     Customer.findOneAndUpdate({_id: id}, req.body, err => {
@@ -60,8 +73,8 @@ const updateCustomer = (req, res) => {
 // cookies not saving on frontend
 const customerSignIn = (req, res, next) => {
   let customer = req.body;
-  if (!customer.username) { res.status(401).json({ success: false, msg: 'Please enter your phone number or email address!'})}
-  if (!customer.password) { res.status(401).json({ success: false, msg: 'Please enter your password!'})}
+  if (!customer.username) { res.status(401).json({code: 401, success: false, msg: 'Please enter your phone number or email address!'})}
+  if (!customer.password) { res.status(401).json({code: 401, success: false, msg: 'Please enter your password!'})}
   if (req.session.isAuthenticated) {
     res.json({success: false, msg: 'User is already logged in!', isAuthenticated: true});
   } else {
@@ -72,14 +85,14 @@ const customerSignIn = (req, res, next) => {
         response.comparePassword(req.body.password, function (err, IsMatch) {
           if (IsMatch) {
             req.session.isAuthenticated = true;
-            res.status(200).json({ success: true, token: token, user: { id: response._id, Firstname: response.firstName, Lastname: response.lastName }});
+            res.status(200).json({ code: 200, success: true, token: token, user: { id: response._id, Firstname: response.firstName, Lastname: response.lastName }});
           } else {
             req.session.isAuthenticated = false;
-            res.status(403).json({ success: false, msg: 'Wrong password, please try again.'})
+            res.status(403).json({ code: 403, success: false, msg: 'Wrong password, please try again.'})
           }
         })
       })
-      .catch(() => res.status(403).json({success: false, msg: 'That user does not exist!'}))
+      .catch(() => res.status(403).json({ code: 403, success: false, msg: 'That user does not exist!'}))
   }
 };
 
