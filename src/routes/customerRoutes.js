@@ -3,10 +3,11 @@ const express = require('express');
 const router = express.Router();
 
 // Local imports
-const customerController = require('../controllers/customerController');
+const customerController = require('../db/controllers/customerController');
 
 // Customer API http request:
 // Route to all customers
+// Argument type error on IDE, must refactor all routes
 router.get('/', customerController.getAllCustomers);
 
 // Route to create customer

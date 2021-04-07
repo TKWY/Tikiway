@@ -49,7 +49,7 @@ customerSchema.pre('save', function save(next) {
 customerSchema.methods.comparePassword = function(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, function (err, IsMatch) {
     if (err) return cb(err);
-    cb(null, IsMatch)
+    cb(null, IsMatch);
   })
 }
 

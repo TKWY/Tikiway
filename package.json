@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "serve": "NODE_ENV=prod node app.js",
-    "start": "NODE_ENV=dev nodemon app",
-    "dev": "DEBUG=server:debug NODE_ENV=dev nodemon app.js --exec",
+    "start": "NODE_ENV=dev nodemon server",
+    "dev": "DEBUG=server:debug NODE_ENV=dev nodemon server --exec",
     "test": "DEBUG=server:debug NODE_ENV=test mocha --require spec --exit tests/ --exec node",
     "eslint": "eslint src/**/*.js --ignore-pattern \"node_modules/\""
   },

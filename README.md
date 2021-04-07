@@ -1,32 +1,76 @@
 # TikiClients
-## What is TikiClients
+## <u>What is TikiClients</u>
 
 TikiClients is the user service for Tikiway customers, it's used to manage customers action, like creating a new account, login and update informations.
 
 The service return response as json and must be handled in the frontend application.
 ***
-#### Document format:
 
+## <u>Folder Structure</u>
+```
+├── app.js
+├── config.js
+├── package-lock.json
+├── package.json
+├── server.js
+├── src
+│   ├── db
+│   │   ├── controllers
+│   │   │   ├── customerController.js
+│   │   │   ├── errorController.js
+│   │   │   └── walletController.js
+│   │   ├── index.js
+│   │   └── models
+│   │       ├── customerModels.js
+│   │       └── walletModel.js
+│   └── routes
+│       ├── customerRoutes.js
+│       └── walletRoutes.js
+├── tests
+└── tree.txt
+```
+
+***
+## <u>Application requests</u>
+### Account creation
+#### Form post request on "/customers"
 ```json
   {
     "_id": "60658801919a0608e25958e4",
-    "firstName": "test",
-    "lastName": "test",
-    "password": "$2b$10$416mNEe200.qaISJ38xHm.4wL9y1EbjhoAxkGQqC.pnnmBpbAxbdO",
-    "email": "test@test.fr",
-    "phone": "+689705647",
-    "dateOfBirth": "1985-04-12T10:00:00.000Z",
+    "firstName": "John",
+    "lastName": "DOE",
+    "password": "thisIsAPassword",
+    "email": "john.doe@thisisamail.com",
+    "phone": "+689XXXXXX",
+    "dateOfBirth": "1980-04-12T10:00:00.000Z",
     "__v": 0
   }
 ```
 <br />
 
+#### POST request return:
+
+```json 
+{
+    "code": 200
+    "success": true,
+    "msg": "Account has been created",
+    "user": {
+        "firstName": "John",
+        "lastName": "DOE",
+        "email": "john.doe@thisamail.com",
+        "phone": "+689XXXXXX",
+        "dateOfBirth": "1980-04-12T10:00:00.000Z"
+        }
+     
+}
+```
+
 #### Error format:
 ```json
-json
 {
     "code": 409,
-    "message": "An account with that phone number already exists."
+    "message": "An account with that phone number or email already exists."
 }
 ```
 ***
@@ -54,10 +98,12 @@ const userSchema = new Schema({
 
 ```
 ***
+
 ## In progress
 
 Customers method still in progress: 
 
+* refactoring customer account creation
 * update method
 * errors handling for each methods
 * delete user by id

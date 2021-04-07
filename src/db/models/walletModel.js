@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const walletSchema = new Schema({
-  customerId: { 
+  customerId: {
     type: String,
     required: true
   },
-  tikiCash: { 
-    type: Number 
+  tikiCash: {
+    type: Number
   },
   giftCards: [
-    { 
-      _id: String, 
-      type: String
+    {
+      _id: String,
+      type: Number
     }
   ]
 })
