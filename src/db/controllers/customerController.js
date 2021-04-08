@@ -12,10 +12,10 @@ const createCustomer = (req, res) => { // field check missing
   const body = req.body;
   const newCustomer = new Customer(body);
   newCustomer.save()
-    .then(result => { res.json(result) })
+    .then(result => res.status(200).json({code: 200, success: true, msg: `Welcome to Tikiway ${result}, thank you for joining us.`}))
     .catch(err => {
-      console.log(err) // need to return json message for frontend handling
-      res.json(errorController(err))
+      console.log(err);
+      res.json(errorController(err));
     })
 };
 
@@ -23,8 +23,19 @@ const createCustomer = (req, res) => { // field check missing
 // will not be accessible in front end but on admin panel
 const getAllCustomers = (req, res) => {
   Customer.find()
-    .then((result) => { res.send(result) })
-    .catch(err => { res.send(err) })
+    .then((result) => {
+      const customerList = result.map(data => {
+        return {
+          id: data._id,
+          firstname: data.firstName,
+          lastname: data.lastName,
+          email: data.email,
+          phone: data.phone
+        }
+      })
+      res.status(200).json({code: 200, success: true, Customers: customerList })
+    })
+    .catch(err => { res.status(500).json({ code: 500, msg: 'server internal error', err: err}) })
 };
 
 // Get customer by id
@@ -45,7 +56,7 @@ const getCustomersById = (req, res) => {
         .catch((err) => { res.status(500).json({code: 500, success: false, msg: 'Wrong user!'}) })
     }
   } else {
-    res.status(403).json({ success: false, msg: 'Please log in first!'});
+    res.status(403).json({ code: 403, success: false, msg: 'Please log in first!'});
   }
 };
 
@@ -53,19 +64,18 @@ const getCustomersById = (req, res) => {
 // id filter not returning account error if wrong account
 const updateCustomer = (req, res) => {
   if (!req.session.isAuthenticated) {
-    res.status(403).json({ success: false, msg: 'Please log in first!'})
+    res.status(403).json({ code: 403, success: false, msg: 'Please log in first!'})
   } else {
     const id = req.params.id;
     Customer.findOneAndUpdate({_id: id}, req.body, err => {
-      console.log('updating')
-      if (err) { res.send({code: 500, message: `User doesn't exist.` })}
+      if (err) { res.send({code: 500, success: false, msg: `User doesn't exist.` })}
     })
       .then(() => {
         Customer.findOne({_id:id})
           .then(result => { res.send(result) })
           .catch(err => { res.send(err) })
       })
-      .catch(err => { res.send({code: 500, message: 'Unknown error happened.'}) })
+      .catch(err => { res.send({code: 500, success: false, msg: 'Unknown error happened.'}) })
   }
 };
 

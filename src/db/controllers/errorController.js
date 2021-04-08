@@ -12,8 +12,7 @@ const errorController = (err, res) => {
 const handleDuplicateKeyError = (err, res) => {
   console.log('you hit the duplicate method')
   const field = Object.keys(err.keyValue);
-  const code = 409;
-  return ({code: code, message: `An account with that ${field} already exists.`})
+  return ({code: 409,success: false, msg: `An account with that ${field} already exists.`})
 }
 
 // Function export
