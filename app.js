@@ -12,9 +12,9 @@ const store = new session.MemoryStore()
 const app = express();
 
 // Connect to mongodb
-const dbURI = `mongodb+srv://${config.db.user}:${config.db.password}@${config.db.cluster}/${config.db.document}?retryWrites=true&w=majority`;
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,})
-  .catch((err) => console.log(err));
+//const dbURI = config.db;
+//mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,})
+//  .catch((err) => console.log(err));
 
 // Application options & middleware
 app.use(express.json());

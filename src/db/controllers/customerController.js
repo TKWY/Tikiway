@@ -21,7 +21,7 @@ const createCustomer = (req, res) => { // field check missing
 
 // Get all customers
 // will not be accessible in front end but on admin panel
-const getAllCustomers = (req, res) => {
+const getAllCustomers = (req, res, next) => {
   Customer.find()
     .then((result) => {
       const customerList = result.map(data => {
@@ -34,6 +34,7 @@ const getAllCustomers = (req, res) => {
         }
       })
       res.status(200).json({code: 200, success: true, Customers: customerList })
+      next()
     })
     .catch(err => { res.status(500).json({ code: 500, msg: 'server internal error', err: err}) })
 };
@@ -53,7 +54,7 @@ const getCustomersById = (req, res) => {
           success: true,
           msg: `User id: ${ response._id } found`,
           response: response }) })
-        .catch((err) => { res.status(500).json({code: 500, success: false, msg: 'Wrong user!'}) })
+        .catch((err) => { res.status(500).json({code: 500, success: false, msg: 'Wrong user!', err: err}) })
     }
   } else {
     res.status(403).json({ code: 403, success: false, msg: 'Please log in first!'});
@@ -75,7 +76,7 @@ const updateCustomer = (req, res) => {
           .then(result => { res.send(result) })
           .catch(err => { res.send(err) })
       })
-      .catch(err => { res.send({code: 500, success: false, msg: 'Unknown error happened.'}) })
+      .catch(err => { res.send({code: 500, success: false, msg: 'Unknown error happened.', err: err}) })
   }
 };
 

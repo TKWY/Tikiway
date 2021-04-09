@@ -5,21 +5,39 @@ const mongoose = require('mongoose');
 const config = require('../../config');
 
 // Local variables
-const DB_URI = `mongodb+srv://${config.db.user}:${config.db.password}@${config.db.cluster}/${config.db.document}?retryWrites=true&w=majority`;
+
+const DB_URI = config.db;
 
 // Connect to database
 connect = () => {
   return new Promise((resolve, reject) => {
-    // MongoDB connect and options
-    mongoose.connect(DB_URI, {
+    if (process.env.NODE_ENV === 'test') {
+      const Mockgoose = require('mockgoose').Mockgoose;
+      const mockgoose = new Mockgoose(mongoose);
+      mockgoose.prepareStorage()
+        .then(() => {
+          mongoose.connect(DB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+          })
+            .then((res, err) => {
+              if (err) reject(err); // throw unneeded errors
+              resolve()
+            })
+        })
+    } else {
+      // MongoDB connect and options
+      mongoose.connect(DB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
       })
-      .then((res, err) => {
-        if (err) throw err; // throw unneeded errors
-        resolve()
-      })
+        .then((res, err) => {
+          if (err) reject(err); // throw unneeded errors
+          resolve()
+        })
+    }
   })
 };
 
