@@ -36,7 +36,7 @@ const getAllCustomers = (req, res, next) => {
       res.status(200).json({code: 200, success: true, Customers: customerList })
       next()
     })
-    .catch(err => { res.status(500).json({ code: 500, msg: 'server internal error', err: err}) })
+    .catch(err => { res.status(500).json({ code: 500, msg: 'server internal error', err: err})})
 };
 
 // Get customer by id

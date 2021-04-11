@@ -8,6 +8,7 @@
     "start": "NODE_ENV=dev nodemon server",
     "dev": "DEBUG=server:debug NODE_ENV=dev nodemon server --exec",
     "test": "DEBUG=server:debug NODE_ENV=test mocha --recursive --exit --timeout 100000 tests/",
+    "test-with-coverage": "DEBUG=server:debug NODE_ENV=test nyc mocha --recursive --exit --timeout 100000 tests/",
     "eslint": "eslint src/**/*.js --ignore-pattern \"node_modules/\""
   },
   "author": "Tikiway",
@@ -24,6 +25,7 @@
     "mocha": "^8.3.2",
     "mongoose": "^5.12.2",
     "morgan": "^1.10.0",
+    "nyc": "^15.1.0",
     "request": "^2.88.2",
     "supertest": "^6.1.3"
   },
