@@ -16,10 +16,14 @@ router.post('/signup', customerController.createCustomer);
 // Route to customer login
 router.post('/signin', customerController.customerSignIn);
 
+router.get('/signout', customerController.customerSignOut);
+
 // Route to customer by ID
 router.get('/:id',customerController.getCustomersById);
 
 // Route to update customer information with their ID
 router.put('/:id', customerController.updateCustomer);
+
+
 
 module.exports = router;

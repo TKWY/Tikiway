@@ -107,8 +107,19 @@ const customerSignIn = (req, res, next) => {
   }
 };
 
+const customerSignOut = (req, res) => {
+  console.log(req)
+  if (req.session.isAuthenticated) {
+    req.Customers.deleteToken(req.token, (err, customer) => {
+      if (err) return res.status(400).json({code: 400, success: false, msg: 'Internal server error'});
+      res.status(200)
+    });
+  } else {
+    res.status(403).json({ code: 403, success: false, msg: 'Please log in first!'});
+  }};
+
 // Exports
 module.exports = {
   createCustomer, updateCustomer, customerSignIn,
-  getAllCustomers, getCustomersById
+  getAllCustomers, getCustomersById, customerSignOut
 };

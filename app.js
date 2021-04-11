@@ -1,6 +1,5 @@
 // Imports
 const express = require('express');
-const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
@@ -10,11 +9,6 @@ const customerRoutes = require('./src/routes/customerRoutes');
 const config = require('./config');
 const store = new session.MemoryStore()
 const app = express();
-
-// Connect to mongodb
-//const dbURI = config.db;
-//mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true,})
-//  .catch((err) => console.log(err));
 
 // Application options & middleware
 app.use(express.json());
