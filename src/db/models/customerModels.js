@@ -50,8 +50,15 @@ customerSchema.methods.comparePassword = function(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, function (err, IsMatch) {
     if (err) return cb(err);
     cb(null, IsMatch);
-  })
-}
+  });
+};
+
+customerSchema.methods.deleteToken = function(token, cb) {
+  this.update({$unset: {token: 1}}, function (err, customer) {
+    if (err) return cb(err);
+    cb(null, customer);
+  });
+};
 
 // Export
 const Customer = mongoose.model('Customer', customerSchema);

@@ -34,43 +34,44 @@ The service return response as json and must be handled in the frontend applicat
 ## <u>Application requests</u>
 ### Account creation
 #### Form post request on "/customers"
-```json
-  {
-    "_id": "60658801919a0608e25958e4",
-    "firstName": "John",
-    "lastName": "DOE",
-    "password": "thisIsAPassword",
-    "email": "john.doe@thisisamail.com",
-    "phone": "+689XXXXXX",
-    "dateOfBirth": "1980-04-12T10:00:00.000Z",
-    "__v": 0
-  }
+
+```json5
+{
+    _id: "60658801919a0608e25958e4",
+    firstName: "John",
+    lastName: "DOE",
+    password: "thisIsAPassword",
+    email: "john.doe@thisisamail.com",
+    phone: "+689XXXXXX",
+    dateOfBirth: "1980-04-12T10:00:00.000Z",
+    __v: 0 
+}
 ```
-<br />
 
 #### POST request return:
 
-```json 
+```json5
 {
-    "code": 200
-    "success": true,
-    "msg": "Account has been created",
-    "user": {
-        "firstName": "John",
-        "lastName": "DOE",
-        "email": "john.doe@thisamail.com",
-        "phone": "+689XXXXXX",
-        "dateOfBirth": "1980-04-12T10:00:00.000Z"
-        }
+    code: 200,
+    success: true,
+    msg: "Account has been created",
+    user: {
+        firstName: "John",
+        lastName: "DOE",
+        email: "john.doe@thisamail.com",
+        phone: "+689XXXXXX",
+        dateOfBirth: "1980-04-12T10:00:00.000Z"
+    }
      
 }
 ```
 
 #### Error format:
-```json
+```json5
 {
-    "code": 409,
-    "message": "An account with that phone number or email already exists."
+    code: 409,
+    succes: false,
+    message: "An account with that phone number or email already exists."
 }
 ```
 ***

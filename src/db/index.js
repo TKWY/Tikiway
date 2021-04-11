@@ -5,19 +5,15 @@ const mongoose = require('mongoose');
 const config = require('../../config');
 
 // Local variables
-const DB_URI = `mongodb+srv://${config.db.user}:${config.db.password}@${config.db.cluster}/${config.db.document}?retryWrites=true&w=majority`;
+const DB_URI = config.db;
 
 // Connect to database
 connect = () => {
   return new Promise((resolve, reject) => {
     // MongoDB connect and options
-    mongoose.connect(DB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-      })
+    mongoose.connect(DB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
       .then((res, err) => {
-        if (err) throw err; // throw unneeded errors
+        if (err) reject(err); // throw unneeded errors
         resolve()
       })
   })
