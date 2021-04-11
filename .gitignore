@@ -1,3 +1,5 @@
 node_modules
 .env
 .idea
+.nyc_output/71bf42f0-b2c8-4ec9-85da-01dfbde8f902.json .nyc_output/processinfo
+.nyc_output/
