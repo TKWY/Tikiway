@@ -12,7 +12,17 @@ const createCustomer = (req, res) => { // field check missing
   const body = req.body;
   const newCustomer = new Customer(body);
   newCustomer.save()
-    .then(() => res.status(200).json({code: 200, success: true, msg: `Welcome to Tikiway, thank you for joining us.`}))
+    .then((response) => res.status(200).json({
+      code: 200,
+      success: true,
+      customer: {
+        id: response._id,
+        firstname: response.firstName,
+        lastname: response.lastName,
+      },
+      msg: `Welcome to Tikiway ${response.firstName}, thank you for joining us.`
+    }
+    ))
     .catch(err => {
       console.log(err);
       res.json(errorController(err));

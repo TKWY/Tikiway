@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const conn = require('../src/db/index');
 const app = require('../app');
 const request = require('supertest');
-const Customer = require('../src/db/models/customerModels')
+const Customer = require('../src/db/models/customerModels');
 
 const newUser = {
   firstName: 'John',
@@ -13,24 +13,27 @@ const newUser = {
 }
 
 describe('Create Customer Test', function () {
-  beforeEach(done => {
+  beforeEach((done) => {
     conn.connect()
-      .then(() => done())
+      .then(() => (done)())
       .catch(err => done(err))
   });
 
   afterEach(done => {
-
     conn.close()
-      .then(() => done())
+      .then(() => {
+        Customer.collection.drop()
+        done()
+      })
       .catch(err => done(err))
     })
 
   it('Create a new user', async () => {
     const res = await request(app).post('/customers/signup')
       .send(newUser)
-    expect(res.statusCode).to.equal(200)
-    console.log(res.body)
-    Customer.deleteOne({email: 'john.doe@mail.fr'}, (err) => { if (err) {console.log(err)}} )
+    expect(res.statusCode).to.equal(200);
+    expect(res.body).has.property('code', 200);
+    expect(res.body).has.property('success', true);
+    expect(res.body).has.property('msg', `Welcome to Tikiway ${newUser.firstName}, thank you for joining us.`)
   })
-  });
+});
