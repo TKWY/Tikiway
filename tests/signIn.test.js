@@ -2,23 +2,37 @@ const request = require('supertest');
 const expect = require('chai').expect;
 const conn = require('../src/db/index');
 const app = require('../app');
+const Customer = require('../src/db/models/customerModels');
 
+const url = '/customers/signin'
+const userLogin = { username: 'john.doe@mail.fr', password: 'test'}
+const newUser = {
+  firstName: 'John',
+  lastName: 'DOE',
+  phone: '+68987705645',
+  password: 'test',
+  email: 'john.doe@mail.fr'
+}
 
 describe('Sign In Test', function () {
-  const url = '/customers/signin';
-  beforeEach(done => {
+  beforeEach((done) => {
     conn.connect()
       .then(() => done())
       .catch(err => done(err))
   });
 
-  afterEach(done => {
+  afterEach((done) => {
     conn.close()
-      .then(() => done())
+      .then(() => {
+        Customer.collection.drop()
+        done()
+      })
       .catch(err => done(err))
   });
 
   it('POST empty username return 401', async() => {
+    const newCustomer = new Customer(newUser);
+    await newCustomer.save()
     const res = await request(app).post(url)
       .send({username: '', password:''});
     expect(res.statusCode).to.equal(401);
@@ -28,6 +42,8 @@ describe('Sign In Test', function () {
   })
 
   it('POST empty password return 401', async() => {
+    const newCustomer = new Customer(newUser);
+    await newCustomer.save()
     const res = await request(app).post(url)
       .send({username: 'test', password: ''});
     expect(res.statusCode).to.equal(401);
@@ -37,6 +53,8 @@ describe('Sign In Test', function () {
   })
 
   it('POST false username return 403', async() => {
+    const newCustomer = new Customer(newUser);
+    await newCustomer.save()
     const res = await request(app).post(url)
       .send({username: 'john.doe@mail.com', password: 'test'});
     expect(res.statusCode).to.equal(403);
@@ -46,8 +64,10 @@ describe('Sign In Test', function () {
   })
 
   it('POST false password return 403', async() => {
+    const newCustomer = new Customer(newUser);
+    await newCustomer.save()
     const res = await request(app).post(url)
-      .send({username: 'test@test.fr', password: 'false'})
+      .send({username: 'john.doe@mail.fr', password: 'false'})
     expect(res.statusCode).to.equal(403);
     expect(res.body).has.property('code', 403);
     expect(res.body).has.property('success', false);
@@ -55,8 +75,10 @@ describe('Sign In Test', function () {
   })
 
   it('POST user return 200', async() => {
+    const newCustomer = new Customer(newUser);
+    await newCustomer.save()
     const res = await request(app).post(url)
-      .send({username: 'test@test.fr', password: 'test'})
+      .send(userLogin)
     expect(res.statusCode).to.equal(200);
     expect(res.body).has.property('code', 200);
     expect(res.body).has.property('success', true);

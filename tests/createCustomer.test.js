@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const conn = require('../src/db/index');
 const app = require('../app');
 const request = require('supertest');
-const Customer = require('../src/db/models/customerModels')
+const Customer = require('../src/db/models/customerModels');
 
 const newUser = {
   firstName: 'John',
@@ -13,16 +13,16 @@ const newUser = {
 }
 
 describe('Create Customer Test', function () {
-  beforeEach(done => {
+  beforeEach((done) => {
     conn.connect()
-      .then(() => done())
+      .then(() => (done)())
       .catch(err => done(err))
   });
 
   afterEach(done => {
     conn.close()
       .then(() => {
-        Customer.deleteOne({email: 'john.doe@mail.fr'}, (err) => { if (err) {console.log(err)}})
+        Customer.collection.drop()
         done()
       })
       .catch(err => done(err))
