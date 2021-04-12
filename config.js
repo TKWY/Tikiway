@@ -1,12 +1,12 @@
 const dotenv = require('dotenv');
 const env = process.env.NODE_ENV;
-dotenv.config(); // Activate dotenv usage
+dotenv.config();
 
 // Development environment
 const dev = {
   env: 'development',
   app: { port: process.env.DEV_PORT },
-  db: 'mongodb://127.0.0.1:27017/TikiClient',
+  db: process.env.DEV_DB,
   secret: process.env.DEV_SECRET,
   session: process.env.DEV_SESSION,
   morgan: 'dev'
@@ -26,7 +26,7 @@ const prod = {
 const test = {
   env: 'test',
   app: { port: process.env.TEST_PORT },
-  db: 'mongodb://127.0.0.1:27017/TikiClient',
+  db: process.env.TEST_DB,
   secret: process.env.TEST_SECRET,
   session: process.env.TEST_SESSIONS,
   morgan: 'test'

@@ -8,6 +8,5 @@ const listen = app.listen(config.app.port, () => {
   debug(msg);
 })
 
-// Function start client server.
 db.connect()
   .then(() => { return listen });
