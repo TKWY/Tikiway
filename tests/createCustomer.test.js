@@ -20,17 +20,20 @@ describe('Create Customer Test', function () {
   });
 
   afterEach(done => {
-
     conn.close()
-      .then(() => done())
+      .then(() => {
+        Customer.deleteOne({email: 'john.doe@mail.fr'}, (err) => { if (err) {console.log(err)}})
+        done()
+      })
       .catch(err => done(err))
     })
 
   it('Create a new user', async () => {
     const res = await request(app).post('/customers/signup')
       .send(newUser)
-    expect(res.statusCode).to.equal(200)
-    console.log(res.body)
-    Customer.deleteOne({email: 'john.doe@mail.fr'}, (err) => { if (err) {console.log(err)}} )
+    expect(res.statusCode).to.equal(200);
+    expect(res.body).has.property('code', 200);
+    expect(res.body).has.property('success', true);
+    expect(res.body).has.property('msg', `Welcome to Tikiway ${newUser.firstName}, thank you for joining us.`)
   })
-  });
+});
