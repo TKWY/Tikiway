@@ -12,7 +12,7 @@ const createCustomer = (req, res) => { // field check missing
   const body = req.body;
   const newCustomer = new Customer(body);
   newCustomer.save()
-    .then(result => res.status(200).json({code: 200, success: true, msg: `Welcome to Tikiway ${result}, thank you for joining us.`}))
+    .then(() => res.status(200).json({code: 200, success: true, msg: `Welcome to Tikiway, thank you for joining us.`}))
     .catch(err => {
       console.log(err);
       res.json(errorController(err));
@@ -96,7 +96,7 @@ const customerSignIn = (req, res, next) => {
         response.comparePassword(req.body.password, function (err, IsMatch) {
           if (IsMatch) {
             req.session.isAuthenticated = true;
-            res.status(200).json({ code: 200, success: true, token: token, user: { id: response._id, Firstname: response.firstName, Lastname: response.lastName }});
+            res.status(200).json({ code: 200, success: true, token: token});
           } else {
             req.session.isAuthenticated = false;
             res.status(403).json({ code: 403, success: false, msg: 'Wrong password, please try again.'})

@@ -4,13 +4,13 @@ const app = require('../app');
 const conn = require('../src/db/index');
 
 describe('Homepage', function () {
-  before(done => {
+  beforeEach(done => {
     conn.connect()
       .then(() => done())
       .catch(err => done(err))
   });
 
-  after(done => {
+  afterEach(done => {
     conn.close()
       .then(() => done())
       .catch(err => done(err))
