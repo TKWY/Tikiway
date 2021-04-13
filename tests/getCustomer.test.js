@@ -4,8 +4,6 @@ const app = require('../app');
 const conn = require('../src/db/index');
 const Customer = require('../src/db/models/customerModels')
 
-const updateUser = { firstName: 'Jane' }
-const userLogin = { username: 'john.doe@mail.fr', password: 'test'}
 const newUser = {
   firstName: 'John',
   lastName: 'DOE',
@@ -17,16 +15,16 @@ const newUser = {
 describe('Homepage', function (d) {
   beforeEach((done) => {
     conn.connect()
+    const newCustomer = new Customer(newUser);
+    newCustomer.save()
       .then(() => done())
       .catch(err => done(err))
   });
 
   afterEach((done) => {
+    Customer.collection.drop()
     conn.close()
-      .then(() => {
-        Customer.collection.drop()
-        done()
-      })
+      .then(() => done())
       .catch(err => done(err))
   });
 
@@ -41,8 +39,6 @@ describe('Homepage', function (d) {
   });
 
   it('GET /customer should return list of customer', async () => {
-    const newCustomer = new Customer(newUser);
-    await newCustomer.save()
     const res = await request(app).get('/customers');
     expect(res.body.Customers).to.be.instanceof(Array);
     res.body.Customers.every(result => {

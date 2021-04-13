@@ -17,16 +17,16 @@ const newUser = {
 describe('Update Customer Test', function () {
   beforeEach((done) => {
     conn.connect()
+    const newCustomer = new Customer(newUser);
+    newCustomer.save()
       .then(() => done())
       .catch(err => done(err))
   });
 
   afterEach((done) => {
+    Customer.collection.drop()
     conn.close()
-      .then(() => {
-        Customer.collection.drop()
-        done()
-      })
+      .then(() => done())
       .catch(err => done(err))
   });
 
@@ -44,8 +44,6 @@ describe('Update Customer Test', function () {
   });
 
   it('should update user', async () => {
-    const newCustomer = new Customer(newUser);
-    await newCustomer.save()
     await request(app).post('/customers/signin')
       .send(userLogin)
       .then(async (result) => {
