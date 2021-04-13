@@ -17,22 +17,21 @@ const newUser = {
 describe('Sign In Test', function () {
   beforeEach((done) => {
     conn.connect()
+    const newCustomer = new Customer(newUser);
+    newCustomer.save()
       .then(() => done())
       .catch(err => done(err))
   });
 
   afterEach((done) => {
+    Customer.collection.drop()
     conn.close()
-      .then(() => {
-        Customer.collection.drop()
-        done()
-      })
+      .then(() => done())
       .catch(err => done(err))
   });
 
   it('POST empty username return 401', async() => {
-    const newCustomer = new Customer(newUser);
-    await newCustomer.save()
+
     const res = await request(app).post(url)
       .send({username: '', password:''});
     expect(res.statusCode).to.equal(401);
@@ -42,8 +41,6 @@ describe('Sign In Test', function () {
   })
 
   it('POST empty password return 401', async() => {
-    const newCustomer = new Customer(newUser);
-    await newCustomer.save()
     const res = await request(app).post(url)
       .send({username: 'test', password: ''});
     expect(res.statusCode).to.equal(401);
@@ -53,8 +50,6 @@ describe('Sign In Test', function () {
   })
 
   it('POST false username return 403', async() => {
-    const newCustomer = new Customer(newUser);
-    await newCustomer.save()
     const res = await request(app).post(url)
       .send({username: 'john.doe@mail.com', password: 'test'});
     expect(res.statusCode).to.equal(403);
@@ -64,8 +59,6 @@ describe('Sign In Test', function () {
   })
 
   it('POST false password return 403', async() => {
-    const newCustomer = new Customer(newUser);
-    await newCustomer.save()
     const res = await request(app).post(url)
       .send({username: 'john.doe@mail.fr', password: 'false'})
     expect(res.statusCode).to.equal(403);
@@ -75,8 +68,6 @@ describe('Sign In Test', function () {
   })
 
   it('POST user return 200', async() => {
-    const newCustomer = new Customer(newUser);
-    await newCustomer.save()
     const res = await request(app).post(url)
       .send(userLogin)
     expect(res.statusCode).to.equal(200);
@@ -84,7 +75,6 @@ describe('Sign In Test', function () {
     expect(res.body).has.property('success', true);
     expect(res.body).has.property('token');
     expect(res.body).to.not.have.property('user');
-    expect(res.body).to.not.have.deep.property('id');
     expect(res.body).to.not.have.deep.property('firstName');
     expect(res.body).to.not.have.deep.property('lastName');
     expect(res.body).to.not.have.deep.property('password');

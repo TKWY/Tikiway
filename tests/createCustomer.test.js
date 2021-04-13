@@ -4,6 +4,7 @@ const app = require('../app');
 const request = require('supertest');
 const Customer = require('../src/db/models/customerModels');
 
+const url = '/customers/signup'
 const newUser = {
   firstName: 'John',
   lastName: 'Doe',
@@ -12,24 +13,30 @@ const newUser = {
   email: 'john.doe@mail.fr'
 }
 
-describe('Create Customer Test', function () {
+const userWithSamePhone = {
+  firstName: 'Jane',
+  lastName: 'Doe',
+  phone: '+68987705645',
+  password: 'test',
+  email: 'jane.doe@mail.fr'
+}
+
+describe('Create Customer', function () {
   beforeEach((done) => {
     conn.connect()
       .then(() => (done)())
       .catch(err => done(err))
   });
 
-  afterEach(done => {
+  afterEach((done) => {
+    Customer.collection.drop()
     conn.close()
-      .then(() => {
-        Customer.collection.drop()
-        done()
-      })
+      .then(() => done())
       .catch(err => done(err))
-    })
+    });
 
   it('Create a new user', async () => {
-    const res = await request(app).post('/customers/signup')
+    const res = await request(app).post(url)
       .send(newUser)
     expect(res.statusCode).to.equal(200);
     expect(res.body).has.property('code', 200);

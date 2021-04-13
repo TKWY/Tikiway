@@ -79,14 +79,16 @@ const updateCustomer = (req, res) => {
   } else {
     const id = req.params.id;
     Customer.findOneAndUpdate({_id: id}, req.body, err => {
-      if (err) { res.send({code: 500, success: false, msg: `User doesn't exist.` })}
+      if (err) { res.send({ code: 500, success: false, msg: `User doesn't exist.` })}
     })
       .then(() => {
         Customer.findOne({_id:id})
-          .then(result => { res.send(result) })
-          .catch(err => { res.send(err) })
+          .then(result => {
+            res.status(200).json({ code: 200, success: true, msg: 'Customer infos has been updated'})
+          })
+          .catch(err => { throw(err) })
       })
-      .catch(err => { res.send({code: 500, success: false, msg: 'Unknown error happened.', err: err}) })
+      .catch(err => { res.send({ code: 500, success: false, msg: 'Unknown error happened.', err: err}) })
   }
 };
 
@@ -106,7 +108,7 @@ const customerSignIn = (req, res, next) => {
         response.comparePassword(req.body.password, function (err, IsMatch) {
           if (IsMatch) {
             req.session.isAuthenticated = true;
-            res.status(200).json({ code: 200, success: true, token: token});
+            res.status(200).json({ code: 200, id: response._id, success: true, token: token});
           } else {
             req.session.isAuthenticated = false;
             res.status(403).json({ code: 403, success: false, msg: 'Wrong password, please try again.'})
@@ -118,7 +120,6 @@ const customerSignIn = (req, res, next) => {
 };
 
 const customerSignOut = (req, res) => {
-  console.log(req)
   if (req.session.isAuthenticated) {
     req.Customers.deleteToken(req.token, (err, customer) => {
       if (err) return res.status(400).json({code: 400, success: false, msg: 'Internal server error'});
