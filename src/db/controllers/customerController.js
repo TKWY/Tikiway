@@ -121,10 +121,10 @@ const customerSignIn = (req, res, next) => {
 
 const customerSignOut = (req, res) => {
   if (req.session.isAuthenticated) {
-    req.Customers.deleteToken(req.token, (err, customer) => {
-      if (err) return res.status(400).json({code: 400, success: false, msg: 'Internal server error'});
-      res.status(200)
-    });
+    req.session.destroy((err) => {
+      if (err){throw(err)}
+      res.status(200).json('logged out!')
+    })
   } else {
     res.status(403).json({ code: 403, success: false, msg: 'Please log in first!'});
   }};
