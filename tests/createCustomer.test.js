@@ -19,16 +19,14 @@ describe('Create Customer Test', function () {
       .catch(err => done(err))
   });
 
-  afterEach(done => {
+  afterEach((done) => {
     conn.close()
-      .then(() => {
-        Customer.collection.drop()
-        done()
-      })
+      .then(() => done())
       .catch(err => done(err))
-    })
+    });
 
   it('Create a new user', async () => {
+    await Customer.collection.drop()
     const res = await request(app).post('/customers/signup')
       .send(newUser)
     expect(res.statusCode).to.equal(200);

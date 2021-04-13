@@ -84,7 +84,6 @@ describe('Sign In Test', function () {
     expect(res.body).has.property('success', true);
     expect(res.body).has.property('token');
     expect(res.body).to.not.have.property('user');
-    expect(res.body).to.not.have.deep.property('id');
     expect(res.body).to.not.have.deep.property('firstName');
     expect(res.body).to.not.have.deep.property('lastName');
     expect(res.body).to.not.have.deep.property('password');

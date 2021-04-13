@@ -17,11 +17,7 @@ const newUser = {
 describe('Update Customer Test', function () {
   beforeEach((done) => {
     conn.connect()
-      .then(() => {
-        const newCustomer = new Customer(newUser);
-        newCustomer.save()
-        done()
-      })
+      .then(() => done())
       .catch(err => done(err))
   });
 
@@ -48,15 +44,19 @@ describe('Update Customer Test', function () {
   });
 
   it('should update user', async () => {
+    const newCustomer = new Customer(newUser);
+    await newCustomer.save()
     await request(app).post('/customers/signin')
-      .send({username: 'test@test.fr', password: 'test'})
+      .send(userLogin)
       .then(async (result) => {
+        const id = result.body.id
         const Cookies = result.headers['set-cookie'].map(function(r){
           return r.replace("; path=/; httponly","")}).join("; ");
-        const res = await request(app).put('/customers/60701d71a44d68179007e507')
+        const res = await request(app).put(`/customers/${id}`)
           .set('Cookie', Cookies)
-          .send({ firstName: 'John', lastName: 'Doe', email: 'john.doe@test.fr' })
-        console.log(res.body)
+          .send(updateUser)
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).has.property('code', 200)
       })
   })
 });
