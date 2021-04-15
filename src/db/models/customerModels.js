@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
-// Customers Schema
 const customerSchema = new Schema({
   firstName: {
     type: String,
@@ -23,22 +22,21 @@ const customerSchema = new Schema({
     required: true
   },
   phone: {
-    type: String ,
+    type: String,
     required: [true, 'Phone number is required.'],
     unique: [true, 'That phone number is already used.'],
     index: true,
     maxlength: [12, 'Phone number must have 12 characters.']
   },
-  dateOfBirth: { type: Date },
-  profileImage: { type: String },
+  dateOfBirth: {type: Date},
+  profileImage: {type: String},
 });
 
 customerSchema.pre('save', function save(next) {
   const customer = this;
-  bcrypt.genSalt(10, function(err, salt) {
+  bcrypt.genSalt(10, function (err, salt) {
     if (err) return next(err)
     bcrypt.hash(customer.password, salt, function (err, hash) {
-      console.log(customer.password)
       if (err) return next(err)
       customer.password = hash;
       next()
@@ -46,20 +44,21 @@ customerSchema.pre('save', function save(next) {
   })
 });
 
-customerSchema.methods.comparePassword = function(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function (err, IsMatch) {
+customerSchema.methods.comparePassword = function (candidatePassword, cb) {
+  const customer = this
+  bcrypt.compare(candidatePassword, customer.password, function (err, IsMatch) {
     if (err) return cb(err);
     cb(null, IsMatch);
   });
 };
 
-customerSchema.methods.deleteToken = function(token, cb) {
-  this.update({$unset: {token: 1}}, function (err, customer) {
+customerSchema.methods.deleteToken = function (token, cb) {
+  const customer = this
+  customer.update({$unset: {token: 1}}, function (err, customer) {
     if (err) return cb(err);
     cb(null, customer);
   });
 };
 
-// Export
 const Customer = mongoose.model('Customer', customerSchema);
 module.exports = Customer;

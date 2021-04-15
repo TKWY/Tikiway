@@ -5,7 +5,7 @@ dotenv.config();
 // Development environment
 const dev = {
   env: 'development',
-  app: { port: process.env.DEV_PORT },
+  port: process.env.DEV_PORT,
   db: process.env.DEV_DB,
   secret: process.env.DEV_SECRET,
   session: process.env.DEV_SESSION,
@@ -15,7 +15,7 @@ const dev = {
 // Production environment
 const prod = {
   env: 'production',
-  app: { port: process.env.PROD_PORT },
+  port: process.env.PROD_PORT,
   db: `mongodb+srv://${process.env.PROD_USER}:${process.env.PROD_PASSWORD}@${process.env.PROD_CLUSTER}/${process.env.PROD_DOCUMENT}?retryWrites=true&w=majority`,
   secret: process.env.PROD_SECRET,
   session: process.env.PROD_SESSION,
@@ -25,11 +25,11 @@ const prod = {
 // Test environment
 const test = {
   env: 'test',
-  app: { port: process.env.TEST_PORT },
+  port: process.env.TEST_PORT,
   db: process.env.TEST_DB,
   secret: process.env.TEST_SECRET,
   session: process.env.TEST_SESSIONS,
-  morgan: 'test'
+  morgan: ' '
 }
 
 //Configurations exports
