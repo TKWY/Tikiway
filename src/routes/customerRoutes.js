@@ -1,29 +1,15 @@
-// Imports
 const express = require('express');
 const router = express.Router();
 
-// Local imports
-const customerController = require('../db/controllers/customerController');
+const {
+  getAllCustomers, createCustomer, customerSignIn, customerSignOut, getCustomersById, updateCustomer
+} = require('../db/controllers/customerController');
 
-// Customer API http request:
-// Route to all customers
-// Argument type error on IDE, must refactor all routes
-router.get('/', customerController.getAllCustomers);
-
-// Route to create customer
-router.post('/signup', customerController.createCustomer);
-
-// Route to customer login
-router.post('/signin', customerController.customerSignIn);
-
-router.get('/signout', customerController.customerSignOut);
-
-// Route to customer by ID
-router.get('/:id',customerController.getCustomersById);
-
-// Route to update customer information with their ID
-router.put('/:id', customerController.updateCustomer);
-
-
+router.get('/', getAllCustomers);
+router.post('/signup', createCustomer);
+router.post('/signin', customerSignIn);
+router.get('/signout', customerSignOut);
+router.get('/:id', getCustomersById);
+router.put('/:id', updateCustomer);
 
 module.exports = router;
