@@ -1,6 +1,6 @@
 const request = require('supertest');
 const expect = require('chai').expect;
-const conn = require('../src/db/index');
+const dbHandler = require('./test-helper');
 const app = require('../app');
 const Customer = require('../src/db/models/customerModels')
 
@@ -15,20 +15,21 @@ const newUser = {
 }
 
 describe('Update Customer Test', function () {
-  beforeEach((done) => {
-    conn.connect()
-    const newCustomer = new Customer(newUser);
-    newCustomer.save()
-      .then(() => done())
-      .catch(err => done(err))
+  beforeEach(async () => {
+    await dbHandler.connect()
+      .then(async () => {
+        const customer = new Customer(newUser);
+        await customer.save()
+      })
   });
 
-  afterEach((done) => {
-    Customer.collection.drop()
-    conn.close()
-      .then(() => done())
-      .catch(err => done(err))
+  afterEach(async () => {
+    await dbHandler.clearDatabase()
   });
+
+  after(async () => {
+    await dbHandler.closeDatabase()
+  })
 
   it('update user return "not logged in" error' , async() => {
     await request(app).post('/customers/signin')
