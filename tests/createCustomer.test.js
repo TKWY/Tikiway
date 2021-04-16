@@ -1,8 +1,7 @@
 const expect = require('chai').expect;
-const conn = require('../src/db/index');
 const app = require('../app');
 const request = require('supertest');
-const Customer = require('../src/db/models/customerModels');
+const dbHandler = require('./test-helper');
 
 const url = '/customers/signup'
 const newUser = {
@@ -13,34 +12,41 @@ const newUser = {
   email: 'john.doe@mail.fr'
 }
 
-const userWithSamePhone = {
-  firstName: 'Jane',
-  lastName: 'Doe',
-  phone: '+68987705645',
-  password: 'test',
-  email: 'jane.doe@mail.fr'
-}
-
-describe('Create Customer', function () {
-  beforeEach((done) => {
-    conn.connect()
-      .then(() => (done)())
-      .catch(err => done(err))
+describe('Create customer account test', function () {
+  beforeEach(async () => {
+    await dbHandler.connect()
   });
 
-  afterEach((done) => {
-    Customer.collection.drop()
-    conn.close()
-      .then(() => done())
-      .catch(err => done(err))
-    });
+  afterEach(async () => {
+    await dbHandler.clearDatabase()
+  });
 
-  it('Create a new user', async () => {
+  after(async () => {
+    await dbHandler.closeDatabase()
+  })
+
+  it('Post return status code 200', async () => {
     const res = await request(app).post(url)
       .send(newUser)
     expect(res.statusCode).to.equal(200);
-    expect(res.body).has.property('code', 200);
-    expect(res.body).has.property('success', true);
     expect(res.body).has.property('msg', `Welcome to Tikiway ${newUser.firstName}, thank you for joining us.`)
-  })
+  });
+
+  it('Response has property code and return 200', async () => {
+    const res = await request(app).post(url)
+      .send(newUser)
+    expect(res.body).has.property('code', 200);
+  });
+
+  it('Response has property success and return true', async () => {
+    const res = await request(app).post(url)
+      .send(newUser)
+    expect(res.body).has.property('success', true);
+  });
+
+  it('Response has property msg and return thank you message', async () => {
+    const res = await request(app).post(url)
+      .send(newUser)
+    expect(res.body).has.property('msg', `Welcome to Tikiway ${newUser.firstName}, thank you for joining us.`)
+  });
 });

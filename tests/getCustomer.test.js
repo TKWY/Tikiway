@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const request = require('supertest');
 const app = require('../app');
-const conn = require('../src/db/index');
+const dbHandler = require('./test-helper');
 const Customer = require('../src/db/models/customerModels')
 
 const newUser = {
@@ -13,20 +13,21 @@ const newUser = {
 }
 
 describe('Homepage', function (d) {
-  beforeEach((done) => {
-    conn.connect()
-    const newCustomer = new Customer(newUser);
-    newCustomer.save()
-      .then(() => done())
-      .catch(err => done(err))
+  beforeEach(async () => {
+    await dbHandler.connect()
+      .then(async () => {
+        const customer = new Customer(newUser);
+        await customer.save();
+      })
   });
 
-  afterEach((done) => {
-    Customer.collection.drop()
-    conn.close()
-      .then(() => done())
-      .catch(err => done(err))
+  afterEach(async () => {
+    await dbHandler.clearDatabase()
   });
+
+  after(async () => {
+    await dbHandler.closeDatabase()
+  })
 
   it('GET / should return 404', async () => {
     const res = await request(app).get('/');
