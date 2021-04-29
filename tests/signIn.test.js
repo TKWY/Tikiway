@@ -1,37 +1,26 @@
 const request = require('supertest');
 const expect = require('chai').expect;
-const dbHandler = require('./test-helper');
+const setup = require('./test-helper');
 const app = require('../app');
 const Customer = require('../src/db/models/customerModels');
 
-const url = '/customers/signin'
-const userLogin = { username: 'john.doe@mail.fr', password: 'test'}
+const url = '/customers/signin';
+const userLogin = { username: 'john.doe@mail.fr', password: 'test'};
 const newUser = {
   firstName: 'John',
   lastName: 'DOE',
   phone: '+68987705645',
   password: 'test',
   email: 'john.doe@mail.fr'
-}
+};
+
+
 
 describe('Sign In Test', function () {
-  beforeEach(async () => {
-    await dbHandler.connect()
-      .then(async() => {
-        const customer = new Customer(newUser)
-        await customer.save()
-      })
-  });
-
-  afterEach(async () => {
-    await dbHandler.clearDatabase()
-  });
-
-  after(async () => {
-    await dbHandler.closeDatabase()
-  })
-
+  setup()
   it('POST empty username return 401', async() => {
+    const customer = new Customer(newUser);
+    await customer.save()
     const res = await request(app).post(url)
       .send({username: '', password:''});
     expect(res.statusCode).to.equal(401);
@@ -41,6 +30,8 @@ describe('Sign In Test', function () {
   })
 
   it('POST empty password return 401', async() => {
+    const customer = new Customer(newUser);
+    await customer.save()
     const res = await request(app).post(url)
       .send({username: 'test', password: ''});
     expect(res.statusCode).to.equal(401);
@@ -50,6 +41,8 @@ describe('Sign In Test', function () {
   })
 
   it('POST false username return 403', async() => {
+    const customer = new Customer(newUser);
+    await customer.save()
     const res = await request(app).post(url)
       .send({username: 'john.doe@mail.com', password: 'test'});
     expect(res.statusCode).to.equal(403);
@@ -59,6 +52,8 @@ describe('Sign In Test', function () {
   })
 
   it('POST false password return 403', async() => {
+    const customer = new Customer(newUser);
+    await customer.save()
     const res = await request(app).post(url)
       .send({username: 'john.doe@mail.fr', password: 'false'})
     expect(res.statusCode).to.equal(403);
@@ -68,6 +63,8 @@ describe('Sign In Test', function () {
   })
 
   it('POST user return 200', async() => {
+    const customer = new Customer(newUser);
+    await customer.save()
     const res = await request(app).post(url)
       .send(userLogin)
     expect(res.statusCode).to.equal(200);

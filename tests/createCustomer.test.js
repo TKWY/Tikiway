@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const app = require('../app');
 const request = require('supertest');
-const dbHandler = require('./test-helper');
+const setup = require('./test-helper');
 
 const url = '/customers/signup'
 const newUser = {
@@ -13,18 +13,7 @@ const newUser = {
 }
 
 describe('Create customer account test', function () {
-  beforeEach(async () => {
-    await dbHandler.connect()
-  });
-
-  afterEach(async () => {
-    await dbHandler.clearDatabase()
-  });
-
-  after(async () => {
-    await dbHandler.closeDatabase()
-  })
-
+  setup()
   it('Post return status code 200', async () => {
     const res = await request(app).post(url)
       .send(newUser)
