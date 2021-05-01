@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const mockdb = new MongoMemoryServer();
+const mockDb = new MongoMemoryServer();
 
 connect = async () => {
-    const URI = await mockdb.getUri();
+    const URI = await mockDb.getUri();
     const mongooseOptions = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true
+      useCreateIndex: true,
+      useFindAndModify: false
     }
     await mongoose.connect(URI, mongooseOptions)
 };
@@ -15,7 +16,7 @@ connect = async () => {
 closeDatabase = async () => {
   await mongoose.connection.dropDatabase()
   await mongoose.connection.close()
-  await mockdb.stop()
+  await mockDb.stop()
 }
 
 clearDatabase = async () => {
@@ -26,4 +27,24 @@ clearDatabase = async () => {
   }
 }
 
-module.exports = { connect, closeDatabase, clearDatabase }
+const setup = () => {
+  before((done) => {
+    connect()
+      .then(done)
+      .catch(err => done(err))
+  });
+
+  beforeEach((done) => {
+    clearDatabase()
+      .then(done)
+      .catch(err => done(err))
+  });
+
+  after((done) => {
+    closeDatabase()
+      .then(done)
+      .catch(err => done(err))
+  });
+}
+
+module.exports = setup

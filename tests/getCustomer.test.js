@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const request = require('supertest');
 const app = require('../app');
-const dbHandler = require('./test-helper');
+const setup = require('./test-helper');
 const Customer = require('../src/db/models/customerModels')
 
 const newUser = {
@@ -13,22 +13,7 @@ const newUser = {
 }
 
 describe('Homepage', function (d) {
-  beforeEach(async () => {
-    await dbHandler.connect()
-      .then(async () => {
-        const customer = new Customer(newUser);
-        await customer.save();
-      })
-  });
-
-  afterEach(async () => {
-    await dbHandler.clearDatabase()
-  });
-
-  after(async () => {
-    await dbHandler.closeDatabase()
-  })
-
+  setup()
   it('GET / should return 404', async () => {
     const res = await request(app).get('/');
     expect(res.statusCode).to.equal(404);
