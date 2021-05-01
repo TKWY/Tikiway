@@ -1,12 +1,15 @@
 # TikiClients
+
 ## <u>What is TikiClients</u>
 
 TikiClients is the user service for Tikiway customers, it's used to manage customers action, like creating a new account, login and update informations.
 
 The service return response as json and must be handled in the frontend application.
-***
+
+---
 
 ## <u>Folder Structure</u>
+
 ```
 ├── app.js
 ├── config.js
@@ -30,55 +33,124 @@ The service return response as json and must be handled in the frontend applicat
 └── tree.txt
 ```
 
-***
+---
+
 ## <u>Application requests</u>
-### Account creation
-#### Form post request on "/customers"
+
+### Return list of customer
+
+#### Get request on /customers
 
 ```json5
 {
-    _id: "60658801919a0608e25958e4",
+{
+  code: 200,
+  success: true,
+  msg: "Account has been created",
+  user: [
+    {customer1},
+    {customer2},
+    {customer3},
+    ...
+  ],
+}
+}
+```
+
+### Account creation
+
+#### Form post request on /customers
+
+```json5
+{
+  _id: "60658801919a0608e25958e4",
+  firstName: "John",
+  lastName: "DOE",
+  password: "thisIsAPassword",
+  email: "john.doe@thisisamail.com",
+  phone: "+689XXXXXX",
+  dateOfBirth: "1980-04-12T10:00:00.000Z",
+  __v: 0,
+}
+```
+
+#### POST return
+
+```json5
+{
+  code: 200,
+  success: true,
+  msg: "Account has been created",
+  user: {
     firstName: "John",
     lastName: "DOE",
-    password: "thisIsAPassword",
-    email: "john.doe@thisisamail.com",
+    email: "john.doe@thisamail.com",
     phone: "+689XXXXXX",
     dateOfBirth: "1980-04-12T10:00:00.000Z",
-    __v: 0 
+  },
 }
 ```
 
-#### POST request return:
+#### Error format
 
 ```json5
 {
-    code: 200,
-    success: true,
-    msg: "Account has been created",
-    user: {
-        firstName: "John",
-        lastName: "DOE",
-        email: "john.doe@thisamail.com",
-        phone: "+689XXXXXX",
-        dateOfBirth: "1980-04-12T10:00:00.000Z"
-    }
-     
+  code: 409,
+  succes: false,
+  message: "An account with that phone number or email already exists.",
 }
 ```
 
-#### Error format:
+### Customer by id
+
+#### GET on /customers/:id return
+
 ```json5
 {
-    code: 409,
-    succes: false,
-    message: "An account with that phone number or email already exists."
+  code: 200,
+  success: true,
+  msg: "Account has been created",
+  user: {
+    firstName: "John",
+    lastName: "DOE",
+    email: "john.doe@thisamail.com",
+    phone: "+689XXXXXX",
+    dateOfBirth: "1980-04-12T10:00:00.000Z",
+  },
 }
 ```
-***
+
+#### PUT on /customers/:id return
+
+#### if customer is not logged in, return error
+
+```json5
+{
+  code: 403, 
+  success: false, 
+  msg: 'Please log in first!'
+}
+```
+
+#### customer is logged in
+
+```json5
+{
+  code: 200,
+  success: true,
+  msg: {
+    updated customer information...
+  }
+}
+```
+
+---
+
 ## What framework?
+
 TikiClients is written with NodeJs using ExpressJS and Mongoose to communicate with the database(MongoDB).
 
-#### Mongoose schema exemple:
+#### Mongoose schema exemple
 
 ```Javascript
 const mongoose = require('mongoose');
@@ -98,13 +170,11 @@ const userSchema = new Schema({
 })
 
 ```
-***
+
+---
 
 ## In progress
 
-Customers method still in progress: 
+Customers method still in progress:
 
-* refactoring customer account creation
-* update method
-* errors handling for each methods
-* delete user by id
+- delete user by id
