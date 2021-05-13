@@ -11,7 +11,7 @@ jobs:
       - node/install-packages
       - run:
           name: Run tests
-          command: npm test
+          command: npm run test:ci
 
 workflows:
   sample: 
