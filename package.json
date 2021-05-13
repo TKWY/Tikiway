@@ -4,8 +4,7 @@
   "description": "Customer micro service",
   "main": "app.js",
   "scripts": {
-    "serve": "NODE_ENV=prod node server",
-    "start": "NODE_ENV=dev nodemon server",
+    "start": "NODE_ENV=prod node server",
     "dev": "DEBUG=server:debug NODE_ENV=dev nodemon server --exec",
     "test": "DEBUG=server:debug NODE_ENV=test mocha --recursive --exit --timeout 10000 tests/",
     "test-with-coverage": "DEBUG=server:debug NODE_ENV=test nyc mocha --recursive min --exit --timeout 100000 tests/",

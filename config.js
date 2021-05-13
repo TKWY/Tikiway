@@ -16,7 +16,7 @@ const dev = {
 const prod = {
   env: 'production',
   port: process.env.PROD_PORT,
-  db: `mongodb+srv://${process.env.PROD_USER}:${process.env.PROD_PASSWORD}@${process.env.PROD_CLUSTER}/${process.env.PROD_DOCUMENT}?retryWrites=true&w=majority`,
+  db: process.env.PROD_DB,
   secret: process.env.PROD_SECRET,
   session: process.env.PROD_SESSION,
   morgan: 'production'
