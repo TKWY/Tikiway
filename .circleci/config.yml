@@ -6,6 +6,7 @@ jobs:
   run-test:  
     docker:
       - image: cimg/node:15.1
+    resource_class: small
     steps:
       - checkout
       - node/install-packages
