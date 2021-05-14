@@ -19,10 +19,10 @@ const newUser = {
 describe('Sign In Test', function () {
   setup()
   it('POST empty username return 401', async() => {
-    const customer = new Customer(newUser);
-    await customer.save()
+    request(app).post('/customers/signup')
+      .send(newUser)
     const res = await request(app).post(url)
-      .send({username: '', password:''});
+      .send({username: '', password: ''});
     expect(res.statusCode).to.equal(401);
     expect(res.body).has.property('code', 401);
     expect(res.body).has.property('success', false);
