@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@4.1
 
 jobs:
-  build-and-test:  
+  run-test:  
     docker:
       - image: cimg/node:15.1
     steps:
@@ -14,6 +14,9 @@ jobs:
           command: npm run test:ci
 
 workflows:
-  sample: 
+  my-workflow: 
     jobs:
-      - build-and-test
+      - run-test:
+          context:
+            - test 
+            - build-and-test
