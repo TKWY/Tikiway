@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const mockDb = new MongoMemoryServer();
+const mockDb = new MongoMemoryServer({binary: {version: 'latest'}});
 
 connect = async () => {
     const URI = await mockDb.getUri();
