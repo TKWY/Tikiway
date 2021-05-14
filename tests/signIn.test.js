@@ -19,8 +19,6 @@ const newUser = {
 describe('Sign In Test', function () {
   setup()
   it('POST empty username return 401', async() => {
-    request(app).post('/customers/signup')
-      .send(newUser)
     const res = await request(app).post(url)
       .send({username: '', password: ''});
     expect(res.statusCode).to.equal(401);
@@ -41,8 +39,8 @@ describe('Sign In Test', function () {
   })
 
   it('POST false username return 403', async() => {
-    const customer = new Customer(newUser);
-    await customer.save()
+    await request(app).post('/customers/signup')
+      .send(newUser)
     const res = await request(app).post(url)
       .send({username: 'john.doe@mail.com', password: 'test'});
     expect(res.statusCode).to.equal(403);
@@ -52,8 +50,8 @@ describe('Sign In Test', function () {
   })
 
   it('POST false password return 403', async() => {
-    const customer = new Customer(newUser);
-    await customer.save()
+    await request(app).post('/customers/signup')
+      .send(newUser)
     const res = await request(app).post(url)
       .send({username: 'john.doe@mail.fr', password: 'false'})
     expect(res.statusCode).to.equal(403);
@@ -63,8 +61,8 @@ describe('Sign In Test', function () {
   })
 
   it('POST user return 200', async() => {
-    const customer = new Customer(newUser);
-    await customer.save()
+    await request(app).post('/customers/signup')
+      .send(newUser)
     const res = await request(app).post(url)
       .send(userLogin)
     expect(res.statusCode).to.equal(200);

@@ -17,8 +17,8 @@ const newUser = {
 describe('Update Customer Test', function () {
   setup()
   it('update user return "not logged in" error' , async() => {
-    const customer = new Customer(newUser);
-    await customer.save()
+    await request(app).post('/customers/signup')
+      .send(newUser)
     await request(app).post('/customers/signin')
       .send(userLogin)
       .then(async(result) => {
@@ -32,8 +32,8 @@ describe('Update Customer Test', function () {
   });
 
   it('should update user', async () => {
-    const customer = new Customer(newUser);
-    await customer.save()
+    await request(app).post('/customers/signup')
+      .send(newUser)
     await request(app).post('/customers/signin')
       .send(userLogin)
       .then(async (result) => {
