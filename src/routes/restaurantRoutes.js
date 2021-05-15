@@ -1,16 +1,7 @@
 const express = require('express');
-const router = express.Router()
+const router = express.Router();
+const { getAllRestaurant } = require('../db/controllers/restaurantController');
 
-router.get('/', (req, res) => {
-  return res.status(200).json({
-    code: 200,
-    success: true,
-    restaurants: []
-  })
-});
-
-router.get('/:id', (req, res) => {
-  res.status(200).send('this is the id')
-});
+router.get('/', getAllRestaurant);
 
 module.exports = router;

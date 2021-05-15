@@ -48,9 +48,11 @@ getAllCustomers = (req, res) => {
     })
     .catch(err => {
       return res.status(500).json({
-        code: 500, 
+        code: 500,
+        succes: false,
         msg: 'server internal error', 
-        err: err})
+        err: err
+      })
     })
 };
 
