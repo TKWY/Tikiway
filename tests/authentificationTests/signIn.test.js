@@ -1,8 +1,8 @@
 const request = require('supertest');
 const expect = require('chai').expect;
-const setup = require('./test-helper');
-const app = require('../app');
-const Customer = require('../src/db/models/customerModels');
+const setup = require('../test-helper');
+const app = require('../../app');
+const Customer = require('../../src/db/models/customerModels');
 
 const url = '/customers/signin';
 const userLogin = { username: 'john.doe@mail.fr', password: 'test'};

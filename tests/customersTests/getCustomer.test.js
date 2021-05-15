@@ -1,18 +1,9 @@
 const expect = require('chai').expect;
 const request = require('supertest');
-const app = require('../app');
-const setup = require('./test-helper');
-const Customer = require('../src/db/models/customerModels')
+const app = require('../../app');
+const setup = require('../test-helper');
 
-const newUser = {
-  firstName: 'John',
-  lastName: 'DOE',
-  phone: '+68987705645',
-  password: 'test',
-  email: 'john.doe@mail.fr'
-}
-
-describe('Homepage', function (d) {
+describe('Homepage', function () {
   setup()
   it('GET / should return 404', async () => {
     const res = await request(app).get('/');

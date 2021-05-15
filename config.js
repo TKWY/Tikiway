@@ -19,7 +19,7 @@ const prod = {
   db: process.env.PROD_DB,
   secret: process.env.PROD_SECRET,
   session: process.env.PROD_SESSION,
-  morgan: 'production'
+  morgan: ' '
 }
 
 // Test environment

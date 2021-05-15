@@ -1,8 +1,8 @@
 const request = require('supertest');
 const expect = require('chai').expect;
-const setup = require('./test-helper');
-const app = require('../app');
-const Customer = require('../src/db/models/customerModels')
+const setup = require('../test-helper');
+const app = require('../../app');
+const Customer = require('../../src/db/models/customerModels')
 
 const updateUser = { firstName: 'Jane' }
 const userLogin = { username: 'john.doe@mail.fr', password: 'test'}
@@ -19,6 +19,7 @@ describe('Update Customer Test', function () {
   it('update user return "not logged in" error' , async() => {
     await request(app).post('/customers/signup')
       .send(newUser)
+      
     await request(app).post('/customers/signin')
       .send(userLogin)
       .then(async(result) => {
@@ -34,6 +35,7 @@ describe('Update Customer Test', function () {
   it('should update user', async () => {
     await request(app).post('/customers/signup')
       .send(newUser)
+
     await request(app).post('/customers/signin')
       .send(userLogin)
       .then(async (result) => {

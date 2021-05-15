@@ -8,6 +8,7 @@ const PORT = port || process.env.PORT;
 const listen = app.listen(PORT, () => {
   const msg = (`Server is running on port ${PORT} and in ${env} mode. \n\Connected to db: ${db}`)
   debug(msg);
+  console.log(msg)
 })
 
 server.connect()

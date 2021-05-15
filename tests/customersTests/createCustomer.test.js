@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
-const app = require('../app');
+const app = require('../../app');
 const request = require('supertest');
-const setup = require('./test-helper');
+const setup = require('../test-helper');
 
 const url = '/customers/signup'
 const newUser = {

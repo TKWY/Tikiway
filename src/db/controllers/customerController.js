@@ -13,7 +13,11 @@ createCustomer = (req, res) => {
       return res.status(200).json({
         code: 200,
         success: true,
-        customer: {id: _id, firstname: firstName, lastname: lastName},
+        customer: {
+          id: _id, 
+          firstname: firstName, 
+          lastname: lastName
+        },
         msg: `Welcome to Tikiway ${firstName}, thank you for joining us.`
       })
     })
@@ -37,10 +41,16 @@ getAllCustomers = (req, res) => {
           phone: phone
         }
       })
-      return res.status(200).json({code: 200, success: true, Customers: customerList})
+      return res.status(200).json({
+        code: 200, 
+        success: true, 
+        Customers: customerList})
     })
     .catch(err => {
-      return res.status(500).json({code: 500, msg: 'server internal error', err: err})
+      return res.status(500).json({
+        code: 500, 
+        msg: 'server internal error', 
+        err: err})
     })
 };
 
@@ -51,7 +61,11 @@ getCustomersById = (req, res) => {
     const id = req.params.id;
     const sessionID = req.session.id;
     if (id.value !== sessionID.value) {
-      return res.status(500).json({code: 500, success: false, msg: 'This user is not authenticated'});
+      return res.status(500).json({
+        code: 500, 
+        success: false, 
+        msg: 'This user is not authenticated'
+      });
     } else {
       Customer.findById(id)
         .then((response) => {
@@ -63,11 +77,20 @@ getCustomersById = (req, res) => {
           })
         })
         .catch((err) => {
-          return res.status(500).json({code: 500, success: false, msg: 'Wrong user!', err: err})
+          return res.status(500).json({
+            code: 500, 
+            success: false, 
+            msg: 'Wrong user!', 
+            err: err
+          })
         })
     }
   } else {
-    return res.status(403).json({code: 403, success: false, msg: 'Please log in first!'});
+    return res.status(403).json({
+      code: 403, 
+      success: false, 
+      msg: 'Please log in first!'
+    });
   }
 };
 
