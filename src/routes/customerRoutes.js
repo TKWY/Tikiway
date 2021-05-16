@@ -5,11 +5,12 @@ const {
   getAllCustomers, createCustomer, customerSignIn, customerSignOut, getCustomersById, updateCustomer
 } = require('../db/controllers/customerController');
 
-router.get('/', getAllCustomers);
-router.post('/signup', createCustomer);
-router.post('/signin', customerSignIn);
-router.get('/signout', customerSignOut);
-router.get('/:id', getCustomersById);
-router.put('/:id', updateCustomer);
+router
+  .get('/', getAllCustomers)
+  .post('/', createCustomer)
+  .post('/signin', customerSignIn)
+  .get('/signout', customerSignOut)
+  .get('/:id', getCustomersById)
+  .put('/:id', updateCustomer);
 
 module.exports = router;
