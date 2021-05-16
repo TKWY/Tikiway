@@ -3,7 +3,7 @@ const app = require('../../app');
 const request = require('supertest');
 const setup = require('../test-helper');
 
-const url = '/customers/signup'
+const url = '/customers/'
 const newUser = {
   firstName: 'John',
   lastName: 'Doe',

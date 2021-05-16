@@ -39,6 +39,14 @@ getRestaurantById = (req, res) => {
     })
 }
 
+postRestaurant =(req, res) => {
+  res.status(200).send(() => {
+    console.log('this is a response')
+  })
+}
+
 module.exports = {
-  getAllRestaurant
+  getAllRestaurant,
+  getRestaurantById,
+  postRestaurant
 }

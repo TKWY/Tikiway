@@ -59,22 +59,23 @@ getAllCustomers = (req, res) => {
 // Get customer by id
 // need to return infos
 getCustomersById = (req, res) => {
-  if (req.session.isAuthenticated) {
-    const id = req.params.id;
-    const sessionID = req.session.id;
-    if (id.value !== sessionID.value) {
-      return res.status(500).json({
-        code: 500, 
-        success: false, 
-        msg: 'This user is not authenticated'
-      });
-    } else {
+  //if (req.session.isAuthenticated) {
+    //const id = req.params.id;
+    //const sessionID = req.session.id;
+    //if (id.value !== sessionID.value) {
+    //  return res.status(500).json({
+    //    code: 500, 
+    //    success: false, 
+    //    msg: 'This user is not authenticated'
+    //  });
+    //} else {
+      const id = req.params.id
       Customer.findById(id)
         .then((response) => {
           return res.status(200).json({
             code: 200,
             success: true,
-            msg: `User id: ${response._id} found`,
+            msg: `User ${response.firstName} ${response.lastName } found`,
             response: response
           })
         })
@@ -87,14 +88,14 @@ getCustomersById = (req, res) => {
           })
         })
     }
-  } else {
-    return res.status(403).json({
-      code: 403, 
-      success: false, 
-      msg: 'Please log in first!'
-    });
-  }
-};
+  //} else {
+  //  return res.status(403).json({
+  //    code: 403, 
+  //    success: false, 
+  //    msg: 'Please log in first!'
+  //  });
+  //}
+//};
 
 // Update customer infos
 updateCustomer = (req, res) => {
