@@ -6,6 +6,7 @@ const {
   postRestaurant
 } = require('../db/controllers/restaurantController');
 
+// Restaurant routes
 router
   .get('/', getAllRestaurant)
   .post('/', postRestaurant)
@@ -13,6 +14,8 @@ router
 router
   .get('/:id', getRestaurantById)
 
+
+// Menu routes
 router
   .get('/:id/menu', (req, res) => {
     res.send(console.log('this is a menu'))
@@ -24,6 +27,7 @@ router
     res.send(console.log(`this is menu id ${req.params.id }`))
   })
 
+// Dish routes
 router
   .get('/:id/menu/:id/dish', (req, res) => {
     res.send(console.log('this is a menu'))

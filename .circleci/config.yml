@@ -15,7 +15,7 @@ jobs:
           command: npm run test:ci
 
 workflows:
-  my-workflow: 
+  Pull request: 
     jobs:
       - run-test:
           context:
