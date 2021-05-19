@@ -7,7 +7,6 @@ const url = '/restaurants';
 const newRestaurant = {
   name: `Pizz'Burger`,
   description: `Pizz'burger c'est des pizzas, mais pas que, c'est aussi des burgers, des tacos, et des kebabs...`,
-  rating: 1
 }
 
 describe('Post new restaurant', function() {
@@ -39,6 +38,6 @@ describe('Post new restaurant', function() {
   it('has property rating', async() => {
     const res = await request(app).post(url)
       .send(newRestaurant)
-    expect(res.body).has.property('rating')
+    expect(res.body).has.property('rating', 0)
   })
 })

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const Customer = require('../models/customerModels');
 const errorController = require('./errorController');
 const config = require('../../../config');
+const { Mongoose } = require('mongoose');
 
 // Create a new customer account
 createCustomer = (req, res) => {
@@ -46,56 +47,20 @@ getAllCustomers = (req, res) => {
         success: true, 
         Customers: customerList})
     })
-    .catch(err => {
-      return res.status(500).json({
-        code: 500,
-        succes: false,
-        msg: 'server internal error', 
-        err: err
-      })
-    })
+    .catch(err => res.json(err))
 };
 
 // Get customer by id
-// need to return infos
 getCustomersById = (req, res) => {
-  //if (req.session.isAuthenticated) {
-    //const id = req.params.id;
-    //const sessionID = req.session.id;
-    //if (id.value !== sessionID.value) {
-    //  return res.status(500).json({
-    //    code: 500, 
-    //    success: false, 
-    //    msg: 'This user is not authenticated'
-    //  });
-    //} else {
-      const id = req.params.id
-      Customer.findById(id)
-        .then((response) => {
-          return res.status(200).json({
-            code: 200,
-            success: true,
-            msg: `User ${response.firstName} ${response.lastName } found`,
-            response: response
-          })
-        })
-        .catch((err) => {
-          return res.status(500).json({
-            code: 500, 
-            success: false, 
-            msg: 'Wrong user!', 
-            err: err
-          })
-        })
-    }
-  //} else {
-  //  return res.status(403).json({
-  //    code: 403, 
-  //    success: false, 
-  //    msg: 'Please log in first!'
-  //  });
-  //}
-//};
+  const id = req.params.id
+  Customer.findById(id)
+    .then(response => res.json(response))
+    .catch(err => {
+      if (err) {
+        res.sendStatus(404)
+      }
+    })
+}
 
 // Update customer infos
 updateCustomer = (req, res) => {

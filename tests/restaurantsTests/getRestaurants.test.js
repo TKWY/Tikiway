@@ -12,18 +12,8 @@ describe('Get all restaurant', function() {
     expect(res.statusCode).to.equal(200);
   });
 
-  it('Contain code 200', async() => {
-    const res = await request(app).get(url)
-    expect(res.body).has.property('code', 200)
-  });
-
-  it('Contain success equal to true', async() => {
-    const res = await request(app).get(url)
-    expect(res.body).has.property('success', true)
-  });
-
   it('Return array list of restaurants', async() => {
     const res = await request(app).get(url)
-    expect(res.body.restaurants).to.be.an('array')
+    expect(res.body).to.be.an('array')
   });
 });

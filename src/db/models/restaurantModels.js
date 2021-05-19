@@ -4,32 +4,74 @@ const Schema = mongoose.Schema;
 const businessHoursSchema = new Schema({
   slotName: String,
   monday: {
-    start: String, 
-    end: String
+    start: {
+      type: String,
+      default: 00
+    }, 
+    end: {
+      type: String,
+      default: 00
+    }
   },
   tuesday: {
-    start: String, 
-    end: String
+    start: {
+      type: String,
+      default: 00
+    }, 
+    end: {
+      type: String,
+      default: 00
+    }
   },
   wednesday: {
-    start: String, 
-    end: String
+    start: {
+      type: String,
+      default: 00
+    }, 
+    end: {
+      type: String,
+      default: 00
+    }
   },
   thursday: {
-    start: String, 
-    end: String
+    start: {
+      type: String,
+      default: 00
+    }, 
+    end: {
+      type: String,
+      default: 00
+    }
   },
   friday: {
-    start: String, 
-    end: String
+    start: {
+      type: String,
+      default: 00
+    }, 
+    end: {
+      type: String,
+      default: 00
+    }
   },
   saturday: {
-    start: String, 
-    end: String
+    start: {
+      type: String,
+      default: 00
+    }, 
+    end: {
+      type: String,
+      default: 00
+    }
   },
   sunday: {
-    start: String, 
-    end: String
+    start: {
+      type: String,
+      default: 00
+    }, 
+    end: {
+      type: String,
+      default: 00
+    }
   }
 })
 
@@ -75,9 +117,15 @@ const restaurantSchema = new Schema({
     type: String,
     required: true
   },
-  rating: Number,
+  rating: {
+    type: Number,
+    default: 0
+  },
   category: String,
-  logo: String,
+  logo: {
+    type: String,
+    default: 'default'
+  },
   businessHours: [businessHoursSchema],
   businessHoursExceptions: [{
     type: String,

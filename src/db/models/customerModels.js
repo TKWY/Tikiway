@@ -28,8 +28,14 @@ const customerSchema = new Schema({
     index: true,
     maxlength: [12, 'Phone number must have 12 characters.']
   },
-  dateOfBirth: {type: Date},
-  profileImage: {type: String},
+  dateOfBirth: {
+    type: Date,
+    default: Date.now()
+  },
+  profileImage: {
+    type: String,
+    default: 'default'
+  },
 });
 
 customerSchema.pre('save', function save(next) {
