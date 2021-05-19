@@ -3,11 +3,7 @@ const Restaurant = require('../models/restaurantModels');
 getAllRestaurant = (req, res) => {
   Restaurant.find()
     .then((response) => {
-      return res.status(200).json({
-        code: 200,
-        success: true,
-        restaurants: response
-      })
+      return res.status(200).json(response)
     })
     .catch(err => {
       return res.status(500).json({
