@@ -1,44 +1,33 @@
-const Restaurant = require('../models/restaurantModels');
+const { Restaurant } = require('../models/restaurantModels');
 
 getAllRestaurant = (req, res) => {
   Restaurant.find()
-    .then((response) => {
-      return res.status(200).json(response)
+    .then(response => {
+      res.json(response)
     })
-    .catch(err => {
-      return res.status(500).json({
-        code: 500,
-        success: false,
-        msg: 'server internal error',
-        err: err
-      })
-    })
+    .catch(err => res.json(err))
 }
 
 getRestaurantById = (req, res) => {
   const id = req.params.id;
   Restaurant.findById(id)
-    .then(response => {
-      res.status(200).json({
-        code: 200,
-        success: true,
-        restaurant: response
-      })
-    })
+    .then(response => res.json(response))
     .catch(err => {
-      return res.status(500).json({
-        code: 500,
-        success: false,
-        msg: 'Restaurant does not exist',
-        err: err
-      })
+      if (err) {
+        res.sendStatus(404)
+      }
     })
 };
 
 getRestaurantMenuById = (req, res) => {
-  res.status(200).send(() => {
-    console.log('This is the Restaurant menu')
-  })
+  id = req.params.id
+  Restaurant.findById(id)
+    .then(response => res.json(response))
+    .catch(err => {
+      if (err) {
+        res.sendStatus(404)
+      }
+    })
 }
 
 postRestaurant =(req, res) => {
