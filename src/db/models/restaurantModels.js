@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const {menuSchema} = require('./menuModels')
 
 const businessHoursSchema = new Schema({
   slotName: String,
@@ -126,6 +127,7 @@ const restaurantSchema = new Schema({
     type: String,
     default: 'default'
   },
+  menu: [menuSchema],
   businessHours: [businessHoursSchema],
   businessHoursExceptions: [{
     type: String,
@@ -141,5 +143,10 @@ const restaurantSchema = new Schema({
   }
 })
 
+const Menu = mongoose.model('Menu', menuSchema);
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-module.exports = Restaurant
+
+module.exports = {
+  Restaurant,
+  Menu
+}
