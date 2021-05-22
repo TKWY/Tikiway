@@ -9,7 +9,7 @@ getAllRestaurant = (req, res) => {
 }
 
 getRestaurantById = (req, res) => {
-  const id = req.params.id;
+  const id = req.params.restaurantId;
   Restaurant.findById(id)
     .then(response => res.json(response))
     .catch(err => {
