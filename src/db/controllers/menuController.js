@@ -1,13 +1,20 @@
 const {Menu} = require('../models/menuModels');
 const {Restaurant} = require('../models/restaurantModels');
 
+getAllMenu = (req, res) => {
+  console.log('you hit menu list')
+  Restaurant.findById(req.params.restaurantId)
+    .then(response => res.json(response.menu))
+    .catch(err => res.status(500).json(err))
+};
+
 postMenu = (req, res) => {
   const body = req.body;
   const newMenu = new Menu({
     category: body.category,
-    restaurantId: req.params.id
+    restaurantId: req.params.restaurantId
   });
-  Restaurant.findById(req.params.id)
+  Restaurant.findById(req.params.restaurantId)
     .then(restaurant => {
       restaurant.menu.push(newMenu)
       restaurant.save()
@@ -21,5 +28,6 @@ postMenu = (req, res) => {
 };
 
 module.exports = {
-  postMenu
+  postMenu,
+  getAllMenu
 };
