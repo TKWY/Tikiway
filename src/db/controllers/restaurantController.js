@@ -12,23 +12,8 @@ getRestaurantById = (req, res) => {
   const id = req.params.restaurantId;
   Restaurant.findById(id)
     .then(response => res.json(response))
-    .catch(err => {
-      if (err) {
-        res.sendStatus(404)
-      }
-    })
+    .catch(err => res.sendStatus(404).json(err))
 };
-
-getRestaurantMenuById = (req, res) => {
-  id = req.params.id
-  Restaurant.findById(id)
-    .then(response => res.json(response))
-    .catch(err => {
-      if (err) {
-        res.sendStatus(404)
-      }
-    })
-}
 
 postRestaurant =(req, res) => {
   const body = req.body;
@@ -42,9 +27,14 @@ postRestaurant =(req, res) => {
     })
 };
 
+updateRestaurant = (req, res) => {
+  Restaurant.findByIdAndUpdate(req.params.restaurantId, req.body)
+    .then(response => res.json(response))
+    .catch(err => res.status(500).json(err))
+};
+
 module.exports = {
   getAllRestaurant,
   getRestaurantById,
-  getRestaurantMenuById,
   postRestaurant
 }
