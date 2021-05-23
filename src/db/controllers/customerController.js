@@ -11,19 +11,10 @@ createCustomer = (req, res) => {
   newCustomer.save()
     .then((response) => {
       const {_id, firstName, lastName} = response
-      return res.status(200).json({
-        code: 200,
-        success: true,
-        customer: {
-          id: _id, 
-          firstname: firstName, 
-          lastname: lastName
-        },
-        msg: `Welcome to Tikiway ${firstName}, thank you for joining us.`
-      })
+      res.status(201).json(response)
     })
     .catch(err => {
-      return res.json(errorController(err));
+      res.json(err);
     })
 };
 
@@ -42,10 +33,7 @@ getAllCustomers = (req, res) => {
           phone: phone
         }
       })
-      return res.status(200).json({
-        code: 200, 
-        success: true, 
-        Customers: customerList})
+      return res.status(200).json({Customers: customerList})
     })
     .catch(err => res.json(err))
 };
