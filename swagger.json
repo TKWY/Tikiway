@@ -1,0 +1,128 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "openapi": "3.0.0",
+    "title": "Backend API for Tikiway delivery service",
+    "description": "This is a REST API application made to server data for Tikiway Application",
+    "license": {
+      "name": "Licensed under MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Customers",
+      "description": "Api for customer service"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+
+  "paths": {
+    "/customers": {
+      "get": {
+        "tags": ["Customers"],
+        "summary": "Get all customers",
+        "description": "Return a list of all the customers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customers"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Customers"],
+        "summary": "Create new customer",
+        "description": "Create new customer",
+        "parameters": [
+          {
+            "name": "customer",
+            "in": "body",
+            "description": "Customer we want to create",
+            "schema": {
+              "$ref": "#/definitions/addCustomer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/addCustomer"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "Customer": {
+      "required": ["_id", "firstName", "lastName", "email", "phone"],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "unique": true
+        },
+        "firstName": {
+          "type": "string",
+          "required": true
+        },
+        "lastName": {
+          "type": "string",
+          "required": true
+        },
+        "email": {
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        "phone": {
+          "type": "string",
+          "unique": true,
+          "required": true
+        }
+      }
+    },
+    "Customers": {
+      "type": "array",
+      "$ref": "#/definitions/Customer"
+    },
+    "addCustomer" : {
+      "required": ["firstName", "lastName", "email", "phone", "password", "dateOfBirth"],
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "required": true
+        },
+        "lastName": {
+          "type": "string",
+          "required": true
+        },
+        "dateOfBirth": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        "phone": {
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        "password": {
+          "type": "string",
+          "required": true
+        }
+      }
+    }
+  }
+}
+
