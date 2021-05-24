@@ -54,8 +54,64 @@
           "201": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/addCustomer"
+              "$ref": "#/definitions/addCustomerResponse"
             }
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of customer that we want to find"
+        }
+      ],
+      "get": {
+        "tags": ["Customers"],
+        "summary": "Find customer ID",
+        "description": "Find customer with specified ID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Customers"],
+        "summary": "Update customer",
+        "description": "Update customer informations",
+        "parameters": [
+          {
+            "name": "customer",
+            "in": "body",
+            "description": "Customer we want to update",
+            "schema": {
+              "$ref": "#/definitions/updateCustomer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Customers"],
+        "summary": "Delete customer",
+        "description": "Delete customer with specified ID",
+        "responses": {
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -120,6 +176,33 @@
         "password": {
           "type": "string",
           "required": true
+        }
+      }
+    },
+    "addCustomerResponse": {
+      "require": ["msg"],
+      "properties": {
+        "msg": {
+          "type": "string",
+          "example":"Welcome to Tikiway John Doe, thank you for joining us."
+        } 
+        
+      }
+    },
+    "updateCustomer": {
+      "required": ["firstName", "lastName", "email", "phone"],
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
         }
       }
     }
