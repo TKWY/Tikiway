@@ -10,8 +10,10 @@ createCustomer = (req, res) => {
   const newCustomer = new Customer(body);
   newCustomer.save()
     .then((response) => {
-      const {_id, firstName, lastName} = response
-      res.status(201).json(response)
+      const {firstName, lastName} = response
+      res.status(201).json({
+        'msg': `Welcome to Tikiway ${response.firstName} ${response.lastName}, thank you for joining us.`
+      })
     })
     .catch(err => {
       res.json(err);
@@ -76,6 +78,20 @@ updateCustomer = (req, res) => {
   }
 };
 
+deleteCustomer = (req, res) => {
+  Customer.findById(req.params.id)
+    .then(response => {
+      response.deleteOne({_id: req.params.id}, () => {
+        res.sendStatus(204)
+      })
+    })
+    .catch(err => {
+      if (err) {
+        res.status(500).json({msg: 'That customer does not exist'})
+      }
+    })  
+};
+
 // Local authentication's
 // cookies not saving on frontend
 customerSignIn = (req, res, next) => {
@@ -125,5 +141,6 @@ customerSignOut = (req, res) => {
 // Exports
 module.exports = {
   createCustomer, updateCustomer, customerSignIn,
-  getAllCustomers, getCustomersById, customerSignOut
+  getAllCustomers, getCustomersById, customerSignOut,
+  deleteCustomer
 };
