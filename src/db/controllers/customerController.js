@@ -21,7 +21,6 @@ createCustomer = (req, res) => {
 };
 
 // Get all customers
-// Only for admin panel
 getAllCustomers = (req, res) => {
   Customer.find()
     .then((response) => {
@@ -42,8 +41,7 @@ getAllCustomers = (req, res) => {
 
 // Get customer by id
 getCustomersById = (req, res) => {
-  const id = req.params.id
-  Customer.findById(id)
+  Customer.findById(req.params.id)
     .then(response => res.json(response))
     .catch(err => {
       if (err) {
@@ -55,28 +53,30 @@ getCustomersById = (req, res) => {
 // Update customer infos
 updateCustomer = (req, res) => {
   if (!req.session.isAuthenticated) {
-    return res.status(403).json({code: 403, success: false, msg: 'Please log in first!'})
-  } else {
-    const id = req.params.id;
-    Customer.findOneAndUpdate({_id: id}, req.body, err => {
+    res.status(403).json({msg: 'Please log in first!'})
+  }
+  Customer.findOneAndUpdate({_id: req.params.id}, req.body, err => {
+    if (err) {
+      res.status(500).json({msg: `User doesn't exist.`})
+    }
+  })
+    .then(() => {
+      Customer.findOne({_id: req.params.id})
+        .then(() => {
+          res.status(201).json({msg: 'Customer infos has been updated'})
+        })
+        .catch(err => {
+          if (err) {
+            res.status(500).json(err)
+          }
+        })
+    })
+    .catch(err => {
       if (err) {
-        return res.send({code: 500, success: false, msg: `User doesn't exist.`})
+        res.status(500).json(err)
       }
     })
-      .then(() => {
-        Customer.findOne({_id: id})
-          .then(() => {
-            return res.status(200).json({code: 200, success: true, msg: 'Customer infos has been updated'})
-          })
-          .catch(err => {
-            throw(err)
-          })
-      })
-      .catch(err => {
-        return res.send({code: 500, success: false, msg: 'Unknown error happened.', err: err})
-      })
-  }
-};
+  };
 
 deleteCustomer = (req, res) => {
   Customer.findById(req.params.id)

@@ -27,7 +27,6 @@ describe('Update Customer Test', function () {
         const res = await request(app).put(`/customers/${id}`)
           .send(updateUser)
         expect(res.statusCode).to.equal(403);
-        expect(res.body).has.property('success', false);
         expect(res.body).has.property('msg', 'Please log in first!');
       })
   });
@@ -45,8 +44,7 @@ describe('Update Customer Test', function () {
         const res = await request(app).put(`/customers/${id}`)
           .set('Cookie', Cookies)
           .send(updateUser)
-        expect(res.statusCode).to.equal(200);
-        expect(res.body).has.property('code', 200)
+        expect(res.statusCode).to.equal(201);
       })
   })
 });
