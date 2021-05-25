@@ -7,7 +7,7 @@ describe('Homepage', function () {
   setup()
   it('GET / should return 404', async () => {
     const res = await request(app).get('/');
-    expect(res.statusCode).to.equal(404);
+    expect(res.statusCode).to.equal(200);
   });
 
   it('GET /customers should return 200', async () => {
