@@ -9,7 +9,6 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "localhost:5000",
   "basePath": "/",
   "tags": [
     {
@@ -17,7 +16,7 @@
       "description": "Api for customer service"
     }
   ],
-  "schemes": ["http"],
+  "schemes": ["http", "https"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
 
