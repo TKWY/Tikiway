@@ -44,10 +44,10 @@ app.use(express.urlencoded( {extended: true} ));
 app.use(morgan(config.morgan));
 app.use(cors());
 app.use(session({secret: 'the secret', saveUninitialized: true, resave: true}));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // routes
 app.use('/customers', customerRoutes);
 app.use('/restaurants', restaurantRoutes);
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 module.exports = app;
