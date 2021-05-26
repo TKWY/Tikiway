@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "openapi": "3.0.0",
-    "title": "Backend API for Tikiway delivery service",
-    "description": "This is a REST API application made to server data for Tikiway Application",
+    "title": "TIKIWAY API",
+    "description": "This is a REST API application made to serve Tikiway datas",
     "license": {
       "name": "Licensed under MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -14,27 +14,18 @@
     {
       "name": "Customers",
       "description": "Api for customer service"
+    },
+    {
+      "name": "Restaurants",
+      "description": "Api for restaurant service"
     }
   ],
-  "schemes": ["http", "https"],
+  "schemes": ["https", "http"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
 
   "paths": {
     "/customers": {
-      "get": {
-        "tags": ["Customers"],
-        "summary": "Get all customers",
-        "description": "Return a list of all the customers",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Customers"
-            }
-          }
-        }
-      },
       "post": {
         "tags": ["Customers"],
         "summary": "Create new customer",
@@ -57,6 +48,19 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": ["Customers"],
+        "summary": "Get all customers",
+        "description": "Return a list of all the customers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Customers"
+            }
+          }
+        }
       }
     },
     "/customers/{id}": {
@@ -70,8 +74,8 @@
       ],
       "get": {
         "tags": ["Customers"],
-        "summary": "Find customer ID",
-        "description": "Find customer with specified ID",
+        "summary": "Find restaurant ID",
+        "description": "Find restaurant with specified ID",
         "responses": {
           "200": {
             "description": "OK",
@@ -84,7 +88,7 @@
       "put": {
         "tags": ["Customers"],
         "summary": "Update customer",
-        "description": "Update customer informations",
+        "description": "Update target customer informations",
         "parameters": [
           {
             "name": "customer",
@@ -108,6 +112,100 @@
         "tags": ["Customers"],
         "summary": "Delete customer",
         "description": "Delete customer with specified ID",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/restaurants": {
+      "post": {
+        "tags": ["Restaurants"],
+        "summary": "Create a new restaurant",
+        "description": "Create a new restaurant",
+        "parameters": [
+          {
+            "name": "restaurant",
+            "in": "body",
+            "description": "restaurant we want to create",
+            "schema": {
+              "$ref": "#/definitions/addRestaurant"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Restaurant"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Restaurants"],
+        "summary": "Get all restaurants",
+        "description": "Return a list of all restaurants",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/addRestaurant"
+            }
+          }
+        }
+      }
+    },
+    "/restaurants/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of restaurant we want to find"
+        }
+      ],
+      "get": {
+        "tags": ["Restaurants"],
+        "summary": "Find customer ID",
+        "description": "Find restaurant with specified ID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Restaurant"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Restaurants"],
+        "summary": "Update restaurant",
+        "description": "Update target restaurant information",
+        "parameters": [
+          {
+            "name": "restaurant",
+            "in": "body",
+            "description": "Restaurant we want to update",
+            "schema": {
+              "$ref": "#/definitions/updateRestaurant"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Restaurant"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Restaurants"],
+        "summary": "Delete restaurant",
+        "description": "Delete restaurant with specified ID",
         "responses": {
           "204": {
             "description": "No Content"
@@ -204,7 +302,155 @@
           "type": "string"
         }
       }
+    },
+    "Restaurant": {
+      "required": ["_id", "name", "description", "rating", "category", "logo", "menu", "reviews", "address"],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        "description": {
+          "type": "string",
+          "required": true
+        },
+        "rating": {
+          "type": "number"
+        },
+        "category": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "menu": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "unique": true
+              },
+              "category": {
+                "type": "string",
+                "required": true
+              },
+              "restaurantId": {
+                "type": "string",
+                "required": true
+              },
+              "dishes": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "unique": true
+                  },
+                  "name": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "description": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "price": {
+                    "type": "number",
+                    "required": true
+                  },
+                  "promoPrice": {
+                    "type": "number",
+                    "required": true
+                  },
+                  "image": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "addressLine": {
+              "type": "string"
+            },
+            "lng": {
+              "type": "number"
+            },
+            "lat": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "Restaurants" : {
+      "type": "array",
+      "$ref": "#/definitions/Restaurant"
+    },
+    "addRestaurant": {
+      "required": ["name", "description", "rating", "category", "logo", "menu", "reviews", "address"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        "description": {
+          "type": "string",
+          "required": true
+        },
+        "rating": {
+          "type": "number"
+        },
+        "category": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"       
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "addressLine": {
+              "type": "string"
+            },
+            "lng": {
+              "type": "number"
+            },
+            "lat": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "updateRestaurant": {
+      "required": ["name", "description", "category"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "unique": true,
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "required": true
+        },
+        "category": {
+          "type": "string",
+          "required": true
+        }
+      }
     }
   }
 }
-
