@@ -15,9 +15,9 @@ postMenu = (req, res) => {
     restaurantId: req.params.restaurantId
   });
   Restaurant.findById(req.params.restaurantId)
-    .then(restaurant => {
-      restaurant.menu.push(newMenu)
-      restaurant.save()
+    .then(response => {
+      response.menu.push(newMenu)
+      response.save()
         .then(result => {
           const menu = result.menu
           res.json(menu[menu.length - 1])

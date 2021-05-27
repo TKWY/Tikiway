@@ -1,13 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const {getAllRestaurant, getRestaurantById, postRestaurant} = require('../db/controllers/restaurantController');
-const {postMenu, getAllMenu} = require('../db/controllers/menuController');
+const {
+  getAllRestaurant, 
+  getRestaurantById, 
+  postRestaurant,
+  deleteRestaurant
+} = require('../db/controllers/restaurantController');
+const {
+  postMenu, 
+  getAllMenu
+} = require('../db/controllers/menuController');
 
 // Restaurant routes
-router
-  .get('/', getAllRestaurant)
-  .post('/', postRestaurant)
-  .get('/:restaurantId', getRestaurantById)
+router.get('/', getAllRestaurant)
+router.post('/', postRestaurant)
+
+// Restaurant operations with ID
+router.get('/:restaurantId', getRestaurantById)
+router.delete('/:restaurantId', deleteRestaurant)
 
 // Menu routes
 router

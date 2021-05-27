@@ -1,112 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const {menuSchema} = require('./menuModels')
-
-const businessHoursSchema = new Schema({
-  slotName: String,
-  monday: {
-    start: {
-      type: String,
-      default: 00
-    }, 
-    end: {
-      type: String,
-      default: 00
-    }
-  },
-  tuesday: {
-    start: {
-      type: String,
-      default: 00
-    }, 
-    end: {
-      type: String,
-      default: 00
-    }
-  },
-  wednesday: {
-    start: {
-      type: String,
-      default: 00
-    }, 
-    end: {
-      type: String,
-      default: 00
-    }
-  },
-  thursday: {
-    start: {
-      type: String,
-      default: 00
-    }, 
-    end: {
-      type: String,
-      default: 00
-    }
-  },
-  friday: {
-    start: {
-      type: String,
-      default: 00
-    }, 
-    end: {
-      type: String,
-      default: 00
-    }
-  },
-  saturday: {
-    start: {
-      type: String,
-      default: 00
-    }, 
-    end: {
-      type: String,
-      default: 00
-    }
-  },
-  sunday: {
-    start: {
-      type: String,
-      default: 00
-    }, 
-    end: {
-      type: String,
-      default: 00
-    }
-  }
-})
-
-const reviewsSchema = new Schema({
-  orderId: {
-    type: String,
-    required: true
-  },
-  rating: {
-    type: Number,
-    required: true
-  },
-  date: {
-    type: Date,
-    required: true
-  },
-  writer: {
-    type: String,
-    required: true
-  },
-  comment: String,
-  tags: [{
-    label: String
-  }],
-  likes: [{
-    clientId: String, 
-    date: Date
-  }],
-  shares: [{
-    clientId: String, 
-    plateform: String, 
-    date: Date
-  }]
-})
+const {menuSchema} = require('./menuModels');
+const {businessHoursSchema} = require('./businessHoursModels');
+const {reviewsSchema} = require('./reviewsModels');
 
 const restaurantSchema = new Schema({
   name: {
@@ -143,10 +39,8 @@ const restaurantSchema = new Schema({
   }
 })
 
-const Menu = mongoose.model('Menu', menuSchema);
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
 module.exports = {
-  Restaurant,
-  Menu
-}
+  Restaurant
+};
