@@ -33,8 +33,23 @@ updateRestaurant = (req, res) => {
     .catch(err => res.status(500).json(err))
 };
 
+deleteRestaurant = (req, res) => {
+  Restaurant.findById(req.params.restaurantId)
+    .then(response => {
+      response.deleteOne({_id: req.params.restaurantId}, () => {
+        res.sendStatus(204)
+      })
+    })
+    .catch(err => {
+      if (err) {
+        res.status(500).json({msg: 'That restaurant does not exist'})
+      }
+    })
+}
+
 module.exports = {
   getAllRestaurant,
   getRestaurantById,
-  postRestaurant
+  postRestaurant,
+  deleteRestaurant
 }
