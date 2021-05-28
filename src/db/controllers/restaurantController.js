@@ -5,14 +5,22 @@ getAllRestaurant = (req, res) => {
     .then(response => {
       res.json(response)
     })
-    .catch(err => res.json(err))
+    .catch(err => {
+      if (err) {
+        res.status(500).json(err)
+      }
+    })
 }
 
 getRestaurantById = (req, res) => {
   const id = req.params.restaurantId;
   Restaurant.findById(id)
     .then(response => res.json(response))
-    .catch(err => res.sendStatus(404).json(err))
+    .catch(err => {
+      if (err) {
+        res.sendStatus(404)
+      }
+    })
 };
 
 postRestaurant =(req, res) => {
@@ -20,17 +28,21 @@ postRestaurant =(req, res) => {
   const newRestaurant = new Restaurant(body);
   newRestaurant.save()
     .then(response => {
-      return res.status(200).json(response)
+      res.status(200).json(response)
     })
     .catch(err => {
-      return res.status(500).json(err)
+      res.status(500).json(err)
     })
 };
 
 updateRestaurant = (req, res) => {
   Restaurant.findByIdAndUpdate(req.params.restaurantId, req.body)
     .then(response => res.json(response))
-    .catch(err => res.status(500).json(err))
+    .catch(err => {
+      if (err) {
+        res.sendStatus(404)
+      }
+    })
 };
 
 deleteRestaurant = (req, res) => {
@@ -51,5 +63,6 @@ module.exports = {
   getAllRestaurant,
   getRestaurantById,
   postRestaurant,
-  deleteRestaurant
+  deleteRestaurant,
+  updateRestaurant
 }

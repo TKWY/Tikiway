@@ -4,7 +4,8 @@ const {
   getAllRestaurant, 
   getRestaurantById, 
   postRestaurant,
-  deleteRestaurant
+  deleteRestaurant,
+  updateRestaurant
 } = require('../db/controllers/restaurantController');
 const {
   postMenu, 
@@ -18,12 +19,12 @@ router.post('/', postRestaurant)
 // Restaurant operations with ID
 router.get('/:restaurantId', getRestaurantById)
 router.delete('/:restaurantId', deleteRestaurant)
+router.put('/:restaurantId', updateRestaurant)
 
 // Menu routes
-router
-  .get('/:restaurantId/menu', getAllMenu)
-  .post('/:restaurantId/menu', postMenu)
-  .get('/:restaurantId/menu/:id', (req, res) => {
+router.get('/:restaurantId/menu', getAllMenu)
+router.post('/:restaurantId/menu', postMenu)
+router.get('/:restaurantId/menu/:id', (req, res) => {
     res.send(console.log(`this is menu id ${req.params.id }`))
   })
 
