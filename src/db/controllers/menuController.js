@@ -2,7 +2,6 @@ const {Menu} = require('../models/menuModels');
 const {Restaurant} = require('../models/restaurantModels');
 
 getAllMenu = (req, res) => {
-  console.log('you hit menu list')
   Restaurant.findById(req.params.restaurantId)
     .then(response => res.json(response.menu))
     .catch(err => res.status(500).json(err))
