@@ -37,7 +37,10 @@ postRestaurant =(req, res) => {
 
 updateRestaurant = (req, res) => {
   Restaurant.findByIdAndUpdate(req.params.restaurantId, req.body)
-    .then(response => res.json(response))
+    .then(() => {
+      Restaurant.findById(req.params.restaurantId)
+        .then(response => res.status(201).json(response))
+    })
     .catch(err => {
       if (err) {
         res.sendStatus(404)
