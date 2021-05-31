@@ -11,10 +11,10 @@ const newRestaurant = {
 
 describe('Post new restaurant', function() {
   setup();
-  it('return status code 200', async() => {
+  it('return status code 201', async() => {
     const res = await request(app).post(url)
       .send(newRestaurant)
-    expect(res.statusCode).to.equal(200)
+    expect(res.statusCode).to.equal(201)
   });
 
   it('has property name', async() => {

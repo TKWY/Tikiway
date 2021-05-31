@@ -29,6 +29,6 @@ describe('Update restaurants tests', function() {
       .send(newRestaurant)
     const res = await request(app).put(url+`/${postRestaurant.body._id}`)
       .send(updateRestaurant)
-    expect(res.body).has.property('description', 'This is the new description')
+    expect(res.body).has.property('msg', 'Restaurant has been updated')
   })
 })
