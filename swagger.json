@@ -168,7 +168,7 @@
       ],
       "get": {
         "tags": ["Restaurants"],
-        "summary": "Find customer ID",
+        "summary": "Find restaurant ID",
         "description": "Find restaurant with specified ID",
         "responses": {
           "200": {
@@ -209,6 +209,29 @@
         "responses": {
           "204": {
             "description": "No Content"
+          }
+        }
+      }
+    },
+    "/restaurants/{restaurantId}/menu": {
+      "parameters": [
+        {
+          "name": "restaurantId",
+          "in": "path",
+          "required": true,
+          "description": "ID of restaurant we want to find"
+        }
+      ],
+      "get": {
+        "tags": ["Menus"],
+        "summary": "Return menus list",
+        "description": "Return list of menus for specified restaurant ID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Menus"
+            }
           }
         }
       }
@@ -332,49 +355,7 @@
         "menu": {
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "_id": {
-                "type": "string",
-                "unique": true
-              },
-              "category": {
-                "type": "string",
-                "required": true
-              },
-              "restaurantId": {
-                "type": "string",
-                "required": true
-              },
-              "dishes": {
-                "type": "object",
-                "properties": {
-                  "_id": {
-                    "type": "string",
-                    "unique": true
-                  },
-                  "name": {
-                    "type": "string",
-                    "required": true
-                  },
-                  "description": {
-                    "type": "string",
-                    "required": true
-                  },
-                  "price": {
-                    "type": "number",
-                    "required": true
-                  },
-                  "promoPrice": {
-                    "type": "number",
-                    "required": true
-                  },
-                  "image": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "$ref": "#/definitions/Menus"
           }
         },
         "address": {
@@ -395,7 +376,10 @@
     },
     "Restaurants" : {
       "type": "array",
-      "$ref": "#/definitions/Restaurant"
+      "items": {
+        "$ref": "#/definitions/Restaurant"
+      }
+      
     },
     "addRestaurant": {
       "required": ["name", "description", "rating", "category", "logo", "menu", "reviews", "address"],
@@ -450,6 +434,63 @@
           "type": "string",
           "required": true
         }
+      }
+    },
+    "Menu": {
+      "required": ["_id", "category", "restaurantId", "dishes"],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "unique": true
+        },
+        "category": {
+          "type": "string",
+          "required": true
+        },
+        "restaurantId": {
+          "type": "string",
+          "required": true
+        },
+        "dishes": {
+          "$ref": "#/definitions/Dishes"
+        }
+      }
+    },
+    "Menus": {
+      "type": "array",
+      "$ref": "#/definitions/Menu"
+    },
+    "Dish": {
+      "required": ["_id", "name", "description", "price", "promoPrice", "image"],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "unique": true
+        },
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "required": true
+        },
+        "price": {
+          "type": "number",
+          "required": true
+        },
+        "promoPrice": {
+          "type": "number"
+        },
+        "image": {
+          "type": "string"
+        }
+      }
+    },
+    "Dishes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Dish"
       }
     }
   }
