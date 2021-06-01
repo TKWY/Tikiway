@@ -9,24 +9,23 @@ const {
 } = require('../db/controllers/restaurantController');
 const {
   postMenu, 
-  getAllMenu
+  getAllMenu,
+  getMenuById
 } = require('../db/controllers/menuController');
 
 // Restaurant routes
-router.get('/', getAllRestaurant)
-router.post('/', postRestaurant)
+router.get('/', getAllRestaurant);
+router.post('/', postRestaurant);
 
 // Restaurant operations with ID
-router.get('/:restaurantId', getRestaurantById)
-router.delete('/:restaurantId', deleteRestaurant)
-router.put('/:restaurantId', updateRestaurant)
+router.get('/:restaurantId', getRestaurantById);
+router.delete('/:restaurantId', deleteRestaurant);
+router.put('/:restaurantId', updateRestaurant);
 
 // Menu routes
-router.get('/:restaurantId/menu', getAllMenu)
-router.post('/:restaurantId/menu', postMenu)
-router.get('/:restaurantId/menu/:id', (req, res) => {
-    res.send(console.log(`this is menu id ${req.params.id }`))
-  })
+router.get('/:restaurantId/menu', getAllMenu);
+router.post('/:restaurantId/menu', postMenu);
+router.get('/:restaurantId/menu/:menuId', getMenuById);
 
 // Dish routes
 router
