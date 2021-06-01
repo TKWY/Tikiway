@@ -26,7 +26,20 @@ postMenu = (req, res) => {
     .catch(err => res.status(500).json(err.message))
 };
 
+getMenuById = (req, res) => {
+  Restaurant.findById(req.params.restaurantId)
+    .then(response => {
+      res.json(response.menu.id(req.params.menuId))
+    })
+    .catch(err => {
+      if (err) {
+        res.status(404).json('this menu does not exist')
+      }
+    })
+}
+
 module.exports = {
   postMenu,
-  getAllMenu
+  getAllMenu,
+  getMenuById
 };
