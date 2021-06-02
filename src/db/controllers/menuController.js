@@ -1,5 +1,5 @@
-const {Menu} = require('../models/menuModels');
-const {Restaurant} = require('../models/restaurantModels');
+const { Menu } = require('../models/menuModels');
+const Restaurant = require('../models/restaurantModels');
 
 getAllMenu = (req, res) => {
   Restaurant.findById(req.params.restaurantId)

@@ -1,4 +1,4 @@
-const { Restaurant } = require('../models/restaurantModels');
+const Restaurant = require('../models/restaurantModels');
 
 getAllRestaurant = (req, res) => {
   Restaurant.find()
@@ -8,7 +8,7 @@ getAllRestaurant = (req, res) => {
         res.status(404).json(err)
       }
     })
-}
+};
 
 getRestaurantById = (req, res) => {
   const id = req.params.restaurantId;
@@ -41,7 +41,7 @@ updateRestaurant = (req, res) => {
         res.status(404).json(err)
       }
     })
-}
+};
 
 deleteRestaurant = (req, res) => {
   Restaurant.findByIdAndDelete(req.params.restaurantId)
@@ -51,7 +51,7 @@ deleteRestaurant = (req, res) => {
         res.status(404).json(err)
       }
     })
-}
+};
 
 module.exports = {
   getAllRestaurant,
@@ -59,4 +59,4 @@ module.exports = {
   postRestaurant,
   deleteRestaurant,
   updateRestaurant
-}
+};
