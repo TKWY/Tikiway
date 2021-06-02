@@ -12,6 +12,9 @@ const {
   getAllMenu,
   getMenuById
 } = require('../db/controllers/menuController');
+const { 
+  postDish
+} = require('../db/controllers/dishesController');
 
 // Restaurant routes
 router.get('/', getAllRestaurant);
@@ -28,12 +31,10 @@ router.post('/:restaurantId/menu', postMenu);
 router.get('/:restaurantId/menu/:menuId', getMenuById);
 
 // Dish routes
-router
-  .get('/:restaurantId/menu/:id/dish', (req, res) => {
+router.post('/:restaurantId/menu/:menuId/dish', postDish);
+
+router.get('/:restaurantId/menu/:menuId/dish', (req, res) => {
     res.send(console.log('this is a menu'))
-  })
-  .post('/:restaurantId/menu/:id/dish', (req, res) => {
-    res.send(console.log('this is a menu'))
-  })
+  });
 
 module.exports = router;

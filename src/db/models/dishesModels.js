@@ -21,6 +21,14 @@ const dishSchema = new Schema({
   image: {
     type: String,
     default: 'default'
+  },
+  restaurantId: {
+    type: String,
+    required: true
+  },
+  menuId: {
+    type: String,
+    required: true
   }
 });
 

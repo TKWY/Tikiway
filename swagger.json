@@ -222,6 +222,29 @@
           "description": "ID of restaurant we want to find"
         }
       ],
+      "post": {
+        "tags": ["Menus"],
+        "summary": "Post menu",
+        "description": "Add a new menu to specified restaurant",
+        "parameters": [
+          {
+            "name": "menus",
+            "in": "body",
+            "description": "Menu we want to add",
+            "schema": {
+              "$ref": "#/definitions/addMenu"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema":{
+              "$ref": "#/definitions/Menu"
+            }
+          }
+        }
+      },
       "get": {
         "tags": ["Menus"],
         "summary": "Return menus list",
@@ -231,6 +254,45 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Menus"
+            }
+          }
+        }
+      }
+    },
+    "/restaurants/{restaurantId}/menu/{menuId}/dish": {
+      "parameters":[
+        {
+          "name": "restaurantId",
+          "in": "path",
+          "required": true,
+          "description": "ID of the restaurant we want to find"
+        },
+        {
+          "name": "menuId",
+          "in": "path",
+          "required": true,
+          "description": "ID of the menu we want to find"
+        }
+      ],
+      "post": {
+        "tags": ["Dishes"],
+        "summary": "Post dish",
+        "description": "Add a new dish to a menu",
+        "parameters": [
+          {
+            "name": "dishes",
+            "in": "body",
+            "description": "Dish we want to add",
+            "schema": {
+              "$ref": "#/definitions/Dish"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Dish"
             }
           }
         }
@@ -459,6 +521,15 @@
     "Menus": {
       "type": "array",
       "$ref": "#/definitions/Menu"
+    },
+    "addMenu": {
+      "required": ["category"],
+      "properties": {
+        "category": {
+          "type": "string",
+          "required": true
+        }
+      }
     },
     "Dish": {
       "required": ["_id", "name", "description", "price", "promoPrice", "image"],
