@@ -21,9 +21,17 @@ postMenu = (req, res) => {
           const menu = result.menu
           res.json(menu[menu.length - 1])
         })
-        .catch(err => res.status(500).json(err))
+        .catch(err => {
+          if (err) {
+            res.status(500).json(err)
+          }
+        })
     })
-    .catch(err => res.status(500).json(err.message))
+    .catch(err => {
+      if (err) {
+        res.status(404).json('This restaurant does not exist')
+      } 
+    })
 };
 
 getMenuById = (req, res) => {

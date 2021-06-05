@@ -14,7 +14,7 @@ const newMenu = {
 };
 
 const newDish = {
-  name: 'Steak frite',
+  name: 'Steack frite',
   description: 'Steak et frite accompagné de sa sauce barbecue fait maison',
   price: 1200,
   promoPrice: 1100
@@ -27,19 +27,21 @@ describe("Post a new dishe", function() {
     const postRestaurant = await request(app).post(url)
       .send(newRestaurant);
     const postMenu = await request(app).post(url+`/${postRestaurant.body._id}/menu`)
-      .send(newMenu)
-    const res = await request(app).post(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish`)
-      .send(newDish)
-    expect(res.statusCode).to.equal(201)
-  })
+      .send(newMenu);
+    await request(app).post(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish`)
+      .send(newDish);
+    const res = await request(app).get(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish`)
+    expect(res.statusCode).to.equal(200);
+  });
 
-  it("Return correct property", async() =>  {
+  it("Return message", async() =>  {
     const postRestaurant = await request(app).post(url)
       .send(newRestaurant);
     const postMenu  = await request(app).post(url+`/${postRestaurant.body._id}/menu`)
       .send(newMenu);
-    const res = await request(app).post(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish`)
-      .send(newDish)
-    expect(res.body).has.property('name', 'Steak frite')
-  })
-})
+    await request(app).post(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish`)
+      .send(newDish);
+    const res = await request(app).get(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish`)
+    expect(res.body).to.be.instanceOf(Array);
+  });
+});
