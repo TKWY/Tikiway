@@ -66,7 +66,19 @@ updateMenu = (req, res) => {
 };
 
 deleteMenu = (req, res) => {
-  console.log('you hit the delete method');
+  Restaurant.findById(req.params.restaurantId)
+    .then(response => {
+      const menu = response.menu.id(req.params.menuId);
+      menu.remove();
+      response.save()
+        .then(() => {
+          res.sendStatus(204);
+        })
+        .catch(err => {
+          res.json(err);
+          console.log(err);
+        })
+    })
 };
 
 module.exports = {
