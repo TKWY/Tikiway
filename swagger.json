@@ -18,12 +18,15 @@
     {
       "name": "Restaurants",
       "description": "Api for restaurant service"
+    },
+    {
+      "name": "Menus",
+      "description": "Api for menus with restaurants as first endpoint"
     }
   ],
   "schemes": ["https", "http"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
-
   "paths": {
     "/customers": {
       "post": {
@@ -259,6 +262,45 @@
         }
       }
     },
+    "/restaurants/{restaurantId}/menu/{menuId}": {
+      "parameters": [
+        {
+          "name": "restaurantId",
+          "in": "path",
+          "required": true,
+          "description": "ID of the restaurant we want to find"
+        },
+        {
+          "name": "menuId",
+          "in": "path",
+          "required": true,
+          "description": "ID of the menu we want to find"
+        }
+      ],
+      "put": {
+        "tags": ["Menus"],
+        "summary": "Update menu",
+        "description": "Update specified menu",
+        "parameters": [
+          {
+            "name": "menus",
+            "in": "body",
+            "description": "Menu we want to update",
+            "schema": {
+              "$ref": "#/definitions/addMenu"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/addMenu"
+            }
+          }
+        }
+      }
+    },
     "/restaurants/{restaurantId}/menu/{menuId}/dish": {
       "parameters":[
         {
@@ -284,7 +326,7 @@
             "in": "body",
             "description": "Dish we want to add",
             "schema": {
-              "$ref": "#/definitions/Dish"
+              "$ref": "#/definitions/addDish"
             }
           }
         ],
@@ -562,6 +604,32 @@
       "type": "array",
       "items": {
         "$ref": "#/definitions/Dish"
+      }
+    },
+    "addDish": {
+      "required": ["name", "description", "price", "promoPrice", "image"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "required": true
+        },
+        "price": {
+          "type": "number",
+          "required": true
+        },
+        "promoPrice": {
+          "type": "number",
+          "required": true
+        },
+        "image": {
+          "type": "string",
+          "required": true,
+          "default": "default"
+        }
       }
     }
   }

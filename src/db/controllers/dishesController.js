@@ -39,7 +39,8 @@ postDish = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(restaurant => {
       const menu = restaurant.menu.id(req.params.menuId);
-      menu.dishes.push(newDish)
+      const dishes = menu.dishes
+      dishes.push(newDish)
       restaurant.save()
         .then(result => {
           const menuFilter = result.menu.id(req.params.menuId)
@@ -48,13 +49,13 @@ postDish = (req, res) => {
         })
         .catch(err => { 
           if (err) {
-            res.json(err)
+            res.status(500).json(err)
           }
         })
     })
     .catch(err => { 
       if (err) {
-        res.json(err);
+        res.status(404).json('Restaurant does not exist');
       }
     })
 };
