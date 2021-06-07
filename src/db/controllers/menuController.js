@@ -1,12 +1,19 @@
 const { Menu } = require('../models/menuModels');
 const Restaurant = require('../models/restaurantModels');
 
+// Return list of all menu
 getAllMenu = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => res.json(response.menu))
-    .catch(err => res.status(500).json(err))
+    .catch(err => {
+      if (err) {
+        res.status(500).json(err)
+        console.log(err)
+      }
+    })
 };
 
+// Add new menu to restaurant
 postMenu = (req, res) => {
   const body = req.body;
   const newMenu = new Menu({
@@ -34,6 +41,7 @@ postMenu = (req, res) => {
     })
 };
 
+// Return menu with specified ID
 getMenuById = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => {
@@ -46,6 +54,7 @@ getMenuById = (req, res) => {
     })
 };
 
+// Update menu with specified ID
 updateMenu = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => {
@@ -65,6 +74,7 @@ updateMenu = (req, res) => {
     })
 };
 
+// Delete menu with specified ID
 deleteMenu = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => {

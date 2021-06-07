@@ -19,8 +19,8 @@ router.put('/:restaurantId/menu/:menuId', menus.updateMenu);
 router.delete('/:restaurantId/menu/:menuId', menus.deleteMenu);
 
 // Dish routes
-router.get('/:restaurantId/menu/:menuId/dish', dishes.getDishes);
 router.post('/:restaurantId/menu/:menuId/dish', dishes.postDish);
+router.get('/:restaurantId/menu/:menuId/dish', dishes.getDishes);
 router.get('/:restaurantId/menu/:menuId/dish/:dishId', dishes.getDishById);
 router.put('/:restaurantId/menu/:menuId/dish/:dishId', dishes.updateDish);
 router.delete('/:restaurantId/menu/:menuId/dish/:dishId', dishes.deleteDish);
