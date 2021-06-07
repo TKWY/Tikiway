@@ -15,15 +15,15 @@ postMenu = (req, res) => {
   });
   Restaurant.findById(req.params.restaurantId)
     .then(response => {
-      response.menu.push(newMenu)
+      response.menu.push(newMenu);
       response.save()
         .then(result => {
-          const menu = result.menu
-          res.json(menu[menu.length - 1])
+          const menu = result.menu;
+          res.json(menu[menu.length - 1]);
         })
         .catch(err => {
           if (err) {
-            res.status(500).json(err)
+            res.status(500).json(err);
           }
         })
     })
@@ -37,17 +37,42 @@ postMenu = (req, res) => {
 getMenuById = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => {
-      res.json(response.menu.id(req.params.menuId))
+      res.json(response.menu.id(req.params.menuId));
     })
     .catch(err => {
       if (err) {
-        res.status(404).json('this menu does not exist')
+        res.status(404).json('this menu does not exist');
       }
     })
-}
+};
+
+updateMenu = (req, res) => {
+  Restaurant.findById(req.params.restaurantId)
+    .then(response => {
+      const menu =  response.menu.id(req.params.menuId);
+      menu.category = req.body.category;
+      response.save().
+      then(() => {
+        res.json(menu)
+      })
+      
+    })
+    .catch(err => {
+      if (err) {
+        res.status(404).json(err);
+        console.log(err)
+      };
+    })
+};
+
+deleteMenu = (req, res) => {
+  console.log('you hit the delete method');
+};
 
 module.exports = {
   postMenu,
   getAllMenu,
-  getMenuById
+  getMenuById,
+  updateMenu,
+  deleteMenu
 };

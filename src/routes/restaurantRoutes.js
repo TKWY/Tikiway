@@ -7,20 +7,22 @@ const dishes = require('../db/controllers/dishesController');
 // Restaurant routes
 router.get('/', restaurants.getAllRestaurant);
 router.post('/', restaurants.postRestaurant);
-
-// Restaurant operations with ID
 router.get('/:restaurantId', restaurants.getRestaurantById);
-router.delete('/:restaurantId', restaurants.deleteRestaurant);
 router.put('/:restaurantId', restaurants.updateRestaurant);
+router.delete('/:restaurantId', restaurants.deleteRestaurant);
 
 // Menu routes
 router.get('/:restaurantId/menu', menus.getAllMenu);
 router.post('/:restaurantId/menu', menus.postMenu);
 router.get('/:restaurantId/menu/:menuId', menus.getMenuById);
+router.put('/:restaurantId/menu/:menuId', menus.updateMenu);
+router.delete('/:restaurantId/menu/:menuId', menus.deleteMenu);
 
 // Dish routes
-router.post('/:restaurantId/menu/:menuId/dish', dishes.postDish);
 router.get('/:restaurantId/menu/:menuId/dish', dishes.getDishes);
-router.get('/:restaurantId/menu/:menuId/dish/:dishId', dishes.getDishById)
+router.post('/:restaurantId/menu/:menuId/dish', dishes.postDish);
+router.get('/:restaurantId/menu/:menuId/dish/:dishId', dishes.getDishById);
+router.put('/:restaurantId/menu/:menuId/dish/:dishId', dishes.updateDish);
+router.delete('/:restaurantId/menu/:menuId/dish/:dishId', dishes.deleteDish);
 
 module.exports = router;

@@ -59,8 +59,18 @@ postDish = (req, res) => {
     })
 };
 
+updateDish = (req, res) =>  {
+  console.log('you hit the dish update method');
+};
+
+deleteDish = (req, res) => {
+  console.log('you hit the delete dish method');
+};
+
 module.exports = {
   postDish,
   getDishes,
-  getDishById
+  getDishById,
+  updateDish,
+  deleteDish
 };
