@@ -14,8 +14,6 @@ const newUser = {
   email: 'john.doe@mail.fr'
 };
 
-
-
 describe('Sign In Test', function () {
   setup()
   it('POST empty username return 401', async() => {
@@ -25,7 +23,7 @@ describe('Sign In Test', function () {
     expect(res.body).has.property('code', 401);
     expect(res.body).has.property('success', false);
     expect(res.body).has.property('msg', 'Please enter your phone number or email address!');
-  })
+  });
 
   it('POST empty password return 401', async() => {
     await request(app).post('/customers/')
@@ -36,7 +34,7 @@ describe('Sign In Test', function () {
     expect(res.body).has.property('code', 401);
     expect(res.body).has.property('success', false);
     expect(res.body).has.property('msg', 'Please enter your password!');
-  })
+  });
 
   it('POST false username return 403', async() => {
     await request(app).post('/customers/')
@@ -47,7 +45,7 @@ describe('Sign In Test', function () {
     expect(res.body).has.property('code', 403);
     expect(res.body).has.property('success', false);
     expect(res.body).has.property('msg', 'That user does not exist!')
-  })
+  });
 
   it('POST false password return 403', async() => {
     await request(app).post('/customers/')
@@ -58,7 +56,7 @@ describe('Sign In Test', function () {
     expect(res.body).has.property('code', 403);
     expect(res.body).has.property('success', false);
     expect(res.body).has.property('msg', 'Wrong password, please try again.')
-  })
+  });
 
   it('POST user return 200', async() => {
     await request(app).post('/customers/')
@@ -73,5 +71,5 @@ describe('Sign In Test', function () {
     expect(res.body).to.not.have.deep.property('firstName');
     expect(res.body).to.not.have.deep.property('lastName');
     expect(res.body).to.not.have.deep.property('password');
-  })
+  });
 });

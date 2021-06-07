@@ -13,29 +13,23 @@ const newMenu = {
   category: 'Midi'
 };
 
-const menuUpdate = {
-  category: 'Soir'
-} 
-
-describe('Post Menu update', function() {
+describe('Delete Menu', function() {
   setup();
-  it('Return status code 200', async() => {
+  it('Return status code 204', async() => {
     const postRestaurant = await request(app).post(url)
       .send(newRestaurant);
     const postMenu = await request(app).post(url+`/${postRestaurant.body._id}/menu`)
       .send(newMenu);
-    const res = await request(app).put(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}`)
-      .send(menuUpdate);
-    expect(res.statusCode).to.equal(200);
+    const res = await request(app).delete(url+`/${postRestaurant.body._id}/menu`+`/${postMenu.body._id}`);
+    expect(res.statusCode).to.equal(204);
   });
 
-  it('Return status code 200', async() => {
+  it('Return status code 204', async() => {
     const postRestaurant = await request(app).post(url)
       .send(newRestaurant);
     const postMenu = await request(app).post(url+`/${postRestaurant.body._id}/menu`)
       .send(newMenu);
-    const res = await request(app).put(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}`)
-      .send(menuUpdate);
-    expect(res.body).has.property('category', 'Soir')
-  });
-});
+    const res = await request(app).delete(url+`/${postRestaurant.body._id}/menu`+`/${postMenu.body._id}`);
+    expect(res.noContent).to.equal(true);
+  })
+})
