@@ -45,11 +45,15 @@ postMenu = (req, res) => {
 getMenuById = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => {
+      const menu = response.menu.id(req.params.menuId);
+      if (menu === null) {
+        res.status(404).json('This menu does not exist');
+      }
       res.json(response.menu.id(req.params.menuId));
     })
     .catch(err => {
       if (err) {
-        res.status(404).json('this menu does not exist');
+        res.status(404).json('This restaurant does not exist');
       }
     })
 };
@@ -64,7 +68,6 @@ updateMenu = (req, res) => {
       then(() => {
         res.json(menu)
       })
-      
     })
     .catch(err => {
       if (err) {

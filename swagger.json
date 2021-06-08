@@ -277,6 +277,19 @@
           "description": "ID of the menu we want to find"
         }
       ],
+      "get": {
+        "tags": ["Menus"],
+        "summary": "Get menu",
+        "description": "Get menu with specified ID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Menu"
+            }
+          }
+        }
+      },
       "put": {
         "tags": ["Menus"],
         "summary": "Update menu",
@@ -299,6 +312,16 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": ["Menus"],
+        "summary": "Delete menu",
+        "description": "Delete menu with specified ID",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        } 
       }
     },
     "/restaurants/{restaurantId}/menu/{menuId}/dish": {

@@ -61,7 +61,32 @@ postDish = (req, res) => {
 };
 
 updateDish = (req, res) =>  {
-  console.log('you hit the dish update method');
+  Restaurant.findById(req.params.restaurantId)
+    .then(response => {
+      const menu = response.menu.id(req.params.menuId);
+      const dish = menu.dishes.id(req.params.dishId);
+      dish.name = req.body.name
+      response.save()
+        .then(() => {
+          if (menu === null) {
+            res.status(404).json('This menu does not exist')
+          }
+          if (dish === null) {
+            res.status(404).json('This dish does not exist')
+          }
+          res.status(201).json(dish);
+        })
+        .catch(err => {
+          if (err) {
+            res.status(500).json('Server internal error')
+          }
+        })
+    })
+    .catch(err => {
+      if (err) {
+        res.status(404).json('This restaurant does not exist')
+      }
+    })
 };
 
 deleteDish = (req, res) => {
