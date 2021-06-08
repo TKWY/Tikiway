@@ -7,7 +7,7 @@ getAllMenu = (req, res) => {
     .then(response => res.json(response.menu))
     .catch(err => {
       if (err) {
-        res.status(500).json(err)
+        res.status(404).json('This restaurant does not exist')
         console.log(err)
       }
     })
@@ -61,18 +61,21 @@ getMenuById = (req, res) => {
 // Update menu with specified ID
 updateMenu = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
-    .then(response => {
-      const menu =  response.menu.id(req.params.menuId);
-      menu.category = req.body.category;
-      response.save().
-      then(() => {
-        res.json(menu)
-      })
+    .then(restaurant => {
+      const menu =  restaurant.menu.id(req.params.menuId);
+      if (menu === null) {
+        res.status(404).json('This menu does not exist')
+      } else {
+        menu.category = req.body.category;
+        restaurant.save().
+        then(() => {
+          res.json(menu)
+        })
+      }
     })
     .catch(err => {
       if (err) {
-        res.status(404).json(err);
-        console.log(err)
+        res.status(404).json('This restaurant does not exist');
       };
     })
 };
@@ -82,16 +85,21 @@ deleteMenu = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => {
       const menu = response.menu.id(req.params.menuId);
-      menu.remove();
-      response.save()
-        .then(() => {
-          res.sendStatus(204);
-        })
-        .catch(err => {
-          res.json(err);
-          console.log(err);
-        })
-    })
+      if (menu === null) {
+        res.status(404).json('This menu does not exist')
+      } else {
+        menu.remove();
+        response.save()
+          .then(() => {
+            res.sendStatus(204);
+          })
+          .catch(err => {
+            if(err) {
+              res.status(404).json('This restaurant does not exist');
+            };
+          })
+      };
+    });
 };
 
 module.exports = {

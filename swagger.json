@@ -22,6 +22,10 @@
     {
       "name": "Menus",
       "description": "Api for menus with restaurants as first endpoint"
+    },
+    {
+      "name": "Dishes",
+      "description": "Api for dishes with restaurants as first endpoint"
     }
   ],
   "schemes": ["https", "http"],
@@ -359,6 +363,71 @@
             "schema": {
               "$ref": "#/definitions/Dish"
             }
+          }
+        }
+      }
+    },
+    "/restaurants/{restaurantId}/menu/{menuId}/dish/{dishId}": {
+      "parameters": [
+        {
+          "name": "restaurantId",
+          "in": "path",
+          "description": "ID of the restaurant we want to find"
+        },
+        {
+          "name": "menuId",
+          "in": "path",
+          "description": "ID of the menu we want to find"
+        },
+        {
+          "name": "dishId",
+          "in": "path",
+          "description": "ID of the dish we want to find"
+        }
+      ],
+      "get": {
+        "tags": ["Dishes"],
+        "summary": "Get dish",
+        "description": "Get dish with specified ID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Dish"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Dishes"],
+        "summary": "Update dish",
+        "description": "Update dish with specified ID",
+        "parameters": [
+          {
+            "name": "dishes",
+            "in": "body",
+            "description": "Dish we want to update",
+            "schema": {
+              "$ref": "#/definitions/addDish"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Dish"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Dishes"],
+        "summary": "Delete dish",
+        "description": "Delete dish with specified ID",
+        "responses": {
+          "204": {
+            "description": "No Content"
           }
         }
       }

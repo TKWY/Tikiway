@@ -13,14 +13,17 @@ getDishes = (req, res) => {
 getDishById = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => {
-      const menu = response.menu.id(req.params.menuId)
-      res.status(200).json(menu.dishes.id(req.params.dishId))
+      const menu = response.menu.id(req.params.menuId);
+      const dish = menu.dishes.id(req.params.dishId);
+      if (dish === null) {
+        res.status(404).json('This dish does not exist');
+      }
+      res.status(200).json(dish);
     })
     .catch(err => {
       if (err) {
-        res.json(err)
-        console.log(err)
-      }
+        res.sendStatus(404)
+      };
     })
 };
 
@@ -90,7 +93,25 @@ updateDish = (req, res) =>  {
 };
 
 deleteDish = (req, res) => {
-  console.log('you hit the delete dish method');
+  Restaurant.findById(req.params.restaurantId)
+    .then(restaurant => {
+      const menu = restaurant.menu.id(req.params.menuId);
+      if (menu === null) {
+        res.status(404).json('This menu does not exist');
+      }
+      const dish = menu.dishes.id(req.params.dishId);
+      if (dish === null) {
+        res.status(404).json('This this dish does not exist');
+      }
+      dish.remove();
+      restaurant.save()
+      res.sendStatus(204);
+    })
+    .catch(err => {
+      if (err) {
+        res.status(404).json('This restaurant does not exist')
+      }
+    })
 };
 
 module.exports = {
