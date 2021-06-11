@@ -365,6 +365,19 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": ["Dishes"],
+        "summary": "Get all dishes",
+        "description": "Return list of all dishes of specified menu",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Dishes"
+            } 
+          }
+        }
       }
     },
     "/restaurants/{restaurantId}/menu/{menuId}/dish/{dishId}": {

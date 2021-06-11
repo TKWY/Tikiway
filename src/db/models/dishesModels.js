@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const modifierSchema = require('./modifierModels');
 
 const dishSchema = new Schema({
   name: {
@@ -10,6 +11,7 @@ const dishSchema = new Schema({
     type: String,
     required: true
   },
+  modifier: [modifierSchema],
   price: {
     type: Number,
     required: true
