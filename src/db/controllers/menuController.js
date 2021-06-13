@@ -4,7 +4,9 @@ const Restaurant = require('../models/restaurantModels');
 // Return list of all menu
 getAllMenu = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
-    .then(response => res.json(response.menu))
+    .then(response => {
+      res.json(response.menu)
+    })
     .catch(err => {
       if (err) {
         res.status(404).json('This restaurant does not exist')
