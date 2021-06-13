@@ -21,7 +21,7 @@ const cartModel = new schema({
       sideDishId: {
         type: schema.Types.ObjectId,
         ref: "SideDish",
-        
+
         required: true
       },
       sideDishName: {
@@ -48,4 +48,8 @@ const cartModel = new schema({
     type: Number,
     default: 0
   }
-})
+});
+
+const Cart = mongoose.Model('Cart', cartModel);
+
+module.exports = Cart;

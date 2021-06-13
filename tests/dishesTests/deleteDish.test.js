@@ -31,6 +31,5 @@ describe('Delete dish', function() {
       .send(newDish);
     const res = await request(app).delete(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish/${postDish.body._id}`)
     expect(res.statusCode).to.equal(204);
-    console.log(res)
   })
 })

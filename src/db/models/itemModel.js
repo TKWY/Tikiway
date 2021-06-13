@@ -7,9 +7,8 @@ const itemsSchema = new schema({
     required: true
   },
   price: {
-    type: Number,
-    required: true
+    type: Number
   }
-})
+});
 
 module.exports = itemsSchema;
