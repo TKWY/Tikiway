@@ -11,7 +11,6 @@ const customerRoutes = require('./src/routes/customerRoutes');
 const restaurantRoutes = require('./src/routes/restaurantRoutes');
 
 // Local const
-
 const config = require('./config');
 const store = new session.MemoryStore()
 const app = express();

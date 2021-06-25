@@ -18,13 +18,11 @@ const cartModel = new schema({
         type: String,
         required: true,
       },
-      sideDishId: {
+      modifierId: {
         type: schema.Types.ObjectId,
-        ref: "SideDish",
-
-        required: true
+        ref: "Modifier",
       },
-      sideDishName: {
+      modifierName: {
         type: String,
         required: true
       },
@@ -48,6 +46,8 @@ const cartModel = new schema({
     type: Number,
     default: 0
   }
+}, {
+  timestamps: true
 });
 
 const Cart = mongoose.Model('Cart', cartModel);
