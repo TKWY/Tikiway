@@ -3,15 +3,12 @@ const schema = mongoose.Schema;
 
 const cartModel = new schema({
   customerId: {
-    type: schema.Types.ObjectId,
-    required: true,
-    ref: "Customer"
+    type: String,
   },
   dishes: [
     {
       dishId: {
-        type: schema.Types.ObjectId,
-        ref: "Dish",
+        type: String,
         required: true
       },
       dishName: {
@@ -19,8 +16,8 @@ const cartModel = new schema({
         required: true,
       },
       modifierId: {
-        type: schema.Types.ObjectId,
-        ref: "Modifier",
+        type: String,
+        required: false
       },
       modifierName: {
         type: String,
@@ -32,9 +29,8 @@ const cartModel = new schema({
         default: 1
       },
       restaurantId: {
-        type: schema.Types.ObjectId,
+        type: String,
         required: true,
-        ref: "Restaurant"
       },
       price: {
         type: Number,
@@ -50,6 +46,6 @@ const cartModel = new schema({
   timestamps: true
 });
 
-const Cart = mongoose.Model('Cart', cartModel);
+const Cart = mongoose.model('Cart', cartModel);
 
 module.exports = Cart;

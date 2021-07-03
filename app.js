@@ -9,6 +9,7 @@ const swaggerUi = require('swagger-ui-express');
 // Routes Imports
 const customerRoutes = require('./src/routes/customerRoutes');
 const restaurantRoutes = require('./src/routes/restaurantRoutes');
+const cartRoutes = require('./src/routes/cartRoutes');
 
 // Local const
 const config = require('./config');
@@ -47,6 +48,7 @@ app.use(session({secret: 'the secret', saveUninitialized: true, resave: true}));
 // routes
 app.use('/customers', customerRoutes);
 app.use('/restaurants', restaurantRoutes);
+app.use('/cart', cartRoutes);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 module.exports = app;
