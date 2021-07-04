@@ -68,3 +68,4 @@ customerSchema.methods.deleteToken = function (token, cb) {
 
 const Customer = mongoose.model('Customer', customerSchema);
 module.exports = Customer;
+ 
