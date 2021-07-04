@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const Customer = require('../models/customerModels');
 const errorController = require('./errorController');
 const config = require('../../../config');
-const { Mongoose } = require('mongoose');
 
 // Create a new customer account
 createCustomer = (req, res) => {
