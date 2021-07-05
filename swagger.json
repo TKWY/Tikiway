@@ -126,6 +126,31 @@
         }
       }
     },
+    "/drivers": {
+      "post": {
+        "tags": ["Drivers"],
+        "summary": "Create new driver",
+        "description": "Create new driver",
+        "parameters": [
+          {
+            "name": "driver",
+            "in": "body",
+            "description": "Driver we want to create",
+            "schema": {
+              "$ref": "#definitions/addDriver"
+            }
+          }
+        ],
+        "responses":{
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/addDriverResponse"
+            } 
+          }
+        }
+      }
+    },
     "/restaurants": {
       "post": {
         "tags": ["Restaurants"],

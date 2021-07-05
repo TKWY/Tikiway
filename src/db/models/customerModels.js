@@ -41,9 +41,9 @@ const customerSchema = new Schema({
 customerSchema.pre('save', function save(next) {
   const customer = this;
   bcrypt.genSalt(10, function (err, salt) {
-    if (err) return next(err)
+    if (err) return next(err);
     bcrypt.hash(customer.password, salt, function (err, hash) {
-      if (err) return next(err)
+      if (err) return next(err);
       customer.password = hash;
       next()
     })
@@ -51,7 +51,7 @@ customerSchema.pre('save', function save(next) {
 });
 
 customerSchema.methods.comparePassword = function (candidatePassword, cb) {
-  const customer = this
+  const customer = this;
   bcrypt.compare(candidatePassword, customer.password, function (err, IsMatch) {
     if (err) return cb(err);
     cb(null, IsMatch);
@@ -59,7 +59,7 @@ customerSchema.methods.comparePassword = function (candidatePassword, cb) {
 };
 
 customerSchema.methods.deleteToken = function (token, cb) {
-  const customer = this
+  const customer = this;
   customer.update({$unset: {token: 1}}, function (err, customer) {
     if (err) return cb(err);
     cb(null, customer);
