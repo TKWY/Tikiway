@@ -24,7 +24,11 @@ const reviewsSchema = new Schema({
   }],
   likes: [{
     clientId: String,
-    date: Date
+    date: Date,
+    number: {
+      type: Number,
+      default: 0
+    }
   }],
   Shares: [{
     clientId: String,
