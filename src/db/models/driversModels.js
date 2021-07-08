@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 const driverSchema = new Schema({
-  tel: {
+  phone: {
     type: String,
     required: true,
     unique: true
@@ -27,7 +27,13 @@ const driverSchema = new Schema({
   },
   workingStatus: {
     type: Boolean,
-    default: false
+    default: false,
+    required: true
+  },
+  accountValidation: {
+    type: Boolean,
+    default: false,
+    required: true
   }
 });
 

@@ -137,7 +137,7 @@
             "in": "body",
             "description": "Driver we want to create",
             "schema": {
-              "$ref": "#definitions/addDriver"
+              "$ref": "#definitions/driver"
             }
           }
         ],
@@ -145,8 +145,77 @@
           "201": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/addDriverResponse"
+              "$ref": "#/definitions/driverResponse"
             } 
+          }
+        }
+      },
+      "get": {
+        "tags": ["Drivers"],
+        "summary": "Get all drivers",
+        "description": "Return a list of all the drivers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/drivers"
+            }
+          }
+        }
+      }
+    },
+    "/drivers/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of driver that we want to find"
+        }
+      ],
+      "get": {
+        "tags": ["Drivers"],
+        "summary": "Find driver ID",
+        "description": "Find driver with specified ID",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/driver"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Drivers"],
+        "summary": "Update driver",
+        "description": "Update target driver informations",
+        "parameters": [
+          {
+            "name": "customer",
+            "in": "body",
+            "description": "Driver we want to update",
+            "schema": {
+              "$ref": "#/definitions/updateDriver"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/driver"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Drivers"],
+        "summary": "Delete driver",
+        "description": "Delete driver with specified ID",
+        "responses": {
+          "200": {
+            "description": "Driver has been deleted"
           }
         }
       }
@@ -759,6 +828,90 @@
           "type": "string",
           "required": true,
           "default": "default"
+        }
+      }
+    },
+    "driver": {
+      "require": ["phone", "mail", "firstName", "lastName", "password", "wordkingStatus"],
+      "properties": {
+        "phone": {
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        "mail": {
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        "firstName": {
+          "type": "string",
+          "required": true
+        },
+        "lastName": {
+          "type": "string",
+          "required": true
+        },
+        "password": {
+          "type": "string",
+          "required": true
+        },
+        "workingStatus": {
+          "type": "boolean",
+          "required": true,
+          "default": false
+        },
+        "accountValidation": {
+          "type": "boolean",
+          "required": true,
+          "default": false
+        }
+      }
+    },
+    "drivers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/driver"
+      }
+    },
+    "driverResponse": {
+      "require": ["_id", "phone", "mail", "firstName", "lastName", "password", "wordkingStatus"],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "unique": true
+        },
+        "phone": {
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        "mail": {
+          "type": "string",
+          "required": true,
+          "unique": true
+        },
+        "firstName": {
+          "type": "string",
+          "required": true
+        },
+        "lastName": {
+          "type": "string",
+          "required": true
+        },
+        "password": {
+          "type": "string",
+          "required": true
+        },
+        "workingStatus": {
+          "type": "boolean",
+          "required": true,
+          "default": false
+        },
+        "accountValidation": {
+          "type": "boolean",
+          "required": true,
+          "default": false
         }
       }
     }

@@ -10,9 +10,7 @@ createCustomer = (req, res) => {
   newCustomer.save()
     .then((response) => {
       const {firstName, lastName} = response
-      res.status(201).json({
-        'msg': `Welcome to Tikiway ${firstName} ${lastName}, thank you for joining us.`
-      })
+      res.status(201).json(`Welcome to Tikiway ${firstName} ${lastName}, thank you for joining us.`)
     })
     .catch(err => {
       res.json(err);

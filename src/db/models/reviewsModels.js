@@ -24,17 +24,13 @@ const reviewsSchema = new Schema({
   }],
   likes: [{
     clientId: String,
-    date: Date,
-    number: {
-      type: Number,
-      default: 0
-    }
-  }],
+    date: Date
+    }],
   Shares: [{
     clientId: String,
     plateform: String,
     date: Date
-  }]
+  }]          
 })
 
 const Reviews = mongoose.model('Reviews', reviewsSchema);

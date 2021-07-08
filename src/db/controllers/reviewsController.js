@@ -1,10 +1,28 @@
 const { Reviews } = require('../models/reviewsModels');
+const Restaurant = require('../models/restaurantModels');
 
 // Return all Reviews from target restaurant ID
 const getAllReviews = (req, res) => {
-  Reviews.find()
-    .then(reviews => {
-      res.status(200).json(reviews);
+  Restaurant.findById(req.params.restaurantId)
+    .then(restaurant => {
+      const reviews = restaurant.reviews;
+      res.status(200).json(reviews)
+    })
+    .catch(err => {
+      if (err) {
+        res.status(500).json(err);
+      }
+    })
+};
+
+const getReviewId = async (req, res) => {
+  await Restaurant.findById(req.params.restaurantId)
+    .then(restaurant => {
+      const review = restaurant.reviews.id(req.params.reviewId);
+      if (review === null) {
+        res.status(404).json('That review id does not exist.')
+      }
+      res.json(review)
     })
     .catch(err => {
       if (err) {
@@ -14,13 +32,36 @@ const getAllReviews = (req, res) => {
 };
 
 //  post a new Review on target restaurant ID
-const postReview = (req, res) => {
+const postReview = async (req, res) => {
   body = req.body;
-  newReview = new Reviews(body);
-  newReview.save()
-    .then(review => {
-      res.status(201).json(review);
+  await Restaurant.findById(req.params.restaurantId)
+    .then(restaurant => {
+      restaurant.reviews.push(req.body);
+      restaurant.save()
+        .then(() => {
+          res.status(201).json('Thank you for posting your review.')
+        })
     })
+    .catch(err => {
+      if (err) {
+        console.log(err)
+        res.status(500).json(err);
+      }
+    })
+};
+
+// Update target review
+const updateReview = async (req, res) => {
+  await Restaurant.findById(req.params.restaurantId)
+    .then(restaurant => {
+      const review = restaurant.reviews.id(req.params.reviewId);
+      if (review === null) {
+        res.status(404).json('That review does not exist.');
+      }
+      review.comment = req.body.comment;
+      restaurant.save();
+      res.status(200).json('Your comment has been updated.');
+    })  
     .catch(err => {
       if (err) {
         res.status(500).json(err);
@@ -28,32 +69,28 @@ const postReview = (req, res) => {
     })
 };
 
-// Update target review
-const updateReview = (req, res) => {
-  body = req.body;
-  Reviews.findByIdAndUpdate(req.params.reviewId, body)
-    .then(review => {
-      res.status(203).json(review);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    })
-};
-
 // Delete target review
 const deleteReview = (req, res) => {
-  body = req.body;
-  Reviews.findByIdAndDelete(req.params.reviewId, body)
-    .then(() => {
-      res.status(200).json('Review has been deleted');
+  Restaurant.findById(req.params.restaurantId)
+    .then(restaurant => {
+      const review = restaurant.reviews.id(req.params.reviewId);
+      if (review === null) {
+        res.status(404).json('That review does not exist');
+      }
+      review.remove();
+      restaurant.save();
+      res.sendStatus(204);
     })
     .catch(err => {
-      res.status(500).json(err);
+      if (err) {
+        res.status(500).json(err)
+      }
     })
 };
 
 module.exports = {
   getAllReviews,
+  getReviewId,
   postReview,
   updateReview,
   deleteReview
