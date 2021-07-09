@@ -3,11 +3,15 @@ const passport = require('passport');
 const Customer = require('../db/models/customerModels');
 
 passport.use(new LocalStrategy(
-  (username, password) => {
+  (username, password, done) => {
     Customer.findOne({phone: username})
-      .then(response => {
-        console.log(response)
-        return response
+      .then(user  => {
+        if (!user) done(null, false, 'Incorrect username');
+        if (!user.comparePassword(password)) done(null, false, 'Incorrect password');
+        return done(null, user);
+      })
+      .then(err => {
+        if (err) done(null, err);
       })
   }
 ))
