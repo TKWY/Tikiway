@@ -5,16 +5,19 @@ const cors = require('cors');
 const session = require('express-session');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const passport = require('passport');
 
 // Routes Imports
 const customerRoutes = require('./src/routes/customerRoutes');
 const restaurantRoutes = require('./src/routes/restaurantRoutes');
 const driverRoutes = require('./src/routes/driverRoutes');
+const authRoutes  = require('./src/routes/authRoutes');
 
 // Local const
 const config = require('./config');
 const store = new session.MemoryStore()
 const app = express();
+const local = require('./src/strategies/local');
 
 // Swagger definition & options
 const swaggerDefinition = {
@@ -40,12 +43,25 @@ const swaggerDocument = require('./swagger.json');
 
 // Application options & middleware
 app.use(express.json());
-app.use(express.urlencoded( {extended: true} ));
+app.use(express.urlencoded({extended: true}));
 app.use(morgan(config.morgan));
 app.use(cors());
-app.use(session({secret: 'the secret', saveUninitialized: true, resave: true}));
+app.use(session({
+  secret: 'the secret', 
+  saveUninitialized: true, 
+  resave: false,
+  cookie: {
+    maxAge: 3000
+  }
+}));
+
+// Authentification PassportJS
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // routes
+app.use('/auth', authRoutes);
 app.use('/customers', customerRoutes);
 app.use('/restaurants', restaurantRoutes);
 app.use('/drivers', driverRoutes);

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const customerSchema = new Schema({
   firstName: {
@@ -65,6 +66,8 @@ customerSchema.methods.deleteToken = function (token, cb) {
     cb(null, customer);
   });
 };
+
+customerSchema.plugin(passportLocalMongoose);
 
 const Customer = mongoose.model('Customer', customerSchema);
 module.exports = Customer;

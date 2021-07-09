@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const {menuSchema} = require('./menuModels');
 const {businessHoursSchema} = require('./businessHoursModels');
-const {reviewsSchema} = require('./reviewsModels');
 
 const restaurantSchema = new Schema({
   name: {
@@ -31,7 +30,6 @@ const restaurantSchema = new Schema({
     date: Date,
     businessHours: [businessHoursSchema]
   }],
-  reviews: [reviewsSchema],
   address: {
     addressLine: String,
     lng: Number,
