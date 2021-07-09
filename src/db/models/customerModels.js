@@ -55,7 +55,7 @@ customerSchema.methods.comparePassword = function (candidatePassword, cb) {
   const customer = this;
   bcrypt.compare(candidatePassword, customer.password, function (err, IsMatch) {
     if (err) return cb(err);
-    cb(null, IsMatch);
+    if (cb) cb(null, IsMatch);
   });
 };
 
