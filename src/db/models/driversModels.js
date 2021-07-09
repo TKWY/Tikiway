@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt');
 
 const driverSchema = new Schema({
-  tel: {
+  phone: {
     type: String,
     required: true,
     unique: true
@@ -26,10 +27,35 @@ const driverSchema = new Schema({
   },
   workingStatus: {
     type: Boolean,
-    default: false
+    default: false,
+    required: true
+  },
+  accountValidation: {
+    type: Boolean,
+    default: false,
+    required: true
   }
-})
+});
+
+driverSchema.pre('save', function save(next) {
+  const driver = this;
+  bcrypt.genSalt(10, function(err, salt) {
+    if (err) return next(err);
+    bcrypt.hash(driver.password, salt, function(err, hash) {
+      if (err) return next (err);
+      driver.password = hash;
+      next()
+    })
+  })
+});
+
+driverSchema.methods.comparePassword = function(candidatePassword, cb) {
+  const driver = this;
+  bcrypt.compare(candidatePassword, driver.password, function(err, Ismatch) {
+    if (err) return cb(err);
+    cb(null, driver);
+  })
+};
 
 const Drivers = mongoose.model('Drivers', driverSchema);
-
 module.exports = Drivers;
