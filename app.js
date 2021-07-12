@@ -5,7 +5,6 @@ const cors = require('cors');
 const session = require('express-session');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-const passport = require('passport');
 
 // Routes Imports
 const customerRoutes = require('./src/routes/customerRoutes');
@@ -17,7 +16,6 @@ const authRoutes  = require('./src/routes/authRoutes');
 const config = require('./config');
 const store = new session.MemoryStore()
 const app = express();
-const local = require('./src/strategies/local');
 
 // Swagger definition & options
 const swaggerDefinition = {
@@ -51,14 +49,9 @@ app.use(session({
   saveUninitialized: true, 
   resave: false,
   cookie: {
-    maxAge: 3000
+    maxAge: 6*30*24*3600
   }
 }));
-
-// Authentification PassportJS
-app.use(passport.initialize());
-app.use(passport.session());
-
 
 // routes
 app.use('/auth', authRoutes);
