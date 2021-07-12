@@ -24,6 +24,6 @@ describe('Create customer tests', function () {
   it('Response has property msg and return thank you message', async () => {
     const res = await request(app).post(url)
       .send(newUser)
-    expect(res.body).has.property('msg', `Welcome to Tikiway ${newUser.firstName} ${newUser.lastName}, thank you for joining us.`)
+    expect(res.body).to.equal(`Welcome to Tikiway ${newUser.firstName} ${newUser.lastName}, thank you for joining us.`)
   });
 });

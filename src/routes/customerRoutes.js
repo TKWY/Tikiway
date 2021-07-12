@@ -3,8 +3,6 @@ const router = express.Router();
 const {
   getAllCustomers, 
   createCustomer, 
-  customerSignIn, 
-  customerSignOut, 
   getCustomersById, 
   updateCustomer,
   deleteCustomer
@@ -12,8 +10,6 @@ const {
 
 router.get('/', getAllCustomers);
 router.post('/', createCustomer);
-router.post('/signin', customerSignIn);
-router.get('/signout', customerSignOut);
 router.get('/:id', getCustomersById);
 router.put('/:id', updateCustomer);
 router.delete('/:id', deleteCustomer);

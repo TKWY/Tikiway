@@ -4,7 +4,7 @@ const setup = require('../test-helper');
 const app = require('../../app');
 const Customer = require('../../src/db/models/customerModels');
 
-const url = '/customers/signin';
+const url = '/auth/login';
 const userLogin = { username: 'john.doe@mail.fr', password: 'test'};
 const newUser = {
   firstName: 'John',
@@ -14,15 +14,13 @@ const newUser = {
   email: 'john.doe@mail.fr'
 };
 
-describe('Sign In Test', function () {
+describe('Log in Test', function () {
   setup()
   it('POST empty username return 401', async() => {
     const res = await request(app).post(url)
       .send({username: '', password: ''});
     expect(res.statusCode).to.equal(401);
-    expect(res.body).has.property('code', 401);
-    expect(res.body).has.property('success', false);
-    expect(res.body).has.property('msg', 'Please enter your phone number or email address!');
+    expect(res.body).to.equal('Please enter your phone number or email address!');
   });
 
   it('POST empty password return 401', async() => {
@@ -31,9 +29,7 @@ describe('Sign In Test', function () {
     const res = await request(app).post(url)
       .send({username: 'test', password: ''});
     expect(res.statusCode).to.equal(401);
-    expect(res.body).has.property('code', 401);
-    expect(res.body).has.property('success', false);
-    expect(res.body).has.property('msg', 'Please enter your password!');
+    expect(res.body).to.equal('Please enter your password!');
   });
 
   it('POST false username return 403', async() => {
@@ -42,9 +38,7 @@ describe('Sign In Test', function () {
     const res = await request(app).post(url)
       .send({username: 'john.doe@mail.com', password: 'test'});
     expect(res.statusCode).to.equal(403);
-    expect(res.body).has.property('code', 403);
-    expect(res.body).has.property('success', false);
-    expect(res.body).has.property('msg', 'That user does not exist!')
+    expect(res.body).to.equal('That user does not exist!')
   });
 
   it('POST false password return 403', async() => {
@@ -53,23 +47,6 @@ describe('Sign In Test', function () {
     const res = await request(app).post(url)
       .send({username: 'john.doe@mail.fr', password: 'false'})
     expect(res.statusCode).to.equal(403);
-    expect(res.body).has.property('code', 403);
-    expect(res.body).has.property('success', false);
-    expect(res.body).has.property('msg', 'Wrong password, please try again.')
-  });
-
-  it('POST user return 200', async() => {
-    await request(app).post('/customers/')
-      .send(newUser)
-    const res = await request(app).post(url)
-      .send(userLogin)
-    expect(res.statusCode).to.equal(200);
-    expect(res.body).has.property('code', 200);
-    expect(res.body).has.property('success', true);
-    expect(res.body).has.property('token');
-    expect(res.body).to.not.have.property('user');
-    expect(res.body).to.not.have.deep.property('firstName');
-    expect(res.body).to.not.have.deep.property('lastName');
-    expect(res.body).to.not.have.deep.property('password');
+    expect(res.body).to.equal('Wrong password, please try again.')
   });
 });
