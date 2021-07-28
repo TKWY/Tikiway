@@ -1,14 +1,25 @@
 const Customer = require('../models/customerModels');
 const errorController = require('./errorController');
 
+// This controller have all the customers methods
 // Create a new customer account
 createCustomer = (req, res) => {
   const body = req.body;
   const newCustomer = new Customer(body);
   newCustomer.save()
     .then((response) => {
-      const {firstName, lastName} = response
-      res.status(201).json(`Welcome to Tikiway ${firstName} ${lastName}, thank you for joining us.`)
+      const {
+        firstName, 
+        lastName, 
+        mail, 
+        tel
+      } = response
+      res.status(201).json({
+        firstName: response.firstName,
+        lastname: lastName,
+        mail: mail,
+        tel: tel,
+        msg: `Welcome to Tikiway ${firstName} ${lastName}, thank you for joining us.`})
     })
     .catch(err => {
       res.json(err);
