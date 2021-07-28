@@ -43,8 +43,12 @@ const swaggerDocument = require('./swagger.json');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(morgan(config.morgan));
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(session({
+  name: 'tkwy-session',
   secret: 'the secret', 
   saveUninitialized: true, 
   resave: false,
