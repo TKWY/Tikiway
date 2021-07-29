@@ -9,29 +9,23 @@ const Restaurant = require('../models/restaurantModels');
 
 
 // Method will return all the dishes of specified menu as a response
-// still need a better error handling
 getDishes = async (req, res) => {
   try {
-    // Find restaurant with specified Id
     const findRestaurant = await Restaurant.findById(req.params.restaurantId)
-    // if restaurant is null return status code 404
-    if (findRestaurant === null) {
-      res.sendStatus(404);
-    }
-    // else if you find a restaurant try to find a menu
     const findMenu = await findRestaurant.menu.id(req.params.menuId);
-    // if menu is null return status code 404
-    if (findMenu === null) {
+    const findDish = await findMenu.dishes;
+    // If there's no dish in the list return 404 error as a response
+    if (findDish === "") {
       res.sendStatus(404);
     }
-    // else return a list of all the dishes in target menu
-    res.status(200).json(findMenu.dishes);
+    // Else return list of dishes
+    res.status(200).json(findDish);
   } catch (err) {
     res.json(err);
-    console.log(err)
   }
 };
 
+// Method will return dish with specified id
 getDishById = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => {
