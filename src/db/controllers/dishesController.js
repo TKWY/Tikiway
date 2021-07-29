@@ -9,38 +9,39 @@ const Restaurant = require('../models/restaurantModels');
 
 
 // Method will return all the dishes of specified menu as a response
+// it will get a list of dishes but yuou have to specify the restaurant Id
+// and the menu Id.
 getDishes = async (req, res) => {
+  const { restaurantId, menuId } = req.params
   try {
-    const findRestaurant = await Restaurant.findById(req.params.restaurantId)
-    const findMenu = await findRestaurant.menu.id(req.params.menuId);
+    const findRestaurant = await Restaurant.findById(restaurantId);
+    const findMenu = await findRestaurant.menu.id(menuId);
     const findDish = await findMenu.dishes;
-    // If there's no dish in the list return 404 error as a response
     if (findDish === "") {
       res.sendStatus(404);
     }
-    // Else return list of dishes
     res.status(200).json(findDish);
   } catch (err) {
-    res.json(err);
+    res.json(err); // Need to check errors and return a better status code in case of an error
   }
 };
 
 // Method will return dish with specified id
-getDishById = (req, res) => {
-  Restaurant.findById(req.params.restaurantId)
-    .then(response => {
-      const menu = response.menu.id(req.params.menuId);
-      const dish = menu.dishes.id(req.params.dishId);
-      if (dish === null) {
-        res.status(404).json('This dish does not exist');
-      }
-      res.status(200).json(dish);
-    })
-    .catch(err => {
-      if (err) {
-        res.sendStatus(404)
-      };
-    })
+// Same as the get all dishes method, you need to specify the restaurant Id and
+// menu Id.
+getDishById = async (req, res) => {
+  const { restaurantId, menuId, dishId } = req.params;
+  try {
+    const findRestaurant = await Restaurant.findById(restaurantId);
+    const findMenu = await findRestaurant.menu.id(menuId);
+    const findDish = findMenu.dishes.id(dishId);
+    if (findDish === null) {
+      res.sendStatus(404);
+    }
+    res.status(200).json(findDish);
+  } catch (err) {
+    res.json(err); // Need to check errors and return a better stataus code in case of an error
+  }
 };
 
 postDish = (req, res) => {

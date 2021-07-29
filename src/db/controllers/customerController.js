@@ -11,6 +11,7 @@ const errorController = require('./errorController');
 // May have to rewrite handler in the future
 // Controller will probably need to change file name to userController
 // so it will be easier for the devs to identify the file.
+// will probably need to refactor the code with async await method
 
 // Method will create a new customer account and return customer
 // informations as a response.
