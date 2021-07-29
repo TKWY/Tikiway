@@ -1,4 +1,4 @@
-// This controller have all the customers methods
+// This controller regroup customers methods
 // Copyright Dev&Design
 
 // Import Customer model
@@ -14,7 +14,7 @@ const errorController = require('./errorController');
 
 // Method will create a new customer account and return customer
 // informations as a response.
-// Method need to handle data duplication and handle those error
+// It need to handle data duplication and other errors
 createCustomer = (req, res) => {
   // Get post body
   const body = req.body;

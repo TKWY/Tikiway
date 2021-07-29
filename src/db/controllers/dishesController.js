@@ -1,15 +1,31 @@
+// This controller regroup all dishes methods
+// Dev&Design
+
+// Import Dish model
 const { Dish } = require('../models/dishesModels');
+
+// Import Restaurant model
 const Restaurant = require('../models/restaurantModels');
 
-getDishes = (req, res) => {
-  Restaurant.findById(req.params.restaurantId)
-    .then(restaurant => {
-      const menu = restaurant.menu.id(req.params.menuId)
-      res.status(200).json(menu.dishes)
-    })
-    .catch(err => res.json(err))
+
+// Method will return all the dishes of specified menu as a response
+getDishes = async (req, res) => {
+  try {
+    const findRestaurant = await Restaurant.findById(req.params.restaurantId)
+    const findMenu = await findRestaurant.menu.id(req.params.menuId);
+    const findDish = await findMenu.dishes;
+    // If there's no dish in the list return 404 error as a response
+    if (findDish === "") {
+      res.sendStatus(404);
+    }
+    // Else return list of dishes
+    res.status(200).json(findDish);
+  } catch (err) {
+    res.json(err);
+  }
 };
 
+// Method will return dish with specified id
 getDishById = (req, res) => {
   Restaurant.findById(req.params.restaurantId)
     .then(response => {
