@@ -3,7 +3,6 @@
 
 // Import Dish model
 const { Dish } = require('../models/dishesModels');
-const { find } = require('../models/restaurantModels');
 
 // Import Restaurant model
 const Restaurant = require('../models/restaurantModels');
