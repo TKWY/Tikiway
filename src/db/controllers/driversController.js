@@ -1,4 +1,10 @@
+// This controller regroup all driver methods
+// Dev&Design
+
+// Import drivers model
 const Drivers = require('../models/driversModels');
+
+// Import error controller
 const errorController = require('./errorController');
 
 const createDriver = (req, res) => {
