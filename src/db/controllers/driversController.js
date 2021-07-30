@@ -2,6 +2,7 @@
 // Dev&Design
 
 // Import drivers model
+const { response } = require('express');
 const Drivers = require('../models/driversModels');
 
 // Import error controller
@@ -13,62 +14,112 @@ const createDriver = async (req, res) => {
   const body = req.body;
   try {
     const newDriver = await new Drivers(body);
-    return res.status(201).json(newDriver);
+    const saveDriver = await newDriver.save();
+    return res.status(201).json(saveDriver);
   } catch (err) {
-    if (err.code === 1000) {
-      return res.status(409).json({error: 'An driver with that phone number already exist, please try another one.'});
+    if (err.code === 11000) {
+      return res.status(409).json({
+        error: 'An driver with that phone number or email address already exist, \
+        please try another one.'
+      });
     }
     console.log(err);
-    return res.status(500).json(err.error);
+    return res.status(500).json({error: err.error});
   }
 };
 
-const getAllDriver = (req, res) => {
-  Drivers.find()
-    .then(drivers => {
-      res.status(200).json(drivers);
-    })
-    .catch(err => {
-      if (err) {
-        res.status(500).json(err);
-      }
-    })
+// Method will return a list of all the driver
+// route: GET /drivers
+const getAllDriver = async(req, res) => {
+  try {
+    const findDrivers = await Drivers.find();
+    const driversCollection = await findDrivers.map(drivers => {
+      const { firstName, lastName, mail, phone, workingStatus, _id } = drivers;
+      const driverInfos = {
+        id: _id,
+        firstname: firstName,
+        lastname: lastName,
+        phone: phone,
+        email: mail,
+        workingStatus: workingStatus
+      };
+      return driverInfos;
+    });
+    if (driversCollection === null ) {
+      return res.sendStatus(404);
+    }
+    return res.status(200).json(driversCollection);
+  } catch (err) {
+    if (err) {
+      res.status(500).json({error: err.error});
+    }
+  }
 };
 
-const getDriverById = (req, res) => {
-  Drivers.findById(req.params.driverId)
-    .then(driver =>  {
-      res.status(200).json(driver);
+
+// Method will return driver with specified Id
+// route: drivers/:driverId
+const getDriverById = async(req, res) => {
+  const id = req.params.driverId;
+  try {
+    const findDriver = await Drivers.findById(id);
+    const { _id, firstName, lastName, mail, workingStatus, phone } = findDriver;
+    return res.status(200).json({
+      id: _id,
+      firstname: firstName,
+      lastname: lastName,
+      phone: phone,
+      mail: mail,
+      workingStatus: workingStatus
     })
-    .catch(err => {
-      res.status(500).json(err);
-    })
+  } catch(err) {
+    if (err) {
+      return res.status(500).json({error: err.error});
+    }
+  }
 };
 
-const updateDriver = (req, res) => {
-  Drivers.findByIdAndUpdate(req.params.driverId, req.body)
-    .then(driver =>  {
-      res.status(201).json(driver);
-    })
-    .catch(err => {
-      if (err) {
-        res.status(500).json(err);
-      }
-    })
+// Method will update driver with specified Id
+// route: PUT drivers/:driverId
+const updateDriver = async(req, res) => {
+  const id = req.param.id;
+  const driverUpdate = req.body;
+  try {
+    const findDriver = await Drivers.findByIdAndUpdate(id, driverUpdate);
+    if (findDriver === null) {
+      return res.sendStatus(404);
+    }
+    return res.status(201).json(findDriver);
+  } catch (err) {
+    if (err) {
+      res.status(500).json({error: err.error})
+    }
+  }
 };
 
-const deleteDriver = (req, res) => {
-  Drivers.findByIdAndDelete(req.params.driverId)
-    .then(() => {
-      res.status(200).json('Driver has been deleted');
-    })
-    .catch(err => {
-      if (err) {
-        errorController(err)
-      } 
-    })
+
+// Method will delete driver with specified Id
+// route: DELETE drivers/:driverId
+const deleteDriver = async (req, res) => {
+  const id = req.params.driverId;
+  try {
+    const findDriver = await Drivers.findByIdAndDelete(id);
+    if (findDriver === null) {
+      return res.sendStatus(404);
+    }
+    return res.sendStatus(204);
+  } catch (err) {
+    if (err) {
+      res.status(500).json({error: err.error});
+    }
+  }
 };
 
+// add method to set driver workingStatus
+// add in delivery status in model
+// add get drivers with online status
+
+// Export all methods on driversController
 module.exports = {
   getAllDriver,
   getDriverById,
