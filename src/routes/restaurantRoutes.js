@@ -5,9 +5,11 @@ const restaurants = require('../db/controllers/restaurantController');
 
 // Other routes imports.
 const menuRoutes = require('./menuRoutes');
+const businessRoutes = require('./businessRoutes');
 
 // Other routes endpoints.
 router.use('/', menuRoutes);
+router.use('/', businessRoutes);
 
 // Restaurants routes endpoints.
 router.get('/', restaurants.getAllRestaurant);
