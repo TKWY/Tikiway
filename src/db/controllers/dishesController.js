@@ -3,6 +3,7 @@
 
 // Import Dish model
 const { Dish } = require('../models/dishesModels');
+const { find } = require('../models/restaurantModels');
 
 // Import Restaurant model
 const Restaurant = require('../models/restaurantModels');
@@ -23,7 +24,9 @@ getDishes = async (req, res) => {
     }
     return res.status(200).json(findDish);
   } catch (err) {
-    return res.json(err); // Need to check errors and return a better status code in case of an error
+    if (err) {
+      return res.json(err); // Need to check errors and return a better status code in case of an error
+    }
   }
 };
 
@@ -42,7 +45,9 @@ getDishById = async (req, res) => {
     }
     return res.status(200).json(findDish);
   } catch (err) {
-    return res.json(err); // Need to check errors and return a better stataus code in case of an error
+    if (err) {
+      return res.json(err); // Need to check errors and return a better stataus code in case of an error
+    }
   }
 };
 
@@ -50,18 +55,18 @@ getDishById = async (req, res) => {
 // Need restaurant Id and menu Id
 // route: POST restaurants/:restaurantId/menu/:menuId/dish/:dishId
 postDish = async(req, res) => {
-  const body = req.body;
+  const { description, promoPrice, price, image, name } = req.body;
   const { restaurantId, menuId } = req.params;
   try {
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
     const dish = await findMenu.dishes;
     const newDish = await new Dish({
-      name: body.name,
-      description: body.description,
-      price: body.price,
-      promoPrice: body.promoPrice,
-      image: body.image,
+      name: name,
+      description: description,
+      price: price,
+      promoPrice: promoPrice,
+      image: image,
       restaurantId: restaurantId,
       menuId: menuId
     });
@@ -72,61 +77,64 @@ postDish = async(req, res) => {
     }
     res.sendStatus(500);
   } catch (err) {
-    return res.json(err); // Need to handle errors
+    if (err) {
+      return res.json(err); // Need to handle errors
+    }
   }
 };
 
-updateDish = (req, res) =>  {
-  Restaurant.findById(req.params.restaurantId)
-    .then(response => {
-      const menu = response.menu.id(req.params.menuId);
-      const dish = menu.dishes.id(req.params.dishId);
-      dish.name = req.body.name
-      response.save()
-        .then(() => {
-          if (menu === null) {
-            res.status(404).json('This menu does not exist')
-          }
-          if (dish === null) {
-            res.status(404).json('This dish does not exist')
-          }
-          res.status(201).json(dish);
-        })
-        .catch(err => {
-          if (err) {
-            res.status(500).json('Server internal error')
-          }
-        })
-    })
-    .catch(err => {
-      if (err) {
-        res.status(404).json('This restaurant does not exist')
-      }
-    })
+
+// Method will update dish with specified Id
+// Need restaurant Id and menu Id
+// route: restaurants/:restaurantId/menu/:menuId/dish/:dishId
+updateDish = async (req, res) =>  {
+  const { restaurantId, menuId, dishId } = req.params;
+  const { name, description, price, promoPrice } = req.body;
+  try {
+    const findRestaurant = await Restaurant.findById(restaurantId);
+    const findMenu = await findRestaurant.menu.id(menuId);
+    const findDish = await findMenu.dishes.id(dishId);
+    if (findDish === null) {
+      return res.sendStatus(404);
+    }
+    // This section will need to be refactor as it need to define in a single element
+    // instead of separate elements.
+    findDish.name = name;
+    findDish.description = description;
+    findDish.price = price;
+    findDish.promoPrice;
+    findRestaurant.save()
+    return res.status(201).json(findDish);
+  } catch (err) {
+    if (err) {
+      return res.json(err); // Need to handle errors
+    }
+  }
 };
 
-deleteDish = (req, res) => {
-  Restaurant.findById(req.params.restaurantId)
-    .then(restaurant => {
-      const menu = restaurant.menu.id(req.params.menuId);
-      if (menu === null) {
-        res.status(404).json('This menu does not exist');
-      }
-      const dish = menu.dishes.id(req.params.dishId);
-      if (dish === null) {
-        res.status(404).json('This this dish does not exist');
-      }
-      dish.remove();
-      restaurant.save()
-      res.sendStatus(204);
-    })
-    .catch(err => {
-      if (err) {
-        res.status(404).json('This restaurant does not exist')
-      }
-    })
+
+// Method will remove dish with specified Id
+// Need restaurant Id and menu Id
+deleteDish = async (req, res) => {
+  const { restaurantId, menuId, dishId } = req.params;
+  try {
+    const findRestaurant = await Restaurant.findById(restaurantId);
+    const findMenu = await findRestaurant.menu.id(menuId);
+    const findDish = await findMenu.dishes.id(dishId);
+    if (findMenu === null ) {
+      return res.sendStatus(404);
+    }
+    findDish.remove();
+    findRestaurant.save();
+    return res.sendStatus(404);
+  } catch (err) {
+    if (err) {
+      res.json(err); // Need to handle errors
+    }
+  }
 };
 
+// Export all methods on dishesController
 module.exports = {
   postDish,
   getDishes,
