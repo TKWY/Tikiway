@@ -60,8 +60,8 @@ postRestaurant = async(req, res) => {
   }
 };
 
-// Method will update restaurant informations with specified Id
-// restaurant owner can change their information themselve
+// Method will update restaurants information with specified Id
+// restaurant owner can change their information themselves
 // route PUT restaurants/:restaurantIdd
 updateRestaurant = async (req, res) => {
   const {restaurantId} = req.params;

@@ -5,9 +5,9 @@ const Restaurants = require('../models/restaurantModels');
 // required restaurant Id
 // route: GET restaurants/:restaurantId/hours
 const getHours = async (req, res) => {
-  const id = req.params.restaurantId;
+  const {restaurantId} = req.params;
   try {
-    const findRestaurant = await Restaurants.findById(id);
+    const findRestaurant = await Restaurants.findById(restaurantId);
     if (findRestaurant === null) {
       return res.sendStatus(404);
     } else {
