@@ -14,7 +14,7 @@ const errorController = require('./errorController');
 // so it will be easier for the devs to identify the file.
 
 // Method will create a new customer account and return customer
-// informations as a response.
+// information as a response.
 // It need to handle data duplication and other errors
 createCustomer = (req, res) => {
   // Get post body

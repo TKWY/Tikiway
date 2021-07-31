@@ -24,11 +24,32 @@ const getHours = async (req, res) => {
 // Method will add business hours to restaurant with specified id
 // required restaurant id
 // route: restaurants/:restaurantId/hours
-const postBusinessHours = (req, res) => {
-  res.json('This is the post method')
+const postBusinessHours = async (req, res) => {
+  const id = req.params.restaurantId;
+  const body = req.body;
+  try {
+    const findRestaurant = await Restaurants.findById(id);
+    const findBusinessHours = await findRestaurant.businessHours;
+    if (!findRestaurant) {
+      return res.sendStatus(404);
+    }
+    findBusinessHours.push(body);
+    findRestaurant.save();
+    return res.status(201).json(findBusinessHours);
+  } catch (err) {
+    if (err) {
+      return res.status(500).json({error: err.error});
+    }
+  }
+};
+
+const postException = (req, res) =>  {
+  res.json('This is the post exception');
 };
 
 // Export all methods on businessHoursController
 module.exports = {
-  getHours
+  getHours,
+  postBusinessHours,
+  postException
 }
