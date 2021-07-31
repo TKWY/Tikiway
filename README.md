@@ -43,7 +43,6 @@ The service return response as json and must be handled in the frontend applicat
 
 ```json5
 {
-{
   code: 200,
   success: true,
   msg: "Account has been created",
@@ -53,7 +52,6 @@ The service return response as json and must be handled in the frontend applicat
     {customer3},
     ...
   ],
-}
 }
 ```
 

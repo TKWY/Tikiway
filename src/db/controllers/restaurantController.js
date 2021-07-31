@@ -24,9 +24,9 @@ getAllRestaurant = async (req, res) => {
 // Method will return restaurant with specified Id
 // route: GET restaurants/:restaurantId
 getRestaurantById = async (req, res) => {
-  const id = req.params.restaurantId;
+  const {restaurantId} = req.params;
   try {
-    const findRestaurant = await Restaurant.findById(id);
+    const findRestaurant = await Restaurant.findById(restaurantId);
     if (findRestaurant === null) {
       return res.sendStatus(404);
     }
@@ -64,7 +64,7 @@ postRestaurant = async(req, res) => {
 // restaurant owner can change their information themselve
 // route PUT restaurants/:restaurantIdd
 updateRestaurant = async (req, res) => {
-  const id = req.params.restaurantId;
+  const {restaurantId} = req.params;
   const { name, description, category, image } = req.body;
   const updatedRestaurant = {
     name: name,
@@ -73,7 +73,7 @@ updateRestaurant = async (req, res) => {
     category: category
   }
   try {
-    const findRestaurant = await Restaurant.findByIdAndUpdate(id, updatedRestaurant);
+    const findRestaurant = await Restaurant.findByIdAndUpdate(restaurantId, updatedRestaurant);
     return res.status(201).json(findRestaurant);
   } catch (err) {
     if (err.code === 11000) {
@@ -87,14 +87,19 @@ updateRestaurant = async (req, res) => {
 // Method will delete restaurant with specified Id
 // it is accessible to admins only
 // route: DELETE restaurants/:restaurantId
-deleteRestaurant = (req, res) => {
-  Restaurant.findByIdAndDelete(req.params.restaurantId)
-    .then(() => res.sendStatus(204))
-    .catch(err => {
-      if (err) {
-        res.status(404).json(err)
-      }
-    })
+deleteRestaurant = async (req, res) => {
+  const {restaurantId} = req.params;
+  try {
+    const findRestaurant = await Restaurant.findByIdAndDelete(restaurantId);
+    if (!findRestaurant) {
+      return res.sendStatus(404);
+    }
+    return res.sendStatus(204);
+  } catch (err) {
+    if (err) {
+      res.status(500).json({error: err.error});
+    }
+  }
 };
 
 // Export all methods on restaurantController

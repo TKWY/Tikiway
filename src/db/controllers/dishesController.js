@@ -9,7 +9,7 @@ const Restaurant = require('../models/restaurantModels');
 
 
 // Method will return all the dishes of specified menu as a response
-// it will get a list of dishes but yuou have to specify the restaurant Id
+// it will get a list of dishes but you have to specify the restaurant Id
 // and the menu Id.
 // route: GET restaurants/:restaurantId/menu/:menuId/dish
 getDishes = async (req, res) => {
@@ -17,8 +17,8 @@ getDishes = async (req, res) => {
   try {
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
-    const findDish = await findMenu.dishes;
-    if (findDish === null ) {
+    const findDish = findMenu.dishes;
+    if (!findDish) {
       return res.sendStatus(404);
     }
     return res.status(200).json(findDish);
@@ -38,14 +38,14 @@ getDishById = async (req, res) => {
   try {
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
-    const findDish = findMenu.dishes.id(dishId);
-    if (findDish === null) {
+    const findDish = await findMenu.dishes.id(dishId);
+    if (!findDish) {
       return res.sendStatus(404)
     }
     return res.status(200).json(findDish);
   } catch (err) {
     if (err) {
-      return res.json(err); // Need to check errors and return a better stataus code in case of an error
+      return res.json(err); // Need to check errors and return a better status code in case of an error
     }
   }
 };
@@ -59,7 +59,7 @@ postDish = async(req, res) => {
   try {
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
-    const dish = await findMenu.dishes;
+    const dish = findMenu.dishes;
     const newDish = await new Dish({
       name: name,
       description: description,
@@ -101,7 +101,7 @@ updateDish = async (req, res) =>  {
     findDish.name = name;
     findDish.description = description;
     findDish.price = price;
-    findDish.promoPrice;
+    findDish.promoPrice = promoPrice;
     findRestaurant.save()
     return res.status(201).json(findDish);
   } catch (err) {
@@ -120,7 +120,7 @@ deleteDish = async (req, res) => {
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
     const findDish = await findMenu.dishes.id(dishId);
-    if (findMenu === null ) {
+    if (!findMenu) {
       return res.sendStatus(404);
     }
     findDish.remove();

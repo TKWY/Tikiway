@@ -35,7 +35,7 @@ const getAllDriver = async(req, res) => {
     const findDrivers = await Drivers.find();
     const driversCollection = await findDrivers.map(drivers => {
       const { firstName, lastName, mail, phone, workingStatus, _id } = drivers;
-      const driverInfos = {
+      return {
         id: _id,
         firstname: firstName,
         lastname: lastName,
@@ -43,7 +43,6 @@ const getAllDriver = async(req, res) => {
         email: mail,
         workingStatus: workingStatus
       };
-      return driverInfos;
     });
     if (driversCollection === null ) {
       return res.sendStatus(404);
@@ -60,9 +59,9 @@ const getAllDriver = async(req, res) => {
 // Method will return driver with specified Id
 // route: drivers/:driverId
 const getDriverById = async(req, res) => {
-  const id = req.params.driverId;
+  const { driverId } = req.params;
   try {
-    const findDriver = await Drivers.findById(id);
+    const findDriver = await Drivers.findById(driverId);
     const { _id, firstName, lastName, mail, workingStatus, phone } = findDriver;
     return res.status(200).json({
       id: _id,
@@ -82,10 +81,10 @@ const getDriverById = async(req, res) => {
 // Method will update driver with specified Id
 // route: PUT drivers/:driverId
 const updateDriver = async(req, res) => {
-  const id = req.param.id;
+  const {driverId} = req.params;
   const driverUpdate = req.body;
   try {
-    const findDriver = await Drivers.findByIdAndUpdate(id, driverUpdate);
+    const findDriver = await Drivers.findByIdAndUpdate(driverId, driverUpdate);
     if (findDriver === null) {
       return res.sendStatus(404);
     }
@@ -101,9 +100,9 @@ const updateDriver = async(req, res) => {
 // Method will delete driver with specified Id
 // route: DELETE drivers/:driverId
 const deleteDriver = async (req, res) => {
-  const id = req.params.driverId;
+  const {driverId} = req.params;
   try {
-    const findDriver = await Drivers.findByIdAndDelete(id);
+    const findDriver = await Drivers.findByIdAndDelete(driverId);
     if (findDriver === null) {
       return res.sendStatus(404);
     }
