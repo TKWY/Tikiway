@@ -15,10 +15,10 @@ describe('Homepage', function () {
     expect(res.statusCode).to.equal(200);
   });
 
-  it('GET /customer should return list of customer', async () => {
+  it('GET /customer should return list of customers', async () => {
     const res = await request(app).get('/customers');
-    expect(res.body.Customers).to.be.instanceof(Array);
-    res.body.Customers.every(result => {
+    expect(res.body).to.be.instanceof(Array);
+    res.body.every(result => {
       expect(result).property('lastname');
       expect(result).to.contain({lastname: 'DOE'})
     })
