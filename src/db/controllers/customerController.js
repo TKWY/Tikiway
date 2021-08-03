@@ -16,53 +16,65 @@ const errorController = require('./errorController');
 // Method will create a new customer account and return customer
 // information as a response.
 // It need to handle data duplication and other errors
-createCustomer = (req, res) => {
-  // Get post body
+createCustomer = async (req, res) => {
   const body = req.body;
-  const newCustomer = new Customer(body);
-  newCustomer.save()
-    .then((response) => {
-      // Return user information as a response
-      res.status(201).json({
-        firstName: response.firstName,
-        lastname: response.lastName,
-        mail: response.mail,
-        phone: response.phone
+  try {
+    const newCustomer = await new Customer(body);
+    const { firstName, lastName, mail, phone} = await newCustomer;
+    return res.status(201).json({
+      firstname: firstName,
+      lastname: lastName,
+      mail: mail,
+      phone: phone
     })
-    .catch(err => {
-      // submit error to the error controller
-      // return response depending on error code
-      if (err) {
-        errorController(err);
-      }
-    })
-  })
+  } catch (err) {
+    if (err) {
+      console.log(err)
+      res.json(err.error)
+    }
+  }
 }; 
 
 // Method will return all the users account as a response
 // Method must not be available for administrators
-getAllCustomers = (req, res) => {
-  // Find all customers
-  Customer.find()
-    .then(customers => {
-      const customerList = customers.map(data => {
-        // Decompose array to return objects in a list of objects
-        return {
-          id: data._id,
-          firstname: data.firstName,
-          lastname: data.lastName,
-          email: data.email,
-          phone: data.phone
-        }
-      })
-      return res.status(200).json(customerList);
+getAllCustomers = async (req, res) => {
+  try {
+    const findCustomer = await Customer.find();
+    const customerList = await findCustomer.map(data => {
+      const { _id, firstName, lastName, email, phone} = data;
+      return {
+        id: _id,
+        firstname: firstName,
+        lastname: lastName,
+        email: email,
+        phone: phone
+      }
     })
-    .catch(err => {
-      // return internal error message
-      if (err) {
-        res.status(500).json(err);
-      };
-    })
+    return res.status(200).json(customerList);
+  } catch (err) {
+    if (err) {
+      res.status(500).json(err.error);
+    }
+  }
+//  Customer.find()
+//    .then(customers => {
+//      const customerList = customers.map(data => {
+//        return {
+//          id: data._id,
+//          firstname: data.firstName,
+//          lastname: data.lastName,
+//          email: data.email,
+//          phone: data.phone
+//        }
+//      })
+//      return res.status(200).json(customerList);
+//    })
+//    .catch(err => {
+//      // return internal error message
+//      if (err) {
+//        res.status(500).json(err);
+//      }
+//    })
 };
 
 // Method will return target user informations as a response

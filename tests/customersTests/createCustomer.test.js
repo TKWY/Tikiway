@@ -3,7 +3,7 @@ const app = require('../../app');
 const request = require('supertest');
 const setup = require('../test-helper');
 
-const url = '/customers/'
+const url = '/api/customers'
 const newUser = {
   firstName: 'John',
   lastName: 'Doe',
@@ -12,18 +12,58 @@ const newUser = {
   email: 'john.doe@mail.fr'
 }
 
-describe('Create customer tests', function () {
+describe('Create new customer', function () {
   setup()
   it('Post return status code 201', async () => {
-    const res = await request(app).post(url)
-      .send(newUser)
-    expect(res.statusCode).to.equal(201);
-
+    try {
+      const res = await request(app).post(url).send(newUser);
+      return expect(res.statusCode).to.equal(201);
+    } catch (err) {
+      if (err) {
+        return console.log(err);
+      }
+    }
   });
 
-  it('Response is an customer object', async () => {
-    const res = await request(app).post(url)
-      .send(newUser)
-    expect(res.body).has.property('firstName', 'John')
+  it('Post return a object', async () => {
+    try {
+      const res = await request(app).post(url).send(newUser);
+      return expect(res.body).is.a('Object');
+    } catch (err) {
+      if (err) {
+        return console.log(err);
+      }
+    }
+  });
+
+  it('Post return a object with property firstname', async () => {
+    try {
+      const res = await request(app).post(url).send(newUser)
+      return expect(res.body).has.property('firstname', 'John')
+    } catch (err) {
+      if (err) {
+        return console.log(err)
+      }
+    }
+  });
+
+  it ('Post return a object with property lastname', async () => {
+    try {
+      const res = await request(app).post(url).send(newUser);
+      return expect(res.body).has.property('lastname', 'Doe')
+    } catch (err) {
+      return console.log(err)
+    }
+  });
+
+  it ('Post return a object with property phone', async() => {
+    try {
+      const res = await request(app).post(url).send(newUser);
+      return expect(res.body).has.property('phone', '+68987705645');
+    } catch (err) {
+      if (err) {
+        return console.log(err);
+      }
+    }
   });
 });

@@ -58,10 +58,10 @@ app.use(session({
 }));
 
 // routes
-app.use('/auth', authRoutes);
-app.use('/customers', customerRoutes);
-app.use('/restaurants', restaurantRoutes);
-app.use('/drivers', driverRoutes);
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api/auth', authRoutes);
+app.use('/api/customers', customerRoutes);
+app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/drivers', driverRoutes);
+app.use('/api/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 module.exports = app;
