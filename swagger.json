@@ -1,13 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "openapi": "3.0.0",
     "title": "TIKIWAY API",
-    "description": "This is a REST API application made to serve Tikiway datas",
+    "description": "This is a REST API application made to serve Tikiway data",
     "license": {
       "name": "Licensed under MIT",
       "url": "https://opensource.org/licenses/MIT"
-    }
+    },
+    "version": "1.0"
   },
   "basePath": "/",
   "tags": [
@@ -76,7 +76,8 @@
           "name": "id",
           "in": "path",
           "required": true,
-          "description": "ID of customer that we want to find"
+          "description": "ID of customer that we want to find",
+          "type": "string"
         }
       ],
       "get": {
@@ -170,7 +171,8 @@
           "name": "id",
           "in": "path",
           "required": true,
-          "description": "ID of driver that we want to find"
+          "description": "ID of driver that we want to find",
+          "type": "string"
         }
       ],
       "get": {
@@ -220,7 +222,7 @@
         }
       }
     },
-    "/restaurants": {
+    "/api/restaurants": {
       "post": {
         "tags": ["Restaurants"],
         "summary": "Create a new restaurant",
@@ -258,13 +260,14 @@
         }
       }
     },
-    "/restaurants/{id}": {
+    "/api/restaurants/{id}": {
       "parameters": [
         {
           "name": "id",
           "in": "path",
           "required": true,
-          "description": "ID of restaurant we want to find"
+          "description": "ID of restaurant we want to find",
+          "type": "string"
         }
       ],
       "get": {

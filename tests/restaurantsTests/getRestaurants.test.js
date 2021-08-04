@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 const request = require('supertest');
 const app = require('../../app');
 
-const url = '/restaurants';
+const url = '/api/restaurants';
 
 describe('Get all restaurant', function() {
   setup()

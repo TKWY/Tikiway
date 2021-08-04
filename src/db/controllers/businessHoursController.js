@@ -43,6 +43,8 @@ const postBusinessHours = async (req, res) => {
   }
 };
 
+
+// Method will post a new exception inside the business hours
 const postException = (req, res) =>  {
   res.json('This is the post exception');
 };

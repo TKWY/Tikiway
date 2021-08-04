@@ -3,7 +3,7 @@ const app = require('../../app');
 const request = require('supertest');
 const setup = require('../test-helper');
 
-const url =  '/drivers';
+const url =  '/api/drivers';
 const newDriver = {
   phone: '11111111',
   mail: 'johndoe@mail.com',

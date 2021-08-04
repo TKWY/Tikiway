@@ -10,41 +10,23 @@ const {response} = require("express");
 
 // Method will add a new driver 
 // route: POST drivers
-//const createDriver = async (req, res) => {
-//  const body = req.body;
-//  try {
-//    const newDriver = await new Drivers(body);
-//    const saveDriver = await newDriver.save();
-//    return res.status(201).json(saveDriver);
-//  } catch (err) {
-//    if (err.code === 11000) {
-//      return res.status(409).json({
-//        error: 'An driver with that phone number or email address already exist, \
-//        please try another one.'
-//      });
-//    }
-//    console.log(err);
-//    return res.status(500).json({error: err.error});
-//  }
-//};
-
 const createDriver = async (req, res) => {
+  const body = req.body;
   try {
-    const newDriver = await new Drivers(req.body);
-    const saveDriver = await newDriver.save()
-    const {firstName, lastName} = saveDriver
-    const driver = {
-      firstname: firstName,
-      lastname: lastName
-    }
-    return res.status(201).json(driver);
+    const newDriver = await new Drivers(body);
+    const saveDriver = await newDriver.save();
+    return res.status(201).json(saveDriver);
   } catch (err) {
-      if (err.code === 11000) {
-        return res.status(409).json('A driver with that phone number or email already exist, please try another one.');
-      }
-      return res.status(500).json({error: err.error})
+    if (err.code === 11000) {
+      return res.status(409).json({
+        error: 'An driver with that phone number or email address already exist, \
+        please try another one.'
+      });
+    }
+    console.log(err);
+    return res.status(500).json({error: err.error});
   }
-}
+};
 
 // Method will return a list of all the driver
 // route: GET /drivers
