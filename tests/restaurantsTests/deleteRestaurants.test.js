@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 const request = require('supertest');
 const app = require('../../app');
 
-const url = '/restaurants';
+const url = '/api/restaurants';
 const newRestaurant = {
   name: `Pizz'Burger`,
   description: `Pizz'burger c'est des pizzas, mais pas que, c'est aussi des burgers, des tacos, et des kebabs...`,

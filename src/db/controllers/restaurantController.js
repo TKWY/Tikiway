@@ -64,22 +64,16 @@ postRestaurant = async(req, res) => {
 // restaurant owner can change their information themselves
 // route PUT restaurants/:restaurantIdd
 updateRestaurant = async (req, res) => {
-  const {restaurantId} = req.params;
-  const { name, description, category, image } = req.body;
+  const { restaurantId } = req.params;
+  const { description, category } = req.body;
   const updatedRestaurant = {
-    name: name,
     description: description,
-    image: image,
     category: category
   }
   try {
     const findRestaurant = await Restaurant.findByIdAndUpdate(restaurantId, updatedRestaurant);
     return res.status(201).json(findRestaurant);
   } catch (err) {
-    if (err.code === 11000) {
-      return res.status(409).json({error: 'A restaurant with that name already exist'});
-    }
-    console.log(err.error);
     return res.status(500).json({error: 'Internal Server Error'});
   }
 };
