@@ -1,5 +1,6 @@
 const { Menu } = require('../models/menuModels');
 const Restaurant = require('../models/restaurantModels');
+const errorHandler = require('./errorController');
 
 // Return list of all menu
 getAllMenu = (req, res) => {
@@ -9,8 +10,7 @@ getAllMenu = (req, res) => {
     })
     .catch(err => {
       if (err) {
-        res.status(404).json('This restaurant does not exist')
-        console.log(err)
+        return errorHandler(err)
       }
     })
 };
@@ -32,7 +32,7 @@ postMenu = (req, res) => {
         })
         .catch(err => {
           if (err) {
-            res.status(500).json(err);
+            return errorHandler(err);
           }
         })
     })
@@ -55,7 +55,7 @@ getMenuById = (req, res) => {
     })
     .catch(err => {
       if (err) {
-        res.status(404).json('This restaurant does not exist');
+        return errorHandler(err);
       }
     })
 };
@@ -77,8 +77,8 @@ updateMenu = (req, res) => {
     })
     .catch(err => {
       if (err) {
-        res.status(404).json('This restaurant does not exist');
-      };
+        return errorHandler(err);
+      }
     })
 };
 
@@ -97,10 +97,10 @@ deleteMenu = (req, res) => {
           })
           .catch(err => {
             if(err) {
-              res.status(404).json('This restaurant does not exist');
-            };
+              return errorHandler(err);
+            }
           })
-      };
+      }
     });
 };
 

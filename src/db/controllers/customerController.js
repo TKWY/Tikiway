@@ -1,24 +1,26 @@
-// This controller regroup customers methods
-// Customer controller need to be refactor as it need async methods
-// Copyright Dev&Design
-
-// Import Customer model
+/*
+ This controller regroup customers methods
+ Customer controller need to be refactor as it need async methods
+ Copyright Dev&Design
+ Import Customer model
+*/
 const Customer = require('../models/customerModels');
 
 // Import Error controller
-const errorController = require('./errorController');
+const errorController = require("./errorController");
 
-// All Methods need to have a better error handling
-// May have to rewrite handler in the future
-// Controller will probably need to change file name to userController
-// so it will be easier for the devs to identify the file.
-
-// Method will create a new customer account and return customer
-// information as a response.
-// It need to handle data duplication and other errors
+/*
+ All Methods need to have a better error handling
+ May have to rewrite handler in the future
+ Controller will probably need to change file name to userController
+ so it will be easier for the devs to identify the file.
+ Method will create a new customer account and return customer
+ information as a response.
+ It need to handle data duplication and other errors
+*/
 createCustomer = async (req, res) => {
-  const body = req.body;
   try {
+    const body = req.body;
     const newCustomer = await new Customer(body);
     const { firstName, lastName, mail, phone} = await newCustomer;
     return res.status(201).json({
@@ -29,8 +31,8 @@ createCustomer = async (req, res) => {
     })
   } catch (err) {
     if (err) {
-      console.log(err)
-      res.json(err.error)
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 }; 
@@ -53,7 +55,8 @@ getAllCustomers = async (req, res) => {
     return res.status(200).json(customerList);
   } catch (err) {
     if (err) {
-      res.status(500).json(err.error);
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 //  Customer.find()
@@ -97,8 +100,9 @@ getCustomersById = (req, res) => {
     .catch(err => {
       // If user does not exist return 404 error
       if (err) {
-        res.sendStatus(404);
-      };
+        const {status, message} = errorController(err);
+        return res.status(status).json({message: message});
+      }
     })
 };
 
@@ -138,8 +142,8 @@ updateCustomer = (req, res) => {
     })
     .catch(err => {
       if (err) {
-        // If error return server side error
-        res.status(500).json(err)
+        const {status, message} = errorController(err);
+        return res.status(status).json({message: message});
       }
     })
   };
@@ -159,7 +163,8 @@ deleteCustomer = (req, res) => {
     .catch(err => {
       // if target user does not exist return 404 error
       if (err) {
-        res.status(404)
+        const {status, message} = errorController(err);
+        return res.status(status).json({message: message});
       }
     })  
 };
