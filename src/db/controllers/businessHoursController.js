@@ -1,22 +1,20 @@
 // controller will contain methods to change restaurant working hours
 const Restaurants = require('../models/restaurantModels');
+const errorController = require("./errorController");
 
-// Method will return list of business hours for restaurant with specidied id
+// Method will return list of business hours for restaurant with specified id
 // required restaurant Id
-// route: GET restaurants/:restaurantId/hours
+// route: GET api/restaurants/:restaurantId/hours
 const getHours = async (req, res) => {
-  const {restaurantId} = req.params;
   try {
+    const {restaurantId} = req.params;
     const findRestaurant = await Restaurants.findById(restaurantId);
-    if (findRestaurant === null) {
-      return res.sendStatus(404);
-    } else {
-      const findBusinessHours = await findRestaurant.businessHours;
-      return res.status(200).json(findBusinessHours);
-    }
+    const findBusinessHours = await findRestaurant.businessHours;
+    return res.status(200).json(findBusinessHours);
   } catch (err) {
     if (err) {
-      return res.status(500).json({error: err.error});
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 };
@@ -30,15 +28,13 @@ const postBusinessHours = async (req, res) => {
   try {
     const findRestaurant = await Restaurants.findById(id);
     const findBusinessHours = await findRestaurant.businessHours;
-    if (!findRestaurant) {
-      return res.sendStatus(404);
-    }
     findBusinessHours.push(body);
     findRestaurant.save();
     return res.status(201).json(findBusinessHours);
   } catch (err) {
     if (err) {
-      return res.status(500).json({error: err.error});
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 };

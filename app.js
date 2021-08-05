@@ -63,5 +63,8 @@ app.use('/api/customers', customerRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/drivers', driverRoutes);
 app.use('/api/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use((req, res) => {
+  res.sendStatus(404);
+})
 
 module.exports = app;

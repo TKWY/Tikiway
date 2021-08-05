@@ -5,8 +5,9 @@
 const Drivers = require('../models/driversModels');
 
 // Import error controller
-const errorController = require('./errorController');
+const errorHandler = require('./errorController');
 const {response} = require("express");
+const errorController = require("./errorController");
 
 // Method will add a new driver 
 // route: POST drivers
@@ -44,13 +45,10 @@ const getAllDriver = async(req, res) => {
         workingStatus: workingStatus
       };
     });
-    if (driversCollection === null ) {
-      return res.sendStatus(404);
-    }
     return res.status(200).json(driversCollection);
   } catch (err) {
     if (err) {
-      res.status(500).json({error: err.error});
+      return errorHandler(err);
     }
   }
 };
@@ -73,7 +71,7 @@ const getDriverById = async(req, res) => {
     })
   } catch(err) {
     if (err) {
-      return res.status(500).json({error: err.error});
+      return errorHandler(err);
     }
   }
 };
@@ -81,9 +79,9 @@ const getDriverById = async(req, res) => {
 // Method will update driver with specified Id
 // route: PUT drivers/:driverId
 const updateDriver = async(req, res) => {
-  const {driverId} = req.params;
-  const driverUpdate = req.body;
   try {
+    const {driverId} = req.params;
+    const driverUpdate = req.body;
     const findDriver = await Drivers.findByIdAndUpdate(driverId, driverUpdate);
     if (findDriver === null) {
       return res.sendStatus(404);
@@ -91,7 +89,8 @@ const updateDriver = async(req, res) => {
     return res.status(201).json(findDriver);
   } catch (err) {
     if (err) {
-      res.status(500).json({error: err.error})
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 };
@@ -100,8 +99,8 @@ const updateDriver = async(req, res) => {
 // Method will delete driver with specified Id
 // route: DELETE drivers/:driverId
 const deleteDriver = async (req, res) => {
-  const {driverId} = req.params;
   try {
+    const {driverId} = req.params;
     const findDriver = await Drivers.findByIdAndDelete(driverId);
     if (findDriver === null) {
       return res.sendStatus(404);
@@ -109,7 +108,8 @@ const deleteDriver = async (req, res) => {
     return res.sendStatus(204);
   } catch (err) {
     if (err) {
-      res.status(500).json({error: err.error});
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 };

@@ -16,6 +16,7 @@ router.get('/', restaurants.getAllRestaurant);
 router.post('/', restaurants.postRestaurant);
 
 // Restaurants target ID endpoints.
+// test if modifications wouldn't be better with patch instead of put
 router.get('/:restaurantId', restaurants.getRestaurantById);
 router.put('/:restaurantId', restaurants.updateRestaurant);
 router.delete('/:restaurantId', restaurants.deleteRestaurant);

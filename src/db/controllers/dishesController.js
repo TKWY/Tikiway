@@ -6,6 +6,7 @@ const { Dish } = require('../models/dishesModels');
 
 // Import Restaurant model
 const Restaurant = require('../models/restaurantModels');
+const errorController = require("./errorController");
 
 
 // Method will return all the dishes of specified menu as a response
@@ -13,8 +14,8 @@ const Restaurant = require('../models/restaurantModels');
 // and the menu Id.
 // route: GET restaurants/:restaurantId/menu/:menuId/dish
 getDishes = async (req, res) => {
-  const { restaurantId, menuId } = req.params
   try {
+    const { restaurantId, menuId } = req.params
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
     const findDish = findMenu.dishes;
@@ -24,7 +25,8 @@ getDishes = async (req, res) => {
     return res.status(200).json(findDish);
   } catch (err) {
     if (err) {
-      return res.json(err); // Need to check errors and return a better status code in case of an error
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 };
@@ -34,8 +36,8 @@ getDishes = async (req, res) => {
 // menu Id.
 // route: GET restaurants/:restaurantId/menu/:menuId/dish/:dishId
 getDishById = async (req, res) => {
-  const { restaurantId, menuId, dishId } = req.params;
   try {
+    const { restaurantId, menuId, dishId } = req.params;
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
     const findDish = await findMenu.dishes.id(dishId);
@@ -45,7 +47,8 @@ getDishById = async (req, res) => {
     return res.status(200).json(findDish);
   } catch (err) {
     if (err) {
-      return res.json(err); // Need to check errors and return a better status code in case of an error
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 };
@@ -54,9 +57,9 @@ getDishById = async (req, res) => {
 // Need restaurant Id and menu Id
 // route: POST restaurants/:restaurantId/menu/:menuId/dish/:dishId
 postDish = async(req, res) => {
-  const { description, promoPrice, price, image, name } = req.body;
-  const { restaurantId, menuId } = req.params;
   try {
+    const { description, promoPrice, price, image, name } = req.body;
+    const { restaurantId, menuId } = req.params;
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
     const dish = findMenu.dishes;
@@ -77,7 +80,8 @@ postDish = async(req, res) => {
     res.sendStatus(500);
   } catch (err) {
     if (err) {
-      return res.json(err); // Need to handle errors
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 };
@@ -87,9 +91,9 @@ postDish = async(req, res) => {
 // Need restaurant Id and menu Id
 // route: restaurants/:restaurantId/menu/:menuId/dish/:dishId
 updateDish = async (req, res) =>  {
-  const { restaurantId, menuId, dishId } = req.params;
-  const { name, description, price, promoPrice } = req.body;
   try {
+    const { restaurantId, menuId, dishId } = req.params;
+    const { name, description, price, promoPrice } = req.body;
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
     const findDish = await findMenu.dishes.id(dishId);
@@ -106,7 +110,8 @@ updateDish = async (req, res) =>  {
     return res.status(201).json(findDish);
   } catch (err) {
     if (err) {
-      return res.json(err); // Need to handle errors
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 };
@@ -115,8 +120,8 @@ updateDish = async (req, res) =>  {
 // Method will remove dish with specified Id
 // Need restaurant Id and menu Id
 deleteDish = async (req, res) => {
-  const { restaurantId, menuId, dishId } = req.params;
   try {
+    const { restaurantId, menuId, dishId } = req.params;
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
     const findDish = await findMenu.dishes.id(dishId);
@@ -128,7 +133,8 @@ deleteDish = async (req, res) => {
     return res.sendStatus(404);
   } catch (err) {
     if (err) {
-      res.json(err); // Need to handle errors
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
     }
   }
 };
