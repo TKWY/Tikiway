@@ -6,9 +6,13 @@
   "scripts": {
     "start": "NODE_ENV=prod node server",
     "dev": "DEBUG=server:debug NODE_ENV=dev nodemon server --exec",
-    "test": "DEBUG=server:debug NODE_ENV=test mocha --recursive --exit --timeout 10000 tests/",
-    "restaurant-test": "DEBUG=server:debug NODE_ENV=test mocha --recursive --exit --timeout 10000 tests/restaurantsTests",
-    "menu-test": "DEBUG=server:debug NODE_ENV=test mocha --recursive --exit --timeout 10000 tests/menuTests",
+    "test": "DEBUG=server:debug NODE_ENV=test mocha --recursive --exit --timeout 10000",
+    "test:all": "npm test tests/",
+    "test:customers": "npm test tests/customersTests",
+    "test:restaurants": "npm test tests/restaurantsTests",
+    "test:menus": "npm test tests/menuTests",
+    "test:dishes": "npm test tests/dishesTests",
+    "test:drivers": "npm test tests/driversTest",
     "test:ci": "NODE_ENV=test mocha --recursive --timeout 20000 tests/",
     "test-with-coverage": "DEBUG=server:debug NODE_ENV=test nyc mocha --recursive --exit --timeout 100000 tests/",
     "eslint": "eslint src/**/*.js --ignore-pattern \"node_modules/\""
