@@ -23,13 +23,10 @@ const newDish = {
 describe('Delete dish', function() {
   setup();
   it('Return code 204', async() => {
-    const postRestaurant = await request(app).post(url)
-      .send(newRestaurant);
-    const postMenu  = await request(app).post(url+`/${postRestaurant.body._id}/menu`)
-      .send(newMenu);
-    const postDish = await request(app).post(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish`)
-      .send(newDish);
+    const postRestaurant = await request(app).post(url).send(newRestaurant);
+    const postMenu  = await request(app).post(url+`/${postRestaurant.body._id}/menu`).send(newMenu);
+    const postDish = await request(app).post(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish`).send(newDish);
     const res = await request(app).delete(url+`/${postRestaurant.body._id}/menu/${postMenu.body._id}/dish/${postDish.body._id}`)
     expect(res.statusCode).to.equal(204);
-  })
-})
+  });
+});
