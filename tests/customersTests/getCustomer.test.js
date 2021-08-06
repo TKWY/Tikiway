@@ -12,11 +12,11 @@ const setup = require('../test-helper');
 const app = require('../../app');
 
 // Import user model
-const User = require('../../src/db/models/customerModels');
+const Customer = require('../../src/db/models/customerModels');
 
 // Local object and url to use for tests
 const url = '/api/customers'
-const newUser = {
+const newCustomer = {
   firstName: 'John',
   lastName: 'Doe',
   phone: '+68987705645',
@@ -26,11 +26,11 @@ const newUser = {
 
 // Tests
 describe('Get all customers', function () {
-  setup()
+  setup();
 
   // Will create user before each tests
   beforeEach(async () => {
-    const user = await new User(newUser);
+    const user = await new Customer(newCustomer);
     return await user.save()
   })
 
