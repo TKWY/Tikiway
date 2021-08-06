@@ -4,6 +4,8 @@
 // Import tests requirements
 const expect = require('chai').expect;
 const request = require('supertest');
+
+// Setup start mongoose in memory
 const setup = require('../test-helper');
 
 // Import application
@@ -19,9 +21,12 @@ let newUser = {
   email: 'john.doe@mail.fr'
 };
 
-// Test will delete target user and return a status code 2O4 for no content;
+// Tests
 describe('Delete customer', function () {
   setup();
+
+  // Tests will delete target customer
+  // Does it return status code 204
   it('Return status code 204', async() => {
     const postCustomer = await request(app).post(url).send(newUser);
     const res = await request(app).delete(url+`/${postCustomer.body.id}`);
