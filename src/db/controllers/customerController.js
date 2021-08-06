@@ -60,25 +60,6 @@ getAllCustomers = async (req, res) => {
       return res.status(status).json({message: message});
     }
   }
-//  Customer.find()
-//    .then(customers => {
-//      const customerList = customers.map(data => {
-//        return {
-//          id: data._id,
-//          firstname: data.firstName,
-//          lastname: data.lastName,
-//          email: data.email,
-//          phone: data.phone
-//        }
-//      })
-//      return res.status(200).json(customerList);
-//    })
-//    .catch(err => {
-//      // return internal error message
-//      if (err) {
-//        res.status(500).json(err);
-//      }
-//    })
 };
 
 // Method will return target user informations as a response

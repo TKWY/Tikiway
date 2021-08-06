@@ -1,9 +1,20 @@
+// This contain all the tests to get every customers
+// Dev&Design
+
+// Import tests requirements
 const expect = require('chai').expect;
 const request = require('supertest');
-const app = require('../../app');
+
+// Setup start mongoose in memory
 const setup = require('../test-helper');
+
+// Import application
+const app = require('../../app');
+
+// Import user model
 const User = require('../../src/db/models/customerModels');
 
+// Local object and url to use for tests
 const url = '/api/customers'
 const newUser = {
   firstName: 'John',
@@ -13,33 +24,38 @@ const newUser = {
   email: 'john.doe@mail.fr'
 }
 
-const addUser = async () => {
-  const user = await new User(newUser);
-  return await user.save();
-}
-
+// Tests
 describe('Get all customers', function () {
   setup()
-  it('GET return status code 200', async () => {
-    try {
-      await addUser();
-      const res = await request(app).get(url);
-      return expect(res.statusCode).to.equal(200);
-    } catch (err) {
-      if (err) {
-        console.log(err);
-      }
-    }
+
+  // Will create user before each tests
+  beforeEach(async () => {
+    const user = await new User(newUser);
+    return await user.save()
+  })
+
+  // Does it return a status code 200?
+  it('Return status code 200', async () => {
+    const res = await request(app).get(url);
+    return expect(res.statusCode).to.equal(200);
   });
 
-  it('GET return an array', async () => {
-    await addUser();
+  // Is response an array?
+  it('Return an array', async () => {
     const res = await request(app).get(url);
     expect(res.body).to.be.instanceof(Array);
   });
 
-  it('GET return an array with a property lastname', async () => {
-    await addUser();
+  // Does array contain objects?
+  it ('Return an array containing objects', async () => {
+    const res = await request(app).get(url);
+    res.body.every(customer => {
+      expect(customer).to.be.instanceof(Object);
+    })
+  })
+
+  // Does object has a property lastname?
+  it('Returned object has a property lastname', async () => {
     const res = await request(app).get(url);
     expect(res.body).to.be.instanceof(Array);
     res.body.every(result => {
@@ -48,8 +64,8 @@ describe('Get all customers', function () {
     })
   });
 
-  it('GET return an array with property firstname', async () => {
-    await addUser();
+  // Does object has property firstname
+  it('Returned object has a property firstname', async () => {
     const res = await request(app).get(url);
     expect(res.body).to.be.instanceof(Array);
     res.body.every(result => {
@@ -58,8 +74,8 @@ describe('Get all customers', function () {
     })
   });
 
-  it('GET return an array with property email', async () => {
-    await addUser();
+  // Does object has property email
+  it('Returned object has a property email', async () => {
     const res = await request(app).get(url);
     expect(res.body).to.be.instanceof(Array);
     res.body.every(result => {
@@ -68,8 +84,8 @@ describe('Get all customers', function () {
     })
   });
 
-  it('GET return an array with property phone', async () => {
-    await addUser();
+  // Does object has property phone
+  it('Returned object has a property  phone', async () => {
     const res = await request(app).get(url);
     expect(res.body).to.be.instanceof(Array);
     res.body.every(result => {
