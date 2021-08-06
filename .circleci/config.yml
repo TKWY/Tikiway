@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@4.1
 
 jobs:
-  run-test:  
+  run-customers-test:
     docker:
       - image: cimg/node:15.1
     resource_class: small
@@ -11,13 +11,28 @@ jobs:
       - checkout
       - node/install-packages
       - run:
-          name: Run tests
-          command: npm run test:ci
+          name: Run customers tests
+          command: npm run test:customers
+
+  run-restaurants-test:
+    docker:
+      - image: cimg/node:15.1
+    resource_class: small
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Run restaurants test
+          command: npm run test:restaurants
 
 workflows:
   Pull request: 
     jobs:
-      - run-test:
+      - run-customers-test:
           context:
             - test 
+            - build-and-test
+      - run-restaurants-test:
+          context:
+            - test
             - build-and-test
