@@ -22,8 +22,9 @@ createCustomer = async (req, res) => {
   try {
     const body = req.body;
     const newCustomer = await new Customer(body);
-    const { firstName, lastName, mail, phone} = await newCustomer;
+    const { firstName, lastName, mail, phone, _id} = await newCustomer;
     return res.status(201).json({
+      id: _id,
       firstname: firstName,
       lastname: lastName,
       mail: mail,
@@ -150,23 +151,17 @@ updateCustomer = (req, res) => {
 
 // Method will delete target user
 //  This method is only available for administrators
-deleteCustomer = (req, res) => {
-  // Find target user
-  Customer.findById(req.params.id)
-    .then(response => {
-      // Delete user with target Id
-      response.deleteOne({_id: req.params.id}, () => {
-        // Return status code 204 to validate target user suppression
-        res.sendStatus(204)
-      })
-    })
-    .catch(err => {
-      // if target user does not exist return 404 error
-      if (err) {
-        const {status, message} = errorController(err);
-        return res.status(status).json({message: message});
-      }
-    })  
+deleteCustomer = async (req, res) => {
+  try {
+    const id = req.params.customerId;
+    await Customer.findByIdAndDelete(id);
+    return res.sendStatus(204);
+  } catch (err) {
+    if (err) {
+      const { status, message } = errorController(err);
+      return res.status(status).json({message: message});
+    }
+  }
 };
 
 

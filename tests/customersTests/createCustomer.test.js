@@ -3,8 +3,8 @@ const app = require('../../app');
 const request = require('supertest');
 const setup = require('../test-helper');
 
-const url = '/api/customers'
-const newUser = {
+let url = '/api/customers'
+let newUser = {
   firstName: 'John',
   lastName: 'Doe',
   phone: '+68987705645',
@@ -13,7 +13,7 @@ const newUser = {
 }
 
 describe('Create new customer', function () {
-  setup()
+  setup();
   it('Post return status code 201', async () => {
     try {
       const res = await request(app).post(url).send(newUser);
