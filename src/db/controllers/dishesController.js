@@ -116,21 +116,18 @@ updateDish = async (req, res) =>  {
   }
 };
 
-
 // Method will remove dish with specified Id
 // Need restaurant Id and menu Id
+// route: DELETE api/restaurants/:restaurantId/menu/:menuId/dish/:dishId
 deleteDish = async (req, res) => {
   try {
     const { restaurantId, menuId, dishId } = req.params;
     const findRestaurant = await Restaurant.findById(restaurantId);
     const findMenu = await findRestaurant.menu.id(menuId);
-    const findDish = await findMenu.dishes.id(dishId);
-    if (!findMenu) {
-      return res.sendStatus(404);
-    }
-    findDish.remove();
-    findRestaurant.save();
-    return res.sendStatus(404);
+    const dishes = findMenu.dishes;
+    const findDish = findMenu.dishes.findIndex(dish => dish._id === dishId);
+    dishes.splice(findDish);
+    return res.status(204).json({message: 'Dish has been removed'});
   } catch (err) {
     if (err) {
       const {status, message} = await errorController(err);
