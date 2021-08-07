@@ -25,6 +25,28 @@ jobs:
           name: Run restaurants test
           command: npm run test:restaurants
 
+  run-menus-test:
+    docker:
+      - image: cimg/node:15.1
+    resource_class: small
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Run menus test
+          command: npm run test:menus
+
+  run-dishes-test:
+    docker:
+      - image: cimg/node:15.1
+    resource_class: small
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Run dishes test
+          command: npm run test:dishes
+
 workflows:
   Pull request: 
     jobs:
@@ -33,6 +55,14 @@ workflows:
             - test 
             - build-and-test
       - run-restaurants-test:
+          context:
+            - test
+            - build-and-test
+      - run-menus-test:
+          context:
+            - test
+            - build-and-test
+      - run-dishes-test:
           context:
             - test
             - build-and-test
