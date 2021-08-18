@@ -88,29 +88,32 @@ getCustomersById = async (req, res) => {
       return res.status(status).json({message: message});
     }
   }
-  //Customer.findById(req.params.id)
-  //  .then(response => {
-  //    res.status(200).json({
-  //      id: response._id,
-  //      firstname: response.firstName,
-  //      lastname: response.lastName,
-  //      birthdate: response.dateOfBirth,
-  //      email: response.email,
-  //      phone: response.phone,
-  //      profileImage: response.profileImage
-  //    })
-  //  })
-  //  .catch(err => {
-  //    // If user does not exist return 404 error
-  //    if (err) {
-  //      const {status, message} = errorController(err);
-  //      return res.status(status).json({message: message});
-  //    }
-  //  })
 };
 
 // Method will update target id and return updated informations
-updateCustomer = (req, res) => {
+updateCustomer = async(req, res) => {
+  try {
+    const { id } = req.params;
+    const findCustomer = await Customer.findByIdAndUpdate(id, req.body, {new: true});
+    const { _id, firstName, lastName, email, phone, profileImage } = findCustomer;
+    const customer = {
+      id: _id,
+      lastname: lastName,
+      firstname: firstName,
+      email: email,
+      phone: phone,
+      image: profileImage
+    };
+    return res.status(201).json(customer);
+  } catch (err) {
+    if (err) {
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
+    }
+  }
+}
+
+/*updateCustomer = (req, res) => {
   // Check if user is logged in and have cookie
   if (!req.session.isAuthenticated) {
     res.status(403).json('Please log in first');
@@ -149,7 +152,7 @@ updateCustomer = (req, res) => {
         return res.status(status).json({message: message});
       }
     })
-  };
+  };*/
 
 // Method will delete target user
 //  This method is only available for administrators

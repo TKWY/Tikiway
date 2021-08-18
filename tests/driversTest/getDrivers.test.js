@@ -23,6 +23,6 @@ describe('Create driver account tests', function() {
   it ('Response has firstName property equal to john', async() => {
     const res = await request(app).post(url)
       .send(newDriver);
-    expect(res.body).has.property('firstname', 'john');
+    expect(res.body).has.property('firstName', 'john');
   })
 })
