@@ -12,8 +12,8 @@ const setup = require('../test-helper');
 const app = require('../../app');
 
 // Local objects and url to use for tests
-let url = '/api/customers';
-let newUser = {
+const url = '/api/customers';
+const newUser = {
   firstName: 'John',
   lastName: 'Doe',
   phone: '+68987705645',
