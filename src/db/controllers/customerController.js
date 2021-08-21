@@ -1,23 +1,14 @@
-/*
- This controller regroup customers methods
- Customer controller need to be refactor as it need async methods
- Copyright Dev&Design
- Import Customer model
-*/
+// This controller regroup customers methods
+// Copyright Dev&Design
+
+// Import Customer model
 const Customer = require('../models/customerModels');
 
 // Import Error controller
 const errorController = require("./errorController");
 
-/*
- All Methods need to have a better error handling
- May have to rewrite handler in the future
- Controller will probably need to change file name to userController
- so it will be easier for the devs to identify the file.
- Method will create a new customer account and return customer
- information as a response.
- It need to handle data duplication and other errors
-*/
+// Method will create a new customer account and return customer information
+// route: POST api/v1/customers
 createCustomer = async (req, res) => {
   try {
     const body = req.body;
@@ -41,7 +32,7 @@ createCustomer = async (req, res) => {
 
 // Method will return all the users account as a response
 // Method must not be available for administrators
-//
+// Route: GET api/v1/customers
 getAllCustomers = async (req, res) => {
   try {
     const findCustomer = await Customer.find();
@@ -67,7 +58,7 @@ getAllCustomers = async (req, res) => {
 
 // Method will return target user informations as a response
 // This method serve only connected user
-// route GET api/customers/:id
+// route GET api/v1/customers/:id
 getCustomersById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -91,6 +82,7 @@ getCustomersById = async (req, res) => {
 };
 
 // Method will update target id and return updated informations
+// route: PUT api/v1/customers/:id
 updateCustomer = async(req, res) => {
   try {
     const { id } = req.params;
@@ -113,49 +105,9 @@ updateCustomer = async(req, res) => {
   }
 }
 
-/*updateCustomer = (req, res) => {
-  // Check if user is logged in and have cookie
-  if (!req.session.isAuthenticated) {
-    res.status(403).json('Please log in first');
-  };
-  // If logged in check if current user is in the database
-  // And update user informations
-  Customer.findOneAndUpdate({_id: req.params.id}, req.body, err => {
-    if (err) {
-      // If error return status code 500 user does not exist
-      res.sendStatus(404);
-    };
-  })
-    .then(() => {
-      // Find user with target Id
-      Customer.findOne({_id: req.params.id})
-        .then(customer => {
-          // Return user information
-          res.status(201).json({
-            phone: customer.phone,
-            email: customer.email,
-            firstname: customer.firstName,
-            lastname: customer.lastName,
-            birthdate: customer.dateOfBirth
-          })
-        })
-        .catch(err => {
-          // If user does not exist return 404 error
-          if (err) {
-            res.status(404)
-          }
-        })
-    })
-    .catch(err => {
-      if (err) {
-        const {status, message} = errorController(err);
-        return res.status(status).json({message: message});
-      }
-    })
-  };*/
-
 // Method will delete target user
 //  This method is only available for administrators
+// route: api/v1/customers/:id
 deleteCustomer = async (req, res) => {
   try {
     const id = req.params.id;
@@ -168,7 +120,6 @@ deleteCustomer = async (req, res) => {
     }
   }
 };
-
 
 // Export all the methods on customerController
 module.exports = {
