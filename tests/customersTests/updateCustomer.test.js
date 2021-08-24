@@ -31,8 +31,7 @@ const updateUser = {
 describe('Update customer', function() {
   setup();
 
-  // Tests will update user information
-  // Does it return status code 201
+  // Test will return 201 if customer is updated
   it( 'Return status code 201', async() => {
     const postCustomer = await new Customer(newUser);
     const saveCustomer = await postCustomer.save();
@@ -40,6 +39,7 @@ describe('Update customer', function() {
     expect(res.statusCode).to.equal(201);
   });
 
+  // Test will return the new firstname
   it('Return new firstname', async() => {
     const postCustomer = await new Customer(newUser);
     const saveCustomer = await postCustomer.save();
