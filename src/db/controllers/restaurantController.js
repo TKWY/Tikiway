@@ -6,6 +6,7 @@ const Restaurant = require('../models/restaurantModels');
 
 // Import Error handler controller
 const errorController = require('./errorController');
+const {response} = require("express");
 
 // Method will return a list of all restaurant
 // route: GET restaurants
@@ -89,11 +90,28 @@ deleteRestaurant = async (req, res) => {
   }
 };
 
+// Method will return restaurant geolocation
+// route : GET restaurants/:restaurantId/loc
+getLocation = async (req, res) => {
+  const {restaurantId} = req.params;
+  try {
+    const restaurant = await Restaurant.findById(restaurantId);
+    const geolocation = await restaurant.address;
+    return res.status(200).json(geolocation);
+  } catch (err) {
+    if (err) {
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
+    }
+  }
+};
+
 // Export all methods on restaurantController
 module.exports = {
   getAllRestaurant,
   getRestaurantById,
   postRestaurant,
   deleteRestaurant,
-  updateRestaurant
+  updateRestaurant,
+  getLocation
 };
