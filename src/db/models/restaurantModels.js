@@ -31,9 +31,18 @@ const restaurantSchema = new Schema({
     businessHours: [businessHoursSchema]
   }],
   address: {
-    addressLine: String,
-    lng: Number,
-    lat: Number
+    addressLine: {
+      type: String,
+      default: 'Restaurant'
+    },
+    lng: {
+      type: Number,
+      default: 0.00
+    },
+    lat: {
+      type: Number,
+      default: 0.00
+    }
   }
 })
 
