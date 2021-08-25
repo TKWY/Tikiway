@@ -25,8 +25,7 @@ let newUser = {
 describe('Delete customer', function () {
   setup();
 
-  // Tests will delete target customer
-  // Does it return status code 204
+  // Test will return 204 if customer has been deleted
   it('Return status code 204', async() => {
     const postCustomer = await request(app).post(url).send(newUser);
     const res = await request(app).delete(url+`/${postCustomer.body.id}`);
