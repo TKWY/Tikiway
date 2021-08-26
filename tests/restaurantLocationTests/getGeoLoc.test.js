@@ -26,35 +26,47 @@ describe('Get restaurant location', function() {
   it('Return status code 200', async() => {
     const postRestaurant = await new Restaurant(newRestaurant);
     const saveRestaurant = await postRestaurant.save();
-    const res = await request(app).get(url+`/${saveRestaurant._id}/loc`)
+    const res = await request(app).get(url+`/${saveRestaurant.id}/loc`);
     expect(res.statusCode).to.equal(200);
   });
 
-  it('Return a object', async() => {
+  // Is response an array?
+  it('Return a array', async() => {
     const postRestaurant = await new Restaurant(newRestaurant);
     const saveRestaurant = await postRestaurant.save();
-    const res = await request(app).get(url+`/${saveRestaurant._id}/loc`)
-    expect(res.body).to.be.an('object')
+    const res = await request(app).get(url+`/${saveRestaurant.id}/loc`);
+    expect(res.body).to.be.an('array')
   });
 
-  it('Return a object with property address', async() => {
+  // Does array has an object with property addressName equal to Current Position?
+  it('Return object with property addressName', async() => {
     const postRestaurant = await new Restaurant(newRestaurant);
     const saveRestaurant = await postRestaurant.save();
-    const res = await request(app).get(url+`/${saveRestaurant._id}/loc`)
-    expect(res.body).has.property('addressLine', 'Restaurant')
+    const res = await request(app).get(url+`/${saveRestaurant.id}/loc`);
+    expect(res.body[0]).has.property('addressName', 'Current Position')
   });
 
+  // Does array has an object with property coordinates?
+  it ('Return object with property coordinates', async() => {
+    const postRestaurant = await new Restaurant(newRestaurant);
+    const saveRestaurant = await postRestaurant.save();
+    const res = await request(app).get(url+`/${saveRestaurant.id}/loc`);
+    expect(res.body[0]).has.property('coordinates');
+  })
+
+  // Does coordinates has an object with property latitude?
   it('Return a object with property latitude', async() => {
     const postRestaurant = await new Restaurant(newRestaurant);
     const saveRestaurant = await postRestaurant.save();
-    const res = await request(app).get(url+`/${saveRestaurant._id}/loc`)
-    expect(res.body).has.property('lat', 0.00);
+    const res = await request(app).get(url+`/${saveRestaurant.id}/loc`);
+    expect(res.body[0].coordinates).has.property('lat', 0.00);
   });
 
+  // Does coordinates has an object with property longitude?
   it('Return a object with property longitude', async() => {
     const postRestaurant = await new Restaurant(newRestaurant);
     const saveRestaurant = await postRestaurant.save();
-    const res = await request(app).get(url+`/${saveRestaurant._id}/loc`)
-    expect(res.body).has.property('lng', 0.00);
+    const res = await request(app).get(url+`/${saveRestaurant.id}/loc`);
+    expect(res.body[0].coordinates).has.property('lng', 0.00);
   });
 })

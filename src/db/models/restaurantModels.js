@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const {menuSchema} = require('./menuModels');
 const {businessHoursSchema} = require('./businessHoursModels');
+const geoLocSchema = require('./geolocModels');
 
 const restaurantSchema = new Schema({
   name: {
@@ -31,18 +32,8 @@ const restaurantSchema = new Schema({
     businessHours: [businessHoursSchema]
   }],
   address: {
-    addressLine: {
-      type: String,
-      default: 'Restaurant'
-    },
-    lng: {
-      type: Number,
-      default: 0.00
-    },
-    lat: {
-      type: Number,
-      default: 0.00
-    }
+    type: [geoLocSchema],
+    default: () => ({})
   }
 })
 
