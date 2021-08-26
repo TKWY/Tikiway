@@ -25,6 +25,17 @@ jobs:
           name: Run restaurants test
           command: npm run test:restaurants
 
+  run-restaurants-geolocation-test:
+    docker:
+      - image: cimg/node:15.1
+    resource_class: small
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Run restaurants geolocation test
+          command: npm run test:restaurantsLocation
+
   run-menus-test:
     docker:
       - image: cimg/node:15.1
@@ -48,13 +59,17 @@ jobs:
           command: npm run test:dishes
 
 workflows:
-  Pull request: 
+  Pull request:
     jobs:
       - run-customers-test:
           context:
-            - test 
+            - test
             - build-and-test
       - run-restaurants-test:
+          context:
+            - test
+            - build-and-test
+      - run-restaurants-geolocation-test:
           context:
             - test
             - build-and-test
