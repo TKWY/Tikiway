@@ -10,6 +10,7 @@
     "test:all": "npm test tests/",
     "test:customers": "npm test tests/customersTests",
     "test:restaurants": "npm test tests/restaurantsTests",
+    "test:restaurantsLocation": "npm test tests/restaurantLocationTests",
     "test:menus": "npm test tests/menuTests",
     "test:dishes": "npm test tests/dishesTests",
     "test:drivers": "npm test tests/driversTest",
