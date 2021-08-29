@@ -93,7 +93,7 @@ deleteRestaurant = async (req, res) => {
 // Method will return restaurant geolocation
 // route : GET restaurants/:restaurantId/loc
 getLocation = async (req, res) => {
-  const restaurantId = req.params;
+  const {restaurantId} = req.params;
   try {
     const restaurant = await Restaurant.findById(restaurantId);
     const geolocation = await restaurant.address;
