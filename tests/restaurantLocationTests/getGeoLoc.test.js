@@ -46,12 +46,20 @@ describe('Get restaurant location', function() {
     expect(res.body[0]).has.property('addressName', 'Current Position')
   });
 
-  // Does array has an object with property coordinates?
+  // Does array has a property coordinates?
   it ('Return object with property coordinates', async() => {
     const postRestaurant = await new Restaurant(newRestaurant);
     const saveRestaurant = await postRestaurant.save();
     const res = await request(app).get(url+`/${saveRestaurant.id}/loc`);
     expect(res.body[0]).has.property('coordinates');
+  });
+
+  // Is coordinates an object?
+  it('Return an object coordinates', async() => {
+    const postRestaurant = await new Restaurant(newRestaurant);
+    const saveRestaurant = await postRestaurant.save();
+    const res = await request(app).get(url+`/${saveRestaurant.id}/loc`);
+    expect(res.body[0].coordinates).to.be.an('object');
   })
 
   // Does coordinates has an object with property latitude?
