@@ -93,7 +93,7 @@ deleteRestaurant = async (req, res) => {
 // Method will return restaurant geolocation
 // route : GET restaurants/:restaurantId/loc
 getLocation = async (req, res) => {
-  const {restaurantId} = req.params;
+  const restaurantId = req.params;
   try {
     const restaurant = await Restaurant.findById(restaurantId);
     const geolocation = await restaurant.address;
@@ -106,6 +106,23 @@ getLocation = async (req, res) => {
   }
 };
 
+// Method will post new restaurant location
+// route: POST restaurants/:restaurantId/loc
+
+postLocation = async (req, res) => {
+  const {restaurantId} = req.params;
+  const body = req.body;
+  try {
+    const restaurant = await Restaurant.findById(restaurantId);
+    const geolocation = await restaurant.address;
+    const postGeolocation = await geolocation.push(body);
+    return res.status(201).json(geolocation[postGeolocation - 1]);
+  } catch (err) {
+    const {status, message} = await errorController(err);
+    return res.status(status).json({message: message});
+  }
+};
+
 // Export all methods on restaurantController
 module.exports = {
   getAllRestaurant,
@@ -113,5 +130,6 @@ module.exports = {
   postRestaurant,
   deleteRestaurant,
   updateRestaurant,
-  getLocation
+  getLocation,
+  postLocation
 };
