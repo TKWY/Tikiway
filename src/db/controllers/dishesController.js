@@ -127,7 +127,7 @@ deleteDish = async (req, res) => {
     const dishes = findMenu.dishes;
     const findDish = findMenu.dishes.findIndex(dish => dish._id === dishId);
     dishes.splice(findDish);
-    return res.status(204).json({message: 'Dish has been removed'});
+    return res.sendStatus(204);
   } catch (err) {
     if (err) {
       const {status, message} = await errorController(err);

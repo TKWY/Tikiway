@@ -24,6 +24,7 @@ router.delete('/:restaurantId', restaurants.deleteRestaurant);
 // Address routes endpoints
 router.get('/:restaurantId/loc', restaurants.getLocation);
 router.post('/:restaurantId/loc', restaurants.postLocation);
-router.put('/:restaurantId/loc', restaurants.updateLocation);
+router.put('/:restaurantId/loc/:locId', restaurants.updateLocation);
+router.delete('/:restaurantId/loc/:locId', restaurants.deleteLocation);
 
 module.exports = router;

@@ -108,7 +108,6 @@ getLocation = async (req, res) => {
 
 // Method will post new restaurant location
 // route: POST restaurants/:restaurantId/loc
-
 postLocation = async (req, res) => {
   const {restaurantId} = req.params;
   const body = req.body;
@@ -123,13 +122,46 @@ postLocation = async (req, res) => {
   }
 };
 
+// Method will update restaurant target location
+// route: UPDATE restaurants/:restaurantId/loc/:locId
 updateLocation = async(req, res) => {
-  const {restaurantId} = req.params;
-  const { addressName, coordinates } = req.body;
-  const findRestaurant = await Restaurant.findById(restaurantId);
-  const location = findRestaurant.address;
-  console.log(location);
-  return res.status(204).json(location);
+  try {
+    const {restaurantId, locId} = req.params;
+    const { addressName, coordinates } = req.body;
+    const findRestaurant = await Restaurant.findById(restaurantId);
+    const location = await findRestaurant.address.id(locId);
+    if (location === null) {
+      return res.sendStatus(404);
+    }
+    location.addressName = addressName;
+    location.coordinates = coordinates;
+    findRestaurant.save();
+    return res.status(201).json(location);
+  } catch (err) {
+    if (err) {
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
+    }
+  }
+};
+
+// Method will delete restaurant target location
+// route: DELETE restaurants/:restaurantId/loc/:locId
+deleteLocation = async(req, res) => {
+  try {
+    const {restaurantId, locId} = req.params;
+    const findRestaurant = await Restaurant.findById(restaurantId);
+    const location = await findRestaurant.address;
+    const findLocation = await location.findIndex(location => location.id === locId);
+    location.splice(findLocation);
+    findRestaurant.save();
+    return res.sendStatus(204);
+  } catch (err) {
+    if (err) {
+      const {status, message} = await errorController(err);
+      return res.status(status).json({message: message});
+    }
+  }
 }
 
 // Export all methods on restaurantController
@@ -141,5 +173,6 @@ module.exports = {
   updateRestaurant,
   getLocation,
   postLocation,
-  updateLocation
+  updateLocation,
+  deleteLocation
 };

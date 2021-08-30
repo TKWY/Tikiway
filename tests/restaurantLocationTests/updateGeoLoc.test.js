@@ -35,8 +35,15 @@ describe('Update restaurant location', function() {
   it('Return status 204', async() => {
     const postRestaurant = await new Restaurant(newRestaurant);
     const saveRestaurant = await postRestaurant.save();
-    const res = await request(app).put(url+`/${saveRestaurant.id}/loc`).send(coordinate);
-    expect(res.statusCode).to.equal(204);
+    const res = await request(app).put(url+`/${saveRestaurant.id}/loc/${saveRestaurant.address[0].id}`).send(coordinate);
+    expect(res.statusCode).to.equal(201);
   });
 
+  // Does it return an address name equal to Papeete
+  it('Return updated response with address name Papeete', async() => {
+    const postRestaurant = await new Restaurant(newRestaurant);
+    const saveRestaurant = await postRestaurant.save();
+    const res = await request(app).put(url+`/${saveRestaurant.id}/loc/${saveRestaurant.address[0].id}`).send(coordinate);
+    expect(res.body).has.property('addressName', 'Papeete');
+  });
 })
