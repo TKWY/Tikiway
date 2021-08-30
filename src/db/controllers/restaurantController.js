@@ -123,6 +123,15 @@ postLocation = async (req, res) => {
   }
 };
 
+updateLocation = async(req, res) => {
+  const {restaurantId} = req.params;
+  const { addressName, coordinates } = req.body;
+  const findRestaurant = await Restaurant.findById(restaurantId);
+  const location = findRestaurant.address;
+  console.log(location);
+  return res.status(204).json(location);
+}
+
 // Export all methods on restaurantController
 module.exports = {
   getAllRestaurant,
@@ -131,5 +140,6 @@ module.exports = {
   deleteRestaurant,
   updateRestaurant,
   getLocation,
-  postLocation
+  postLocation,
+  updateLocation
 };
