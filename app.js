@@ -11,6 +11,7 @@ const customerRoutes = require('./src/routes/customerRoutes');
 const restaurantRoutes = require('./src/routes/restaurantRoutes');
 const driverRoutes = require('./src/routes/driverRoutes');
 const authRoutes  = require('./src/routes/authRoutes');
+const orderRoutes = require('./src/routes/orderRoutes');
 
 // Local const
 const config = require('./config');
@@ -49,8 +50,8 @@ app.use(cors({
 }));
 app.use(session({
   name: 'tkwy-session',
-  secret: 'the secret', 
-  saveUninitialized: true, 
+  secret: 'the secret',
+  saveUninitialized: true,
   resave: false,
   cookie: {
     maxAge: 6*30*24*3600
@@ -62,6 +63,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/drivers', driverRoutes);
+app.use('/api/order', orderRoutes);
 app.use('/api/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use((req, res) => {
   res.sendStatus(404);

@@ -8,6 +8,10 @@ const itemsSchema = new schema({
   },
   price: {
     type: Number
+  },
+  quantity: {
+    type: Number,
+    default: 1
   }
 });
 
