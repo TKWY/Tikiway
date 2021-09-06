@@ -45,7 +45,16 @@ logout = (req, res) => {
   }
 };
 
+isAuthenticated = (req, res, next) => {
+  console.log(req.session)
+  if (req.session.isAuthenticated) {
+    return next();
+  }
+  return res.status(401).json({message: 'User is not authenticated, please log in first.'})
+};
+
 module.exports = {
   login,
-  logout
+  logout,
+  isAuthenticated
 };
