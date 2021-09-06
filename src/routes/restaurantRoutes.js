@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const restaurants = require('../db/controllers/restaurantController');
 const ordersController = require('../db/controllers/orderController');
+const authController = require('../db/controllers/authController');
 
 // Other routes imports.
 const menuRoutes = require('./menuRoutes');
@@ -13,7 +14,7 @@ router.use('/', menuRoutes);
 router.use('/', businessRoutes);
 
 // Restaurants routes endpoints.
-router.get('/', restaurants.getAllRestaurant);
+router.get('/', authController.isAuthenticated, restaurants.getAllRestaurant);
 router.post('/', restaurants.postRestaurant);
 
 // Restaurants target ID endpoints.
