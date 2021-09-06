@@ -1,8 +1,9 @@
 const express = require('express');
 const Router = express.Router();
+const orderController = require('../db/controllers/orderController');
 
-Router.get('/order', (req, res) => {
-  res.status(200).json('This is the order route')
-});
+Router.post('/', orderController.postOrder);
+Router.get('/:id', orderController.getOrder);
+Router.delete('/:id', orderController.deleteOrder);
 
 module.exports = Router;

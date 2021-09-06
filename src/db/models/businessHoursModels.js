@@ -5,72 +5,72 @@ const businessHoursSchema = new Schema({
   slotName: String,
   monday: {
     start: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     },
     end: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     }
   },
   tuesday: {
     start: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     },
     end: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     }
   },
   wednesday: {
     start: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     },
     end: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     }
   },
   thursday: {
     start: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     },
     end: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     }
   },
   friday: {
     start: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     },
     end: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     }
   },
   saturday: {
     start: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     },
     end: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     }
   },
   sunday: {
     start: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     },
     end: {
-      type: String,
-      default: 00
+      type: Number,
+      default: '00:00'
     }
   }
 })

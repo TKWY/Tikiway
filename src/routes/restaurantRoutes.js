@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const restaurants = require('../db/controllers/restaurantController');
+const ordersController = require('../db/controllers/orderController');
 
 // Other routes imports.
 const menuRoutes = require('./menuRoutes');
@@ -20,6 +21,9 @@ router.post('/', restaurants.postRestaurant);
 router.get('/:restaurantId', restaurants.getRestaurantById);
 router.put('/:restaurantId', restaurants.updateRestaurant);
 router.delete('/:restaurantId', restaurants.deleteRestaurant);
+
+// Order routes endpoints return list of orders
+router.get('/:restaurantId/orders', ordersController.getRestaurantOrders);
 
 // Address routes endpoints
 router.get('/:restaurantId/loc', restaurants.getLocation);
