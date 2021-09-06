@@ -1,10 +1,11 @@
 // Imports
 const express = require('express');
-const morgan = require('morgan');
+const Morgan = require('morgan');
 const cors = require('cors');
 const session = require('express-session');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const helmet = require('helmet');
 
 // Routes Imports
 const customerRoutes = require('./src/routes/customerRoutes');
@@ -14,7 +15,7 @@ const authRoutes  = require('./src/routes/authRoutes');
 const orderRoutes = require('./src/routes/orderRoutes');
 
 // Local const
-const config = require('./config');
+const {secret, morgan} = require('./config');
 const store = new session.MemoryStore()
 const app = express();
 
@@ -42,15 +43,16 @@ const swaggerDocument = require('./swagger.json');
 
 // Application options & middleware
 app.use(express.json());
+app.use(helmet());
 app.use(express.urlencoded({extended: true}));
-app.use(morgan(config.morgan));
+app.use(Morgan(morgan));
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
 }));
 app.use(session({
   name: 'tkwy-session',
-  secret: 'the secret',
+  secret: secret,
   saveUninitialized: true,
   resave: false,
   cookie: {

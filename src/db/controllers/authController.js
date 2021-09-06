@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('../../../config');
+const {secret} = require('../../../config');
 const Customer = require('../models/customerModels');
 
 login = (req, res) => {
@@ -19,6 +19,7 @@ login = (req, res) => {
         response.comparePassword(req.body.password, function (err, IsMatch) {
           if (IsMatch) {
             req.session.isAuthenticated = true;
+            jwt.sign({id: response.id}, secret, {expiresIn: 6*30*24*3600})
             return res.status(200).json('Thank you for logging in.');
           } else {
             req.session.isAuthenticated = false;
