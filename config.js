@@ -33,5 +33,5 @@ const test = {
 }
 
 //Configurations exports
-const config = { dev, prod, test}
+const config = { dev, prod, test }
 module.exports = config[env];
