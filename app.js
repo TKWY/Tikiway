@@ -13,6 +13,7 @@ const restaurantRoutes = require('./src/routes/restaurantRoutes');
 const driverRoutes = require('./src/routes/driverRoutes');
 const authRoutes  = require('./src/routes/authRoutes');
 const orderRoutes = require('./src/routes/orderRoutes');
+const imageRoutes = require('./src/routes/imageRoutes');
 
 // Local const
 const {secret, morgan} = require('./config');
@@ -66,6 +67,7 @@ app.use('/api/customers', customerRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/drivers', driverRoutes);
 app.use('/api/order', orderRoutes);
+app.use('/api/image', imageRoutes);
 app.use('/api/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use((req, res) => {
   res.sendStatus(404);
