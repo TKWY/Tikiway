@@ -22,7 +22,10 @@ const prod = {
   db: process.env.PROD_DB,
   secret: process.env.PROD_SECRET,
   session: process.env.PROD_SESSION,
-  morgan: ' '
+  morgan: ' ',
+  AWSAccess: process.env.AWSAccessKeyId,
+  AWSSecret: process.env.AWSSecretKey,
+  bucketName: process.env.bucketName
 }
 
 // Test environment
@@ -32,7 +35,10 @@ const test = {
   db: process.env.TEST_DB,
   secret: process.env.TEST_SECRET,
   session: process.env.TEST_SESSIONS,
-  morgan: ' '
+  morgan: ' ',
+  AWSAccess: process.env.AWSAccessKeyId,
+  AWSSecret: process.env.AWSSecretKey,
+  bucketName: process.env.bucketName
 }
 
 //Configurations exports
