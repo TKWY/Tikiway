@@ -18,6 +18,10 @@ const uploadS3 = multer({
     },
     key: (req, file, cb) => {
       cb(null, Date.now().toString()+'-'+ file.originalname)
+    },
+    resize: {
+      width: 200,
+      height: 200
     }
   })
 });
