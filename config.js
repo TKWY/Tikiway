@@ -9,7 +9,10 @@ const dev = {
   db: process.env.DEV_DB,
   secret: process.env.DEV_SECRET,
   session: process.env.DEV_SESSION,
-  morgan: 'dev'
+  morgan: 'dev',
+  AWSAccess: process.env.AWSAccessKeyId,
+  AWSSecret: process.env.AWSSecretKey,
+  bucketName: process.env.bucketName
 }
 
 // Production environment

@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const {menuSchema} = require('./menuModels');
 const {businessHoursSchema} = require('./businessHoursModels');
 const geoLocSchema = require('./geolocModels');
+const imageSchema = require('./imageModel');
 
 const restaurantSchema = new Schema({
   name: {
@@ -19,10 +20,7 @@ const restaurantSchema = new Schema({
     default: 0
   },
   category: String,
-  logo: {
-    type: String,
-    default: 'default'
-  },
+  logo: imageSchema,
   menu: [menuSchema],
   businessHours: [businessHoursSchema],
   businessHoursExceptions: [{
